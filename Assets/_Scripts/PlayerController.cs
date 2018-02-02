@@ -14,7 +14,6 @@ public class PlayerController : MonoBehaviour, IRestartObserver {
 	private float groundDamping = 20f; // how fast do we change direction? higher means faster
 	private float inAirDamping = 5f;
 	private float jumpHeight = 3f;
-	private float doubleJumpHeight = 2f;
 
 	private float normalizedHorizontalSpeed = 0;
 
@@ -26,11 +25,14 @@ public class PlayerController : MonoBehaviour, IRestartObserver {
 	private RaycastHit2D _lastControllerColliderHit;
 	public Vector3 _velocity;
 
-	private bool shooting = true, doubleJumping = false;
 	public static bool airborne = false;
-	public GameObject projectile;
 	private Vector2 playerSize, playerExtents;
-	private float projectileSpeed = 8.0f;
+
+	public ParticleSystem dashPS;
+	private float dashTimeMax = .5f, dashTime = 0.0f;
+	private bool dashing = false;
+	private float dashSpeed = 10f;
+	private bool canDash = true;
 
 	void Awake()
 	{
@@ -50,6 +52,8 @@ public class PlayerController : MonoBehaviour, IRestartObserver {
 		SpawnPlayer ();
 	}
 
+	private float x, y;
+	private bool jump, jumpCancel, dash;
 	void Update()
 	{
 		if (inputDisabled) {
@@ -57,87 +61,90 @@ public class PlayerController : MonoBehaviour, IRestartObserver {
 			return;
 		}
 
-		float x = Input.GetAxis("Horizontal");
-		float y = Input.GetAxis ("Vertical");
+		x = Input.GetAxis("Horizontal");
+		y = Input.GetAxis ("Vertical");
 
-		bool jump = Input.GetKeyDown (KeyCode.JoystickButton18) || Input.GetKeyDown (KeyCode.UpArrow);
-		bool jumpCancel = Input.GetKeyUp (KeyCode.JoystickButton18) || Input.GetKeyUp (KeyCode.UpArrow);
+		jump = Input.GetKeyDown (KeyCode.JoystickButton18) || Input.GetKeyDown (KeyCode.UpArrow);
+		jumpCancel = Input.GetKeyUp (KeyCode.JoystickButton18) || Input.GetKeyUp (KeyCode.UpArrow);
 
-		bool fire = Input.GetAxisRaw ("Fire") <= 0.0f;
+		dash = Input.GetAxisRaw ("Fire") != 0.0f;
 
-		if (!fire)
-			shooting = false;
-		else if (fire && !shooting) {
-			_animate.AnimateToColor (Palette.PlayerColor, Color.red, .05f, Animate.RepeatMode.OnceAndBack);
+		if (_controller.isGrounded)
+			MoveOnGround ();
+		else
+			MoveInAir ();
 
-			shooting = true;
-			NotificationMaster.SendPlayerShootNotification ();
-			AudioManager.PlayEnemyShoot ();
+		_controller.move( _velocity * Time.deltaTime );
+		_velocity = _controller.velocity;
+	}
 
-			//float direction = spriteFlipped ? -1 : 1;
-			Vector2 direction = new Vector2(x, y).normalized;
-			if (direction == Vector2.zero)
-				direction.x = spriteFlipped;
-			GameObject missile = Instantiate (projectile, ProjectileManager.myTransform);
-			missile.transform.position = transform.position + Vector3.Scale(playerSize, direction.normalized);
-			missile.GetComponent <Missile>().Initialize(direction.normalized, projectileSpeed);
+	private void MoveInAir() {
+		airborne = true;
+
+		bool colliding = _controller.collisionState.right || _controller.collisionState.left;
+		if (!colliding && dashing && dashTime <= dashTimeMax) {
+			dashTime += Time.deltaTime;
+			_velocity = (dashSpeed) * new Vector2 (x, y).normalized;
+		} else {
+			dashing = false;
+			dashTime = 0.0f;
+			if (dashPS.isPlaying)
+				dashPS.Stop ();
+
+			_velocity.y += gravity * Time.deltaTime;
+
+			if (Mathf.Abs (x) > .3) {
+				normalizedHorizontalSpeed = x;
+				if (spriteFlipped * x < 0)
+					FlipPlayer ();
+			} else
+				normalizedHorizontalSpeed = 0;
+
+			var smoothedMovementFactor = groundDamping;
+			_velocity.x = Mathf.Lerp (_velocity.x, normalizedHorizontalSpeed * runSpeed, Time.deltaTime * smoothedMovementFactor);
+		}
+			
+		if (!dashing && dash && canDash) {
+			canDash = false;
+			dashing = true;
+			dashPS.Play ();
+			AudioManager.PlayPlayerJump ();
+		} else if (jumpCancel && (_velocity.y > 0))
+			_velocity.y *= .5f;
+	}
+
+	private void MoveOnGround() {
+		airborne = false;
+		canDash = true;
+		dashing = false;
+		dashTime = 0.0f;
+		if (dashPS.isPlaying) {
+			dashPS.Stop ();
 		}
 
-		// xbox
-		/*float fireX = Input.GetAxis ("FireX");
-		float fireY = Input.GetAxis ("FireY");
-		if (Mathf.Abs(fireX) > .5f||Mathf.Abs(fireY) > .5f)
-			fire = true;*/
+		_velocity.y = 0;
 
-		if(Mathf.Abs(x) > .3)
-		{
+		if (Mathf.Abs (x) > .3) {
 			normalizedHorizontalSpeed = x;
 			if (spriteFlipped * x < 0)
 				FlipPlayer ();
-		}
-		else
+		} else
 			normalizedHorizontalSpeed = 0;
 
-		if (_controller.isGrounded) {
-			airborne = false;
-			doubleJumping = false;
-			_velocity.y = 0;
-
-			// we can only jump whilst grounded
-			if (jump) {
-				_velocity.y = Mathf.Sqrt (2f * jumpHeight * -gravity);
-				AudioManager.PlayPlayerJump ();
-			}
-		} else {
-			airborne = true;
-			if (!doubleJumping && jump) {
-				doubleJumping = true;
-				AudioManager.PlayPlayerJump ();
-				_velocity.y = Mathf.Sqrt (2f * doubleJumpHeight * -gravity);
-			}
-			else if (jumpCancel && (_velocity.y > 0))
-				_velocity.y *= .5f;
+		if (jump) {
+			_velocity.y = Mathf.Sqrt (2f * jumpHeight * -gravity);
+			AudioManager.PlayPlayerJump ();
 		}
 
-		// apply horizontal speed smoothing it. dont really do this with Lerp. Use SmoothDamp or something that provides more control
 		var smoothedMovementFactor = groundDamping;//_controller.isGrounded ? groundDamping : inAirDamping; // how fast do we change direction?
-		_velocity.x = Mathf.Lerp( _velocity.x, normalizedHorizontalSpeed * runSpeed, Time.deltaTime * smoothedMovementFactor );
-
-		// apply gravity before moving
+		_velocity.x = Mathf.Lerp (_velocity.x, normalizedHorizontalSpeed * runSpeed, Time.deltaTime * smoothedMovementFactor);
 		_velocity.y += gravity * Time.deltaTime;
 
-		// if holding down bump up our movement amount and turn off one way platform detection for a frame.
-		// this lets us jump down through one way platforms
-		if( _controller.isGrounded && Input.GetKey(KeyCode.DownArrow) )
+		if(Input.GetKey(KeyCode.DownArrow))
 		{
 			_velocity.y *= 3f;
 			_controller.ignoreOneWayPlatformsThisFrame = true;
 		}
-
-		_controller.move( _velocity * Time.deltaTime );
-
-		// grab our current _velocity to use as a base for all calculations
-		_velocity = _controller.velocity;
 	}
 		
 	public void FlipPlayer() {
