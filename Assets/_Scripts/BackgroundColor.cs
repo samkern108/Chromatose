@@ -58,7 +58,7 @@ public class BackgroundColor : MonoBehaviour {
 			Color newColor = (payload == 0) ? highlightColor : Color.cyan;
 
 			float decayTime = (kEvents[kIndex + 1].StartSample - kEvents[kIndex].StartSample)/40000;
-			Timing.RunCoroutine (C_AnimateToColor(currentColor, Color.cyan, .05f, decayTime), tag);
+			Timing.RunCoroutine (C_AnimateToColor(currentColor, newColor, .05f, decayTime), tag);
 			kIndex++;
 
 			/*Timing.RunCoroutine (C_AnimateToColor(color1, color2, .5f), tag);

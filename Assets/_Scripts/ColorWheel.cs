@@ -10,6 +10,9 @@ public class ColorWheel : MonoBehaviour {
 	public GameObject smallWheelPrefab;
 	public static ColorWheel self;
 
+	// Red is 0
+	// Blue is 1
+
 	void Start () {
 		self = this;
 		CreateColorWheel ();
@@ -27,7 +30,7 @@ public class ColorWheel : MonoBehaviour {
 			Camera.main.backgroundColor = Color.Lerp (Color.black, finish, timer/duration);
 			yield return 0;
 		}
-		//SceneManager.LoadScene (pieceIndex + 1);
+		SceneManager.LoadScene (2);
 	}
 
 	private void CreateColorWheel() {

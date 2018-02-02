@@ -4,4 +4,13 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/_Scenes/ColorWheel.unity
+    guid: d3059a403fceb4e41ac35f3cc319cb01
+  - enabled: 1
+    path: Assets/_Scenes/Red.unity
+    guid: 431b04bebb4c146df9c5ad790f94268c
+  - enabled: 1
+    path: Assets/_Scenes/Blue.unity
+    guid: f96fae79914f94a5aa7d5a9ceb4e9b83
