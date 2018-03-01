@@ -76,14 +76,14 @@ public class Enemy : MonoBehaviour {
 			MoveToStart ();
 			if (detectedPlayer) {
 				detectedPlayer = false;
-				animate.AnimateToColor (Palette.EnemyColor, Color.yellow, .3f, Animate.RepeatMode.Once);
+				//animate.AnimateToColor (Palette.EnemyColor, Color.yellow, .3f, Animate.RepeatMode.Once);
 			}
 			return;
 		} else {
 			MoveToPlayer ();
 			if (!detectedPlayer) {
 				detectedPlayer = true;
-				animate.AnimateToColor (Color.yellow, Palette.EnemyColor, .1f, Animate.RepeatMode.Once);
+				//animate.AnimateToColor (Color.yellow, Palette.EnemyColor, .1f, Animate.RepeatMode.Once);
 
 				if (!shooting)
 					StartCoroutine ("Co_Shoot");
@@ -129,10 +129,10 @@ public class Enemy : MonoBehaviour {
 
 	private void Shoot() {
 		AudioManager.PlayEnemyShoot ();
-		animate.AnimateToColor (Palette.EnemyColor, Color.red, .2f, Animate.RepeatMode.OnceAndBack);
+		//animate.AnimateToColor (Palette.EnemyColor, Color.red, .2f, Animate.RepeatMode.OnceAndBack);
 		Vector3 direction = (PlayerController.PlayerPosition - transform.position).normalized;
 		GameObject missile = Instantiate (projectile, ProjectileManager.myTransform);
 		missile.transform.position = transform.position;
-		missile.GetComponent <Missile>().Initialize(direction, projectileSpeed);
+		missile.GetComponent <Projectile>().Initialize(direction, projectileSpeed);
 	}
 }

@@ -10,9 +10,6 @@ public class ColorWheel : MonoBehaviour {
 	public GameObject smallWheelPrefab;
 	public static ColorWheel self;
 
-	// Red is 0
-	// Blue is 1
-
 	void Start () {
 		self = this;
 		CreateColorWheel ();

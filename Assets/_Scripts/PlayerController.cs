@@ -3,17 +3,22 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using Prime31;
+using SonicBloom.Koreo;
 
 public class PlayerController : MonoBehaviour, IRestartObserver {
+
+	[EventID]
+	public string eventID;
 
 	private bool inputDisabled = false;
 
 	// movement config
-	private float gravity = -30f;
+	private float gravity = -20f;//-36f;
+	private float gravityRotation = 0f;
 	private float runSpeed = 7f;
 	private float groundDamping = 20f; // how fast do we change direction? higher means faster
 	private float inAirDamping = 5f;
-	private float jumpHeight = 3f;
+	private float jumpHeight = 7f;
 
 	private float normalizedHorizontalSpeed = 0;
 
@@ -31,11 +36,13 @@ public class PlayerController : MonoBehaviour, IRestartObserver {
 	public ParticleSystem dashPS;
 	private float dashTimeMax = .5f, dashTime = 0.0f;
 	private bool dashing = false;
-	private float dashSpeed = 10f;
+	private float dashSpeed = 16f;
 	private bool canDash = true;
 
 	void Awake()
 	{
+		//InvokeRepeating ("RotateGravity", 4.0f, 4.0f);
+		//RotateGravity();
 		GetComponent <SpriteRenderer>().color = Palette.Invisible;
 
 		NotificationMaster.restartObservers.Add (this);
@@ -46,12 +53,48 @@ public class PlayerController : MonoBehaviour, IRestartObserver {
 		PlayerTransform = transform;
 		playerSize = GetComponent <SpriteRenderer> ().bounds.size;
 		playerExtents = GetComponent <SpriteRenderer> ().bounds.extents;
+
+		Koreographer.Instance.RegisterForEventsWithTime(eventID, BeatEvent);
 	}
 
-	public void Start() {
+	void Start() {
+		dashTime = Level.secondsPerMeasure;
 		SpawnPlayer ();
 	}
 
+	private bool waitingForBoostCheck = false;
+	private int lastSampleTime;
+	private int boostSampleTimeGracePeriod = 5000;
+	private int lastBoostSampleTime = -int.MaxValue;
+	public void BeatEvent(KoreographyEvent evt, int sampleTime, int sampleDelta, DeltaSlice deltaSlice) {
+		lastSampleTime = sampleTime;
+		float val = Math.Abs (lastBoostSampleTime - lastSampleTime);
+		if (val/boostSampleTimeGracePeriod <= 1.0f) {
+			canDash = false;
+			dashing = true;
+			dashTime = 0.0f;
+			dashPS.Play ();
+			AudioManager.PlayPlayerJump ();
+			Camera.main.GetComponent <ScreenShake>().Pulse(val);
+		}
+		waitingForBoostCheck = false;
+	}
+
+	public void CompareDashSampleTime() {
+		lastBoostSampleTime = Koreographer.Instance.GetMusicSampleTime ();
+		float val = Math.Abs (lastBoostSampleTime - lastSampleTime);
+		if (val/boostSampleTimeGracePeriod <= 1.0f) {
+			canDash = false;
+			dashing = true;
+			dashTime = 0.0f;
+			dashPS.Play ();
+			AudioManager.PlayPlayerJump ();
+			Camera.main.GetComponent <ScreenShake>().Pulse(val);
+			waitingForBoostCheck = false;
+		}
+	}
+		
+	private int beatCounter;
 	private float x, y;
 	private bool jump, jumpCancel, dash;
 	void Update()
@@ -69,58 +112,66 @@ public class PlayerController : MonoBehaviour, IRestartObserver {
 
 		dash = Input.GetAxisRaw ("Fire") != 0.0f;
 
-		if (_controller.isGrounded)
-			MoveOnGround ();
-		else
-			MoveInAir ();
+		bool colliding = _controller.collisionState.right || _controller.collisionState.left;
 
-		_controller.move( _velocity * Time.deltaTime );
+		if (!dashing && dash && canDash && !waitingForBoostCheck) {
+			lastBoostSampleTime = Level.koreo.GetLatestSampleTime ();
+			waitingForBoostCheck = true;
+			CompareDashSampleTime ();
+		} else if (!colliding && dashing && dashTime <= dashTimeMax && (dash || dashTime < dashTimeMax/2.0f)) {
+			dashTime += Time.deltaTime;
+			_velocity = (dashSpeed) * new Vector2 (x, y).normalized;
+		}
+		else {
+			dashing = false;
+			if (dashPS.isPlaying)
+				dashPS.Stop ();
+
+			if (_controller.isGrounded)
+				MoveOnGround ();
+			else
+				MoveInAir ();
+		}
+			
+		RaycastHit2D hit = Physics2D.Raycast (transform.position, -transform.up, 10.0f, 1 << LayerMask.NameToLayer("Wall"));
+		if (hit) {
+			_controller.SetUpDirection (hit.normal);
+		}
+
+		RotateGravity (Time.deltaTime * 5);
+		_controller.move( _velocity * Time.deltaTime * 0);
+
 		_velocity = _controller.velocity;
+	}
+
+	private void RotateGravity(float rotation) {
+		gravityRotation += rotation;//(gravityRotation + 90) % 360;
+		transform.localRotation = Quaternion.Euler (new Vector3(0, 0, gravityRotation));
 	}
 
 	private void MoveInAir() {
 		airborne = true;
 
-		bool colliding = _controller.collisionState.right || _controller.collisionState.left;
-		if (!colliding && dashing && dashTime <= dashTimeMax) {
-			dashTime += Time.deltaTime;
-			_velocity = (dashSpeed) * new Vector2 (x, y).normalized;
-		} else {
-			dashing = false;
-			dashTime = 0.0f;
-			if (dashPS.isPlaying)
-				dashPS.Stop ();
+		_velocity.y += gravity * Time.deltaTime;
 
-			_velocity.y += gravity * Time.deltaTime;
+		if (Mathf.Abs (x) > .3) {
+			normalizedHorizontalSpeed = x;
+			if (spriteFlipped * x < 0)
+				FlipPlayer ();
+		} else
+			normalizedHorizontalSpeed = 0;
 
-			if (Mathf.Abs (x) > .3) {
-				normalizedHorizontalSpeed = x;
-				if (spriteFlipped * x < 0)
-					FlipPlayer ();
-			} else
-				normalizedHorizontalSpeed = 0;
+		var smoothedMovementFactor = groundDamping;
+		_velocity.x = Mathf.Lerp (_velocity.x, normalizedHorizontalSpeed * runSpeed, Time.deltaTime * smoothedMovementFactor);
 
-			var smoothedMovementFactor = groundDamping;
-			_velocity.x = Mathf.Lerp (_velocity.x, normalizedHorizontalSpeed * runSpeed, Time.deltaTime * smoothedMovementFactor);
-		}
-			
-		if (!dashing && dash && canDash) {
-			canDash = false;
-			dashing = true;
-			dashPS.Play ();
-			AudioManager.PlayPlayerJump ();
-		} else if (jumpCancel && (_velocity.y > 0))
+	 	if (jumpCancel && (_velocity.y > 0))
 			_velocity.y *= .5f;
 	}
 
 	private void MoveOnGround() {
 		airborne = false;
-		canDash = true;
-		dashing = false;
-		dashTime = 0.0f;
-		if (dashPS.isPlaying) {
-			dashPS.Stop ();
-		}
+		if(!dashing)
+			canDash = true;
 
 		_velocity.y = 0;
 
@@ -132,7 +183,7 @@ public class PlayerController : MonoBehaviour, IRestartObserver {
 			normalizedHorizontalSpeed = 0;
 
 		if (jump) {
-			_velocity.y = Mathf.Sqrt (2f * jumpHeight * -gravity);
+			_velocity.y = Mathf.Sqrt (jumpHeight * -gravity);
 			AudioManager.PlayPlayerJump ();
 		}
 
@@ -158,20 +209,10 @@ public class PlayerController : MonoBehaviour, IRestartObserver {
 
 		inputDisabled = true;
 		GetComponent <SpriteRenderer>().color = Palette.Invisible;
+	
+		//_controller.warpToGrounded ();
 
-		Vector3 newPosition = Vector3.zero;
-		RaycastHit2D hit;
-		// Uhh this is hacky but whatever
-		for(int i = 0; i < 5; i++) {
-			hit = Physics2D.Linecast (transform.position + new Vector3(0, playerExtents.y, 0), newPosition - new Vector3(0, playerExtents.y * 2, 0), 1 << LayerMask.NameToLayer("Wall"));
-			if (hit.collider) {
-				newPosition.y = hit.transform.position.y + hit.transform.GetComponent<SpriteRenderer> ().bounds.extents.y + playerExtents.y;
-				transform.position = newPosition;
-				break;
-			}
-		}
-
-		_animate.AnimateToColor (Palette.Invisible, Palette.PlayerColor, .5f, Animate.RepeatMode.Once);
+		_animate.AnimateToColor (Palette.Invisible, Color.white, .5f, Animate.RepeatMode.Once);
 
 		Invoke ("EnableInput", .5f);
 	}

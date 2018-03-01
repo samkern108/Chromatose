@@ -1,26 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SonicBloom.Koreo;
 
-public class EnemyManager : MonoBehaviour, IRestartObserver, IPlayerObserver, ICheckpointObserver {
+public class EnemyManager : MonoBehaviour, IRestartObserver, IPlayerObserver {
+
+	[EventID]
+	public string eventID;
 
 	public static EnemyManager self;
 	public GameObject p_enemy;
 	public Room room;
 
 	public void Start() {
+		Koreographer.Instance.RegisterForEvents(eventID, SpawnEnemyEvent);
+
 		self = this;
 		NotificationMaster.restartObservers.Add (this);
 		NotificationMaster.playerObservers.Add (this);
-		NotificationMaster.checkpointObservers.Add (this);
 	}
 
-	public void CheckpointActivated(float timeOpen) {
-		// Disabling until we figure out what the gameplay is :3
-		SpawnEnemy();
-	}
-
-	private void SpawnEnemy() {
+	private void SpawnEnemyEvent(KoreographyEvent evt) {
 		GameObject.Instantiate (p_enemy, this.transform);
 	}
 

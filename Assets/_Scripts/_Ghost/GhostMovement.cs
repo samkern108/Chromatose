@@ -168,7 +168,7 @@ public class GhostMovement : MonoBehaviour {
 		}*/
 
 		_velocity.y += gravity * Time.deltaTime;
-		_controller.move( _velocity * Time.deltaTime );
+		_controller.move( _velocity * Time.deltaTime);
 		_velocity = _controller.velocity;
 
 		if((Mathf.Sign(_velocity.x) > 0) && spriteFlipped == 1) {

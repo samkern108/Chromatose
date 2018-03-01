@@ -232,7 +232,11 @@ public class CharacterController2D : MonoBehaviour
 	}
 
 
-	#region Public
+		#region Public
+
+		public void SetUpDirection (Vector2 up) {
+			transform.localRotation = Quaternion.FromToRotation (Vector2.up, up);
+		}
 
 	/// <summary>
 	/// attempts to move the character to position + deltaMovement. Any colliders in the way will cause the movement to
@@ -241,8 +245,10 @@ public class CharacterController2D : MonoBehaviour
 	/// <param name="deltaMovement">Delta movement.</param>
 	public void move( Vector3 deltaMovement )
 	{
-		// save off our current grounded state which we will use for wasGroundedLastFrame and becameGroundedThisFrame
-		collisionState.wasGroundedLastFrame = collisionState.below;
+			deltaMovement = deltaMovement.Rotate2D (transform.up.AngleTo(Vector3.up));
+		
+			// save off our current grounded state which we will use for wasGroundedLastFrame and becameGroundedThisFrame
+			collisionState.wasGroundedLastFrame = collisionState.below;
 
 		// clear our state
 		collisionState.reset();
@@ -254,8 +260,8 @@ public class CharacterController2D : MonoBehaviour
 
 		// first, we check for a slope below us before moving
 		// only check slopes if we are going down and grounded
-		if( deltaMovement.y < 0f && collisionState.wasGroundedLastFrame )
-			handleVerticalSlope( ref deltaMovement );
+		//if( deltaMovement.y < 0f && collisionState.wasGroundedLastFrame )
+		//	handleVerticalSlope( ref deltaMovement );
 
 		// now we check movement in the horizontal dir
 		if( deltaMovement.x != 0f )
@@ -299,7 +305,7 @@ public class CharacterController2D : MonoBehaviour
 	{
 		do
 		{
-			move( new Vector3( 0, -1f, 0 ) );
+			move( -transform.up );
 		} while( !isGrounded );
 	}
 
@@ -337,9 +343,17 @@ public class CharacterController2D : MonoBehaviour
 		var modifiedBounds = boxCollider.bounds;
 		modifiedBounds.Expand( -2f * _skinWidth );
 
-		_raycastOrigins.topLeft = new Vector2( modifiedBounds.min.x, modifiedBounds.max.y );
-		_raycastOrigins.bottomRight = new Vector2( modifiedBounds.max.x, modifiedBounds.min.y );
-		_raycastOrigins.bottomLeft = modifiedBounds.min;
+			var extents = modifiedBounds.extents;
+			var center = modifiedBounds.center;
+
+			Vector3 topLeftOrientation = transform.up - transform.right;
+			Vector3 bottomLeftOrientation = -transform.up - transform.right;
+			Vector3 topLeftSignedExtents = new Vector3 (extents.x * topLeftOrientation.x, extents.y * topLeftOrientation.y);
+			Vector3 bottomLeftSignedExtents = new Vector3 (extents.x * bottomLeftOrientation.x, extents.y * bottomLeftOrientation.y);
+
+			_raycastOrigins.topLeft = center + topLeftSignedExtents;
+			_raycastOrigins.bottomRight = center - topLeftSignedExtents;
+			_raycastOrigins.bottomLeft = center + bottomLeftSignedExtents;
 	}
 
 
@@ -351,14 +365,16 @@ public class CharacterController2D : MonoBehaviour
 	/// </summary>
 	void moveHorizontally( ref Vector3 deltaMovement )
 	{
-		var isGoingRight = deltaMovement.x > 0;
+		var isGoingRight = (transform.right.x * deltaMovement.x) > 0;
 		var rayDistance = Mathf.Abs( deltaMovement.x ) + _skinWidth;
-		var rayDirection = isGoingRight ? Vector2.right : -Vector2.right;
+		var rayDirection = isGoingRight ? (Vector2)transform.right : -(Vector2)transform.right;
 		var initialRayOrigin = isGoingRight ? _raycastOrigins.bottomRight : _raycastOrigins.bottomLeft;
 
 		for( var i = 0; i < totalHorizontalRays; i++ )
 		{
-			var ray = new Vector2( initialRayOrigin.x, initialRayOrigin.y + i * _verticalDistanceBetweenRays );
+			float rayOffset = i * _verticalDistanceBetweenRays;
+			var ray = new Vector2( initialRayOrigin.x, initialRayOrigin.y );
+				ray += (Vector2)transform.up * rayOffset;
 
 			DrawRay( ray, rayDirection * rayDistance, Color.red );
 
@@ -372,7 +388,7 @@ public class CharacterController2D : MonoBehaviour
 			if( _raycastHit )
 			{
 				// the bottom ray can hit a slope but no other ray can so we have special handling for these cases
-				if( i == 0 && handleHorizontalSlope( ref deltaMovement, Vector2.Angle( _raycastHit.normal, Vector2.up ) ) )
+					if( i == 0)// && handleHorizontalSlope( ref deltaMovement, Vector2.Angle( _raycastHit.normal, (Vector2)transform.up ) ) )
 				{
 					_raycastHitsThisFrame.Add( _raycastHit );
 					break;
@@ -385,15 +401,15 @@ public class CharacterController2D : MonoBehaviour
 				// remember to remove the skinWidth from our deltaMovement
 				if( isGoingRight )
 				{
-					deltaMovement.x -= _skinWidth;
+						deltaMovement.x -= _skinWidth * transform.right.x;
 					collisionState.right = true;
 				}
 				else
 				{
-					deltaMovement.x += _skinWidth;
+						deltaMovement.x += _skinWidth * transform.right.x;
 					collisionState.left = true;
 				}
-
+						
 				_raycastHitsThisFrame.Add( _raycastHit );
 
 				// we add a small fudge factor for the float operations here. if our rayDistance is smaller
@@ -403,6 +419,17 @@ public class CharacterController2D : MonoBehaviour
 			}
 		}
 	}
+
+		void OnDrawGizmos() {
+			Gizmos.color = Color.yellow;
+			Gizmos.DrawSphere(_raycastOrigins.topLeft, .05f);
+
+			Gizmos.color = Color.red;
+			Gizmos.DrawSphere(_raycastOrigins.bottomLeft, .05f);
+
+			Gizmos.color = Color.blue;
+			Gizmos.DrawSphere(_raycastOrigins.bottomRight, .05f);
+		}
 
 
 	/// <summary>
@@ -468,9 +495,10 @@ public class CharacterController2D : MonoBehaviour
 
 	void moveVertically( ref Vector3 deltaMovement )
 	{
-		var isGoingUp = deltaMovement.y > 0;
+		float upSign = transform.up.y;
+		var isGoingUp = deltaMovement.y * upSign > 0;
 		var rayDistance = Mathf.Abs( deltaMovement.y ) + _skinWidth;
-		var rayDirection = isGoingUp ? Vector2.up : -Vector2.up;
+		var rayDirection = isGoingUp ? (Vector2)transform.up : -(Vector2)transform.up;
 		var initialRayOrigin = isGoingUp ? _raycastOrigins.topLeft : _raycastOrigins.bottomLeft;
 
 		// apply our horizontal deltaMovement here so that we do our raycast from the actual position we would be in if we had moved
@@ -483,9 +511,11 @@ public class CharacterController2D : MonoBehaviour
 
 		for( var i = 0; i < totalVerticalRays; i++ )
 		{
-			var ray = new Vector2( initialRayOrigin.x + i * _horizontalDistanceBetweenRays, initialRayOrigin.y );
+			float rayOffset = i * _horizontalDistanceBetweenRays;
+			var ray = new Vector2( initialRayOrigin.x, initialRayOrigin.y );
+			ray += (Vector2)transform.right * rayOffset;
 
-			DrawRay( ray, rayDirection * rayDistance, Color.red );
+			DrawRay( ray, rayDirection * rayDistance, Color.yellow );
 			_raycastHit = Physics2D.Raycast( ray, rayDirection, rayDistance, mask );
 			if( _raycastHit )
 			{
@@ -496,12 +526,12 @@ public class CharacterController2D : MonoBehaviour
 				// remember to remove the skinWidth from our deltaMovement
 				if( isGoingUp )
 				{
-					deltaMovement.y -= _skinWidth;
+					deltaMovement.y -= _skinWidth * upSign;
 					collisionState.above = true;
 				}
 				else
 				{
-					deltaMovement.y += _skinWidth;
+					deltaMovement.y += _skinWidth * upSign;
 					collisionState.below = true;
 				}
 
@@ -509,7 +539,7 @@ public class CharacterController2D : MonoBehaviour
 
 				// this is a hack to deal with the top of slopes. if we walk up a slope and reach the apex we can get in a situation
 				// where our ray gets a hit that is less then skinWidth causing us to be ungrounded the next frame due to residual velocity.
-				if( !isGoingUp && deltaMovement.y > 0.00001f )
+				if( !isGoingUp && deltaMovement.y > upSign * 0.00001f )
 					_isGoingUpSlope = true;
 
 				// we add a small fudge factor for the float operations here. if our rayDistance is smaller
@@ -530,7 +560,7 @@ public class CharacterController2D : MonoBehaviour
 	{
 		// slope check from the center of our collider
 		var centerOfCollider = ( _raycastOrigins.bottomLeft.x + _raycastOrigins.bottomRight.x ) * 0.5f;
-		var rayDirection = -Vector2.up;
+		var rayDirection = -(Vector2)transform.up;
 
 		// the ray distance is based on our slopeLimit
 		var slopeCheckRayDistance = _slopeLimitTangent * ( _raycastOrigins.bottomRight.x - centerOfCollider );
@@ -541,7 +571,7 @@ public class CharacterController2D : MonoBehaviour
 		if( _raycastHit )
 		{
 			// bail out if we have no slope
-			var angle = Vector2.Angle( _raycastHit.normal, Vector2.up );
+			var angle = Vector2.Angle( _raycastHit.normal, (Vector2)transform.up );
 			if( angle == 0 )
 				return;
 

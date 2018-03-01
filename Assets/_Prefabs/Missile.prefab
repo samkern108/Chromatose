@@ -19,11 +19,11 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4855160291517634}
-  - component: {fileID: 114780924038190942}
   - component: {fileID: 212110315872590464}
   - component: {fileID: 60281563090221020}
   - component: {fileID: 50659390403156278}
-  - component: {fileID: 95716947894150382}
+  - component: {fileID: 114649335133030490}
+  - component: {fileID: 114064947902234058}
   m_Layer: 10
   m_Name: Missile
   m_TagString: Projectile
@@ -38,7 +38,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1272349653017708}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.7361678, y: 0.57564944, z: 0}
+  m_LocalPosition: {x: -3.309079, y: 0.66234815, z: 0}
   m_LocalScale: {x: 0.3, y: 0.3, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -94,24 +94,7 @@ PolygonCollider2D:
       - {x: -0.43301272, y: -0.24999994}
       - {x: -0.000000029802322, y: -0.5}
       - {x: 0.43301272, y: -0.25000003}
---- !u!95 &95716947894150382
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1272349653017708}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 4876b52f8b38147458d67f72c6b118cd, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114780924038190942
+--- !u!114 &114064947902234058
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -119,10 +102,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 1272349653017708}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd77f4d131c9f498ab93747956ec294b, type: 3}
+  m_Script: {fileID: 11500000, guid: e9d965aeacd0245ce870b66f61896eba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  p_explosion: {fileID: 1897050659706452, guid: 52a3730e33680436c894ac952727e8d5,
+--- !u!114 &114649335133030490
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1272349653017708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc223038a703b4793ab955a88547c91a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  p_explosion: {fileID: 1057253717485666, guid: 48f29556927454329bb597dcba8334af,
     type: 2}
 --- !u!212 &212110315872590464
 SpriteRenderer:

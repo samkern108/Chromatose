@@ -91,14 +91,14 @@ public class GhostAI : MonoBehaviour, IPlayerObserver {
 			if (detectedPlayer) {
 				detectedPlayer = false;
 				if(attack) attack.StopShooting ();
-				animate.AnimateToColor (Palette.EnemyColor, color, .3f, Animate.RepeatMode.Once);
+				//animate.AnimateToColor (Palette.EnemyColor, color, .3f, Animate.RepeatMode.Once);
 			}
 			return;
 		} else {
 			if (!detectedPlayer) {
 				detectedPlayer = true;
 				if(attack) attack.StartShooting ();
-				animate.AnimateToColor (color, Palette.EnemyColor, .1f, Animate.RepeatMode.Once);
+				//animate.AnimateToColor (color, Palette.EnemyColor, .1f, Animate.RepeatMode.Once);
 			}
 		}
 	}

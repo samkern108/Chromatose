@@ -9,13 +9,10 @@ public class BackgroundColor : MonoBehaviour {
 	[EventID]
 	public string eventID;
 	public float lastColorChangeFrame;
-	private Color startColor, currentColor;
-	public Color highlightColor;
 	private string tag = "background";
 	private SpriteRenderer spriteRenderer;
 
-	private Color color1;
-	private Color color2;
+	private Color baseColor, lightColor, ultraColor;
 
 	private Koreography koreo;
 	private KoreographyTrackBase track;
@@ -26,11 +23,10 @@ public class BackgroundColor : MonoBehaviour {
 	{
 		Koreographer.Instance.RegisterForEventsWithTime(eventID, CameraColorEvent);
 		spriteRenderer = GetComponent <SpriteRenderer>();
-		startColor = spriteRenderer.color;
-		currentColor = startColor;
 
-		color1 = currentColor;
-		color2 = highlightColor;
+		baseColor = Palette.levelColors[Level.levelID];
+		lightColor = Palette.levelColorsLight[Level.levelID];
+		ultraColor = Palette.levelColorsUltra[Level.levelID];
 
 		koreo = Koreographer.Instance.GetKoreographyAtIndex(0);
 		track = koreo.GetTrackByID(eventID);
@@ -47,41 +43,21 @@ public class BackgroundColor : MonoBehaviour {
 		
 	void CameraColorEvent(KoreographyEvent evt, int sampleTime, int sampleDelta, DeltaSlice deltaSlice)
 	{
-		//Debug.Log (sampleTime + "  :  " + sampleDelta + "  :  " + deltaSlice.deltaOffset + "  :  " + deltaSlice.deltaLength);
-
 		if (Time.frameCount != lastColorChangeFrame)
 		{
-			//int particleCount = (int)(particlesPerBeat * Koreographer.GetBeatTimeDelta());
-
 			Timing.KillCoroutines (tag);
-			int payload = ((IntPayload)evt.Payload).IntVal;
-			Color newColor = (payload == 0) ? highlightColor : Color.cyan;
+			int payload = 0;//((IntPayload)evt.Payload).IntVal;
+			Color newColor = (payload == 0) ? lightColor : ultraColor;
 
 			float decayTime = (kEvents[kIndex + 1].StartSample - kEvents[kIndex].StartSample)/40000;
-			Timing.RunCoroutine (C_AnimateToColor(currentColor, newColor, .05f, decayTime), tag);
+			Timing.RunCoroutine (C_AnimateToColor(baseColor, newColor, .05f, decayTime), tag);
 			kIndex++;
-
-			/*Timing.RunCoroutine (C_AnimateToColor(color1, color2, .5f), tag);
-
-			Color temp = color1;
-			color1 = color2;
-			color2 = temp;*/
 
 			lastColorChangeFrame = Time.frameCount;
 		}
 	}
 
-	/*private IEnumerator<float> C_AnimateToColor (Color start, Color finish, float inDuration) {
-		float startTime = Time.time;
-		float timer = 0;
-		while(timer <= inDuration) {
-			timer = Time.time - startTime;
-			spriteRenderer.color = Color.Lerp (start, finish, timer/inDuration);
-			currentColor = spriteRenderer.color;
-			yield return 0;
-		}
-	}*/
-
+	private Color currentColor;
 	private IEnumerator<float> C_AnimateToColor (Color start, Color finish, float inDuration, float outDuration) {
 		float startTime = Time.time;
 		float timer = 0;
@@ -96,7 +72,7 @@ public class BackgroundColor : MonoBehaviour {
 		timer = 0;
 		while(timer <= outDuration) {
 			timer = Time.time - startTime;
-			spriteRenderer.color = Color.Lerp (finish, startColor, timer/outDuration);
+			spriteRenderer.color = Color.Lerp (finish, baseColor, timer/outDuration);
 			currentColor = spriteRenderer.color;
 			yield return 0;
 		}

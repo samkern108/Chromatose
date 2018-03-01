@@ -46,6 +46,9 @@ Temp
 **/Assets/Koreographer
 **/Assets/Plugins
 **/Assets/Editor Default Resources/Koreographer
+**/Assets/PlayMaker*
+**/Assets/Gizmos/PlayMaker*
+**/Assets/iTween*
 *.csproj
 *.pidb
 *.unityproj

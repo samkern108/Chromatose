@@ -30,7 +30,7 @@ public class Ghost : MonoBehaviour {
 
 		playerWidth = spriteRenderer.bounds.size.x;
 
-		currentColor = Palette.GhostColor;
+		//currentColor = Palette.GhostColor;
 		currentColor.a = .9f;
 		spriteRenderer.color = currentColor;
 	}
@@ -100,6 +100,6 @@ public class Ghost : MonoBehaviour {
 		float direction = spriteFlipped;
 		GameObject missile = Instantiate (projectile, ProjectileManager.myTransform);
 		missile.transform.position = transform.position + new Vector3((playerWidth * direction), 0, 0);
-		missile.GetComponent <Missile>().Initialize(Vector3.right * direction, projectileSpeed * playbackRate);
+		missile.GetComponent <Projectile>().Initialize(Vector3.right * direction, projectileSpeed * playbackRate);
 	}
 }

@@ -48,7 +48,7 @@ public class GhostMovement_Fly : GhostMovement {
 		sinOffset += (Time.deltaTime * sinDamping);
 		_velocity.y += (amplitude - (amplitude / 2)) * Mathf.Sin (sinOffset);
 
-		_controller.move( _velocity * Time.deltaTime );
+		_controller.move( _velocity * Time.deltaTime);
 		_velocity = _controller.velocity;
 
 		if(_velocity.x * spriteFlipped > (speed * .9f)) {
