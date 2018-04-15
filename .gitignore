@@ -49,6 +49,8 @@ Temp
 **/Assets/PlayMaker*
 **/Assets/Gizmos/PlayMaker*
 **/Assets/iTween*
+**/Assets/ShaderWeaver*
+**/Assets/Ludiq*
 *.csproj
 *.pidb
 *.unityproj

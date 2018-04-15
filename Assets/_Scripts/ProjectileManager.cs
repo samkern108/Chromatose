@@ -2,22 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProjectileManager : MonoBehaviour, IRestartObserver {
+namespace Chromatose
+{
+    public class ProjectileManager : MonoBehaviour, IRestartObserver
+    {
 
-	public static Transform myTransform;
+        public static Transform myTransform;
 
-	// Can we recycle projectiles?
+        // Can we recycle projectiles?
 
-	void Start () {
-		NotificationMaster.restartObservers.Add (this);
-		myTransform = transform;
-	}
+        void Start()
+        {
+            NotificationMaster.restartObservers.Add(this);
+            myTransform = transform;
+        }
 
-	public void Restart() {
-		while (transform.childCount > 0) {
-			Transform child = transform.GetChild (0);
-			child.parent = null;
-			Destroy (child.gameObject);
-		}
-	}
+        public void Restart()
+        {
+            while (transform.childCount > 0)
+            {
+                Transform child = transform.GetChild(0);
+                child.parent = null;
+                Destroy(child.gameObject);
+            }
+        }
+    }
 }
