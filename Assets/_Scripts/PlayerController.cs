@@ -34,7 +34,11 @@ namespace Chromatose
         private Animate _animate;
         public Vector3 _velocity;
 
+        private Vector3 _regularScale;
+
         private Vector2 playerSize, playerExtents;
+
+        public GameObject deathExplosion;
 
         public ParticleSystem dashPS;
 
@@ -49,6 +53,8 @@ namespace Chromatose
 
             _animate = GetComponent<Animate>();
             _controller = GetComponent<CharacterController2D>();
+
+            _regularScale = transform.localScale;
 
             PlayerTransform = transform;
             playerSize = spriteRenderer.bounds.size;
@@ -90,29 +96,34 @@ namespace Chromatose
             jumpCancel = Input.GetKeyUp(KeyCode.JoystickButton18) || Input.GetKeyUp(KeyCode.UpArrow);
             dash = Input.GetKeyDown(KeyCode.Space);
 
-            bool colliding = _controller.collisionState.right || _controller.collisionState.left || _controller.collisionState.above || _controller.collisionState.below;
+            bool colliding = _controller.collisionState.right || _controller.collisionState.left ||
+                            _controller.collisionState.above || _controller.collisionState.below;
 
             if (!dashing && dash && canDash)
             {
                 Dash();
             }
-            else if (!colliding && dashing && dashTime <= dashTimeMax)// && (dash || dashTime < dashTimeMax / 2.0f))
+            else if (!colliding && dashing && dashTime <= dashTimeMax)
             {
                 dashTime += Time.deltaTime;
                 _velocity = (dashSpeed) * new Vector2(x, y).normalized;
             }
             else
             {
-                if(dashing) {
+                if (dashing)
+                {
                     _velocity.y /= 2.0f;
                     dashing = false;
                     spriteRenderer.sprite = circle;
-                    if (dashPS.isPlaying) dashPS.Stop();
+                    if (dashPS.isPlaying)
+                        Invoke("StopDashPS", dashTimeMax);
                 }
 
                 if (_controller.isGrounded) MoveOnGround();
                 else MoveInAir();
             }
+
+           // Animate();
 
             RaycastHit2D hit = Physics2D.Raycast(transform.position, -transform.up, 10.0f, 1 << LayerMask.NameToLayer("Wall"));
             if (hit)
@@ -123,6 +134,19 @@ namespace Chromatose
             _controller.move(_velocity * Time.deltaTime);
 
             _velocity = _controller.velocity;
+        }
+
+        private void Animate()
+        {
+            Vector3 newScale = transform.localScale;
+            newScale.x = x;
+            newScale.y = y;
+            transform.localScale = newScale;
+        }
+
+        private void StopDashPS()
+        {
+            dashPS.Stop();
         }
 
         private void MoveInAir()
@@ -168,6 +192,10 @@ namespace Chromatose
             {
                 _velocity.y = Mathf.Sqrt(jumpHeight * -gravity);
                 AudioManager.PlayPlayerJump();
+                Vector3 animateEndSize = transform.localScale;
+                animateEndSize.y *= 1.4f;
+                animateEndSize.x *= .8f;
+                _animate.AnimateToSize(transform.localScale, animateEndSize, .3f, RepeatMode.OnceAndBack);
             }
 
             var smoothedMovementFactor = groundDamping;//_controller.isGrounded ? groundDamping : inAirDamping; // how fast do we change direction?
@@ -192,9 +220,9 @@ namespace Chromatose
         private void SpawnPlayer()
         {
             invulnerable = true;
-            _velocity = new Vector2();
-
             inputDisabled = true;
+
+            _velocity = new Vector2();
             spriteRenderer.color = Palette.Invisible;
 
             transform.position = spawnPosition;
@@ -229,6 +257,15 @@ namespace Chromatose
         public static Vector3 PlayerPosition
         {
             get { return _playerTransform.position; }
+        }
+
+        public void Die()
+        {
+            NotificationMaster.SendPlayerDeathNotification();
+            AudioManager.PlayPlayerDeath();
+            Instantiate(deathExplosion, transform.position, Quaternion.identity);
+            gameObject.SetActive(false);
+            Level.self.PlayerRespawn();
         }
     }
 }

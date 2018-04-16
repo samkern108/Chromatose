@@ -50,8 +50,13 @@ namespace Chromatose
             audioSource = GetComponent<AudioSource>();
             secondsPerBeat = 60.0f / 126.0f;
             secondsPerMeasure = secondsPerBeat * 4.0f;
+
+            Invoke("StartMusic", 2.0f);
         }
 
+        private void StartMusic() {
+            audioSource.Play();
+        }
 
         public static KoreographyEvent loopStart;
 
@@ -65,8 +70,12 @@ namespace Chromatose
             }
             else
             {
+                audioSource.Stop();
+                Koreographer.Instance.FlushDelayQueue(koreo);
+			    koreo.ResetTimings();
                 float newTime = (float)loopStart.StartSample / (float)koreo.SampleRate;
                 audioSource.time = newTime;
+                audioSource.Play();
             }
             Debug.Log("LoopEvent " + stageNumber + "  " + loopStart.StartSample);
         }

@@ -8,7 +8,7 @@ namespace Chromatose
 {
     public class BackgroundColor : MonoBehaviour
     {
-		public static Bounds bounds;
+        public static Bounds bounds;
 
         [EventID]
         public string eventID;
@@ -16,7 +16,7 @@ namespace Chromatose
         private string tag = "background";
         private SpriteRenderer spriteRenderer;
 
-        private Color baseColor, lightColor, ultraColor;
+        public static Color baseColor, lightColor, ultraColor;
 
         private Koreography koreo;
         private KoreographyTrackBase track;
@@ -27,7 +27,7 @@ namespace Chromatose
         {
             Koreographer.Instance.RegisterForEventsWithTime(eventID, CameraColorEvent);
             spriteRenderer = GetComponent<SpriteRenderer>();
-			bounds = spriteRenderer.bounds;
+            bounds = spriteRenderer.bounds;
 
             baseColor = Palette.levelColors[Level.levelID];
             lightColor = Palette.levelColorsLight[Level.levelID];
@@ -85,5 +85,21 @@ namespace Chromatose
                 yield return 0;
             }
         }
+
+        public static float roomSidesBuffer = 6.0f / 7.0f;
+        public static Vector3 GetRandomPointInRoom()
+        {
+            // roomSidesBuffer prevents it from spawning on the absolute limits of the box.
+            float x = bounds.extents.x * roomSidesBuffer;
+            float y = bounds.extents.y * roomSidesBuffer;
+            Vector3 center = bounds.center;
+
+            Vector3 point = Vector3.zero;
+            point.x = Random.Range(center.x - x, center.x + x);
+            point.y = Random.Range(center.y - y, center.y + y);
+
+            return point;
+        }
+
     }
 }

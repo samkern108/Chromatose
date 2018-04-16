@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/_Scenes/Red.unity
     guid: 431b04bebb4c146df9c5ad790f94268c
   - enabled: 1
+    path: Assets/_Scenes/Orange.unity
+    guid: 85d4160ee8de24848bd56a3831fe9c3a
+  - enabled: 1
     path: Assets/_Scenes/Blue.unity
     guid: f96fae79914f94a5aa7d5a9ceb4e9b83
   - enabled: 1

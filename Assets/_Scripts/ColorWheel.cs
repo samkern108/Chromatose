@@ -14,17 +14,18 @@ namespace Chromatose
         public static ColorWheel self;
 
         void Start()
-        {
+        {            
             self = this;
+            Scenes.Init();
             CreateColorWheel();
         }
 
-        public void PieceClicked(ColorWheelPiece piece)
+        public void PieceClicked(ColorWheelPiece piece, int correspondingScene)
         {
-            Timing.RunCoroutine(C_AnimateToColor(piece.color, 2.0f, piece.pieceIndex));
+            Timing.RunCoroutine(C_AnimateToColor(piece.color, 2.0f, piece.pieceIndex, correspondingScene));
         }
 
-        private IEnumerator<float> C_AnimateToColor(Color finish, float duration, int pieceIndex)
+        private IEnumerator<float> C_AnimateToColor(Color finish, float duration, int pieceIndex, int sceneToLoad)
         {
             float startTime = Time.time;
             float timer = 0;
@@ -34,7 +35,7 @@ namespace Chromatose
                 Camera.main.backgroundColor = Color.Lerp(Color.black, finish, timer / duration);
                 yield return 0;
             }
-            SceneManager.LoadScene(3);
+            SceneManager.LoadScene(sceneToLoad);
         }
 
         private void CreateColorWheel()
@@ -47,8 +48,6 @@ namespace Chromatose
                 newPiece = Instantiate(smallWheelPrefab, this.transform);
                 newPiece.transform.position = new Vector3(0, 0, 0);
 
-                //newPiece.transform.rotation = Quaternion.Euler (new Vector3(0, 0, i * angle));
-
                 newPiece.transform.RotateAround(newPiece.transform.parent.position, new Vector3(0, 0, 1), i * angle);
                 newPiece.transform.position = 1f * newPiece.transform.up;
 
@@ -57,8 +56,6 @@ namespace Chromatose
 
                 targetVector.x = targetVector.x * Mathf.Cos(angleRad) - targetVector.y * Mathf.Sin(angleRad);
                 targetVector.y = targetVector.y * Mathf.Cos(angleRad) + targetVector.x * Mathf.Sin(angleRad);
-
-                //newPiece.transform.position += (Vector3)targetVector;
 
                 newPiece.GetComponent<ColorWheelPiece>().angle = (i * angle);
 
