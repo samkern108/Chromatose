@@ -142,8 +142,8 @@ GameObject:
   - component: {fileID: 11804034}
   - component: {fileID: 11804033}
   - component: {fileID: 11804031}
-  - component: {fileID: 11804030}
   - component: {fileID: 11804032}
+  - component: {fileID: 11804036}
   m_Layer: 12
   m_Name: EnemyBall
   m_TagString: Enemy
@@ -151,18 +151,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &11804030
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 11804029}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6e2a01250e10478295f5d5b103da4a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  progressImmediate: 1
 --- !u!58 &11804031
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -268,6 +256,22 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+--- !u!114 &11804036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 11804029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 015854b52bc8f4ede95c8bdff1744f53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthMax: 3
+  deathExplosion: {fileID: 1830647129377676, guid: abdaec0dbd1cc4a3d9b69d9d9f0458b1,
+    type: 2}
+  notifyOnDeath: 0
+  progressImmediate: 0
 --- !u!1 &18961669
 GameObject:
   m_ObjectHideFlags: 0
@@ -388,8 +392,8 @@ GameObject:
   - component: {fileID: 123895384}
   - component: {fileID: 123895383}
   - component: {fileID: 123895381}
-  - component: {fileID: 123895380}
   - component: {fileID: 123895382}
+  - component: {fileID: 123895386}
   m_Layer: 12
   m_Name: EnemyBall
   m_TagString: Enemy
@@ -397,18 +401,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &123895380
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 123895379}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6e2a01250e10478295f5d5b103da4a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  progressImmediate: 1
 --- !u!58 &123895381
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -514,6 +506,22 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+--- !u!114 &123895386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 123895379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 015854b52bc8f4ede95c8bdff1744f53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthMax: 3
+  deathExplosion: {fileID: 1830647129377676, guid: abdaec0dbd1cc4a3d9b69d9d9f0458b1,
+    type: 2}
+  notifyOnDeath: 0
+  progressImmediate: 0
 --- !u!1 &172709385
 GameObject:
   m_ObjectHideFlags: 0
@@ -821,7 +829,6 @@ GameObject:
   m_Component:
   - component: {fileID: 244676468}
   - component: {fileID: 244676467}
-  - component: {fileID: 244676469}
   - component: {fileID: 244676470}
   - component: {fileID: 244676471}
   m_Layer: 0
@@ -888,17 +895,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &244676469
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 244676466}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c7f336164c344b10886e78653936c4e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &244676470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1064,7 +1060,9 @@ MonoBehaviour:
   eventID: OnYrSideTrack_Level
   stages:
   - {fileID: 1454616326}
-  levelColor: 0
+  - {fileID: 2030040368}
+  - {fileID: 1785037112}
+  level: 7
 --- !u!82 &376827377
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1295,6 +1293,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb9bef5c64c6a4571ad8554979d14432, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &412789866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 412789860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 015854b52bc8f4ede95c8bdff1744f53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthMax: 3
+  deathExplosion: {fileID: 1830647129377676, guid: abdaec0dbd1cc4a3d9b69d9d9f0458b1,
+    type: 2}
+  notifyOnDeath: 0
+  progressImmediate: 0
 --- !u!1 &478794132
 GameObject:
   m_ObjectHideFlags: 0
@@ -1449,7 +1463,6 @@ GameObject:
   - component: {fileID: 510227337}
   - component: {fileID: 510227336}
   - component: {fileID: 510227335}
-  - component: {fileID: 510227339}
   - component: {fileID: 510227341}
   - component: {fileID: 510227334}
   m_Layer: 8
@@ -1545,7 +1558,7 @@ MonoBehaviour:
   _skinWidth: 0.02
   platformMask:
     serializedVersion: 2
-    m_Bits: 4294931144
+    m_Bits: 4294918856
   triggerMask:
     serializedVersion: 2
     m_Bits: 4294932680
@@ -1625,17 +1638,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.0113696, y: 1.0033429}
   m_EdgeRadius: 0
---- !u!114 &510227339
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 510227331}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01eea8ad29fa942a48269657e77a876a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &510227341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1651,7 +1653,8 @@ MonoBehaviour:
   triangle: {fileID: 21300000, guid: 7120412ad01d941eba23bfefe25d1ca9, type: 3}
   eventID: OnYrSideTrack_Synth
   _velocity: {x: 0, y: 0, z: 0}
-  deathExplosion: {fileID: 0}
+  deathExplosion: {fileID: 1594521580144278, guid: a36ffa41add7a40dba8bb5edca243d17,
+    type: 2}
   dashPS: {fileID: 237638205}
 --- !u!1 &510604358
 GameObject:
@@ -2242,6 +2245,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb9bef5c64c6a4571ad8554979d14432, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &695077493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 695077486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 015854b52bc8f4ede95c8bdff1744f53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthMax: 3
+  deathExplosion: {fileID: 1830647129377676, guid: abdaec0dbd1cc4a3d9b69d9d9f0458b1,
+    type: 2}
+  notifyOnDeath: 0
+  progressImmediate: 0
 --- !u!1 &702349824
 GameObject:
   m_ObjectHideFlags: 0
@@ -3472,8 +3491,8 @@ GameObject:
   - component: {fileID: 1158932949}
   - component: {fileID: 1158932948}
   - component: {fileID: 1158932946}
-  - component: {fileID: 1158932945}
   - component: {fileID: 1158932947}
+  - component: {fileID: 1158932951}
   m_Layer: 12
   m_Name: EnemyBall
   m_TagString: Enemy
@@ -3481,18 +3500,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1158932945
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1158932944}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6e2a01250e10478295f5d5b103da4a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  progressImmediate: 1
 --- !u!58 &1158932946
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -3598,6 +3605,22 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+--- !u!114 &1158932951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1158932944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 015854b52bc8f4ede95c8bdff1744f53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthMax: 3
+  deathExplosion: {fileID: 1830647129377676, guid: abdaec0dbd1cc4a3d9b69d9d9f0458b1,
+    type: 2}
+  notifyOnDeath: 0
+  progressImmediate: 0
 --- !u!1 &1159871377
 GameObject:
   m_ObjectHideFlags: 0
@@ -3818,7 +3841,7 @@ Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 1454616327}
+    m_TransformParent: {fileID: 1564770031}
     m_Modifications:
     - target: {fileID: 4651668929094678, guid: 9805dfb9c749a4578a038deb67c04516, type: 2}
       propertyPath: m_LocalPosition.x
@@ -3830,7 +3853,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4651668929094678, guid: 9805dfb9c749a4578a038deb67c04516, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 4651668929094678, guid: 9805dfb9c749a4578a038deb67c04516, type: 2}
       propertyPath: m_LocalRotation.x
@@ -3867,11 +3890,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4651668929094678, guid: 9805dfb9c749a4578a038deb67c04516, type: 2}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4651668929094678, guid: 9805dfb9c749a4578a038deb67c04516, type: 2}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114101015923797368, guid: 9805dfb9c749a4578a038deb67c04516, type: 2}
@@ -3887,18 +3910,6 @@ GameObject:
   m_PrefabParentObject: {fileID: 1303612605266770, guid: 9805dfb9c749a4578a038deb67c04516,
     type: 2}
   m_PrefabInternal: {fileID: 1208793479}
---- !u!114 &1208793482
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1208793481}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6e2a01250e10478295f5d5b103da4a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  progressImmediate: 0
 --- !u!114 &1208793483
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3910,6 +3921,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb9bef5c64c6a4571ad8554979d14432, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1208793488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1208793481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 015854b52bc8f4ede95c8bdff1744f53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthMax: 3
+  deathExplosion: {fileID: 1830647129377676, guid: abdaec0dbd1cc4a3d9b69d9d9f0458b1,
+    type: 2}
+  notifyOnDeath: 0
+  progressImmediate: 0
 --- !u!1 &1209417269
 GameObject:
   m_ObjectHideFlags: 0
@@ -4647,7 +4674,6 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1208793480}
   - {fileID: 1564770031}
   m_Father: {fileID: 0}
   m_RootOrder: 5
@@ -4809,8 +4835,8 @@ GameObject:
   - component: {fileID: 1555087807}
   - component: {fileID: 1555087806}
   - component: {fileID: 1555087804}
-  - component: {fileID: 1555087803}
   - component: {fileID: 1555087805}
+  - component: {fileID: 1555087809}
   m_Layer: 12
   m_Name: EnemyBall
   m_TagString: Enemy
@@ -4818,18 +4844,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1555087803
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1555087802}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6e2a01250e10478295f5d5b103da4a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  progressImmediate: 1
 --- !u!58 &1555087804
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -4935,6 +4949,22 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+--- !u!114 &1555087809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1555087802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 015854b52bc8f4ede95c8bdff1744f53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthMax: 3
+  deathExplosion: {fileID: 1830647129377676, guid: abdaec0dbd1cc4a3d9b69d9d9f0458b1,
+    type: 2}
+  notifyOnDeath: 0
+  progressImmediate: 0
 --- !u!1 &1564770030
 GameObject:
   m_ObjectHideFlags: 0
@@ -4944,7 +4974,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1564770031}
   - component: {fileID: 1564770032}
-  - component: {fileID: 1564770033}
   m_Layer: 12
   m_Name: EnemyBallPointLight
   m_TagString: Untagged
@@ -4961,9 +4990,10 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 5}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1208793480}
   m_Father: {fileID: 1454616327}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!108 &1564770032
 Light:
@@ -5001,18 +5031,6 @@ Light:
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!114 &1564770033
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1564770030}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a4cd7bc94468470f90860fa4bd27af3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectToFollow: {fileID: 1208793480}
 --- !u!1 &1572521455
 GameObject:
   m_ObjectHideFlags: 0
@@ -5701,6 +5719,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb9bef5c64c6a4571ad8554979d14432, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1939104375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1939104368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 015854b52bc8f4ede95c8bdff1744f53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthMax: 3
+  deathExplosion: {fileID: 1830647129377676, guid: abdaec0dbd1cc4a3d9b69d9d9f0458b1,
+    type: 2}
+  notifyOnDeath: 0
+  progressImmediate: 0
 --- !u!1 &1942103560
 GameObject:
   m_ObjectHideFlags: 0
@@ -6239,6 +6273,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb9bef5c64c6a4571ad8554979d14432, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2115871475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2115871469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 015854b52bc8f4ede95c8bdff1744f53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthMax: 3
+  deathExplosion: {fileID: 1830647129377676, guid: abdaec0dbd1cc4a3d9b69d9d9f0458b1,
+    type: 2}
+  notifyOnDeath: 0
+  progressImmediate: 0
 --- !u!1 &2128853589
 GameObject:
   m_ObjectHideFlags: 0

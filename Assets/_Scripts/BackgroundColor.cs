@@ -6,6 +6,14 @@ using MEC;
 
 namespace Chromatose
 {
+    // Payloads:
+    // 0 is 1 beat flash to light
+    // 1 is 2 beat flash to light
+    // 2 is 3 beat flash to light
+    // 3 is 4 beat flash to light
+    // 5 is 1 beat flash to ultra
+    // and so on
+
     public class BackgroundColor : MonoBehaviour
     {
         public static Bounds bounds;
@@ -20,8 +28,10 @@ namespace Chromatose
 
         private Koreography koreo;
         private KoreographyTrackBase track;
-        private List<KoreographyEvent> kEvents;
+
         private int kIndex = 0;
+
+        private float flashDuration = .5f;
 
         void Start()
         {
@@ -29,13 +39,12 @@ namespace Chromatose
             spriteRenderer = GetComponent<SpriteRenderer>();
             bounds = spriteRenderer.bounds;
 
-            baseColor = Palette.levelColors[Level.levelID];
-            lightColor = Palette.levelColorsLight[Level.levelID];
-            ultraColor = Palette.levelColorsUltra[Level.levelID];
+            baseColor = Level.levelPalette.baseColor;
+            lightColor = Level.levelPalette.lightColor;
+            ultraColor = Level.levelPalette.ultraColor;
 
             koreo = Koreographer.Instance.GetKoreographyAtIndex(0);
             track = koreo.GetTrackByID(eventID);
-            kEvents = track.GetAllEvents();
         }
 
         void OnDestroy()
@@ -48,18 +57,14 @@ namespace Chromatose
 
         void CameraColorEvent(KoreographyEvent evt, int sampleTime, int sampleDelta, DeltaSlice deltaSlice)
         {
-            if (Time.frameCount != lastColorChangeFrame)
-            {
-                Timing.KillCoroutines(tag);
-                int payload = 0;//((IntPayload)evt.Payload).IntVal;
-                Color newColor = (payload == 0) ? lightColor : ultraColor;
+            int payload = 0;//((IntPayload)evt.Payload).IntVal;
+            int colorValue = Mathf.FloorToInt(payload / 4);
+            int numBeats = payload % 4;
+            Color newColor = (payload == 0) ? lightColor : ultraColor;
 
-                float decayTime = (kEvents[kIndex + 1].StartSample - kEvents[kIndex].StartSample) / 40000;
-                Timing.RunCoroutine(C_AnimateToColor(baseColor, newColor, .05f, decayTime), tag);
-                kIndex++;
-
-                lastColorChangeFrame = Time.frameCount;
-            }
+            float decayTime = Level.secondsPerBeat * (numBeats + 1);
+            Debug.Log(Level.secondsPerBeat + "   " + numBeats);
+            Timing.RunCoroutine(C_AnimateToColor(baseColor, newColor, flashDuration, decayTime), tag);
         }
 
         private Color currentColor;

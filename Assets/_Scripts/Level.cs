@@ -18,13 +18,12 @@ namespace Chromatose
 
         public GameObject[] stages;
         public static bool moveToNextStage = true;
-
-        [HideInInspector]
-        public static float BPM = 126;
+        public static float BPM;
 
         public static float secondsPerBeat, secondsPerMeasure;
-        public static int levelID;
-        public LevelColors levelColor;
+        
+        public Palette.LevelColor level;
+        public static LevelPalette levelPalette;
 
         public static AudioSource audioSource;
 
@@ -32,15 +31,15 @@ namespace Chromatose
 
         void Awake()
         {
-            levelID = (int)levelColor;
+            Palette.InitColors();
+
+            levelPalette = Palette.levels[level];
             self = this;
 
             foreach (GameObject stage in stages)
             {
                 stage.SetActive(false);
             }
-
-            Palette.InitColors();
 
             koreo = Koreographer.Instance.GetKoreographyAtIndex(0);
             track = koreo.GetTrackByID(eventID);

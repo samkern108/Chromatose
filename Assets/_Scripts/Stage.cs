@@ -12,10 +12,11 @@ namespace Chromatose
 
         public void Start()
         {
-            NotifyOnDeath[] notifiers = GetComponentsInChildren<NotifyOnDeath>();
-            foreach (NotifyOnDeath notifier in notifiers)
+            EnemyHealth[] notifiers = GetComponentsInChildren<EnemyHealth>();
+            foreach (EnemyHealth notifier in notifiers)
             {
-                notifier.notifyDelegate = this;
+                if(notifier.notifyOnDeath)
+                    notifier.notifyDelegate = this;
             }
             waitingOnObjects = notifiers.Length;
         }

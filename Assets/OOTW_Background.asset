@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1223223985, guid: aa81bbec85a3f423193272a7c6154986, type: 3}
+  m_Name: OOTW_Background
+  m_EditorClassIdentifier: 
+  mEventID: OOTW_Background
+  mEventList:
+  - mStartSample: 435891
+    mEndSample: 435891
+  - mStartSample: 489288
+    mEndSample: 489288
+  - mStartSample: 542445
+    mEndSample: 542445
+  - mStartSample: 595812
+    mEndSample: 595812
+  - mStartSample: 649317
+    mEndSample: 649317
+  - mStartSample: 702699
+    mEndSample: 702699
+  - mStartSample: 756204
+    mEndSample: 756204
+  - mStartSample: 809955
+    mEndSample: 809955
+  _SerializedPayloadTypes:
+  - SonicBloom.Koreo.IntPayload
+  _AssetPayloads: []
+  _AssetPayloadIdxs: 
+  _ColorPayloads: []
+  _ColorPayloadIdxs: 
+  _CurvePayloads: []
+  _CurvePayloadIdxs: 
+  _FloatPayloads: []
+  _FloatPayloadIdxs: 
+  _GradientPayloads: []
+  _GradientPayloadIdxs: 
+  _IntPayloads:
+  - mIntVal: 5
+  - mIntVal: 0
+  - mIntVal: 0
+  - mIntVal: 0
+  - mIntVal: 0
+  - mIntVal: 0
+  _IntPayloadIdxs: 000000000300000004000000050000000600000007000000
+  _SpectrumPayloads: []
+  _SpectrumPayloadIdxs: 
+  _TextPayloads: []
+  _TextPayloadIdxs: 

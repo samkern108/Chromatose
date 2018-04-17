@@ -42,12 +42,15 @@ namespace Chromatose
 
         public ParticleSystem dashPS;
 
+        private Color playerColor;
+
         void Awake()
         {
             self = this;
 
             spriteRenderer = GetComponent<SpriteRenderer>();
             spriteRenderer.color = Palette.Invisible;
+            playerColor = Level.levelPalette.playerColor;
 
             NotificationMaster.restartObservers.Add(this);
 
@@ -227,7 +230,7 @@ namespace Chromatose
 
             transform.position = spawnPosition;
 
-            _animate.AnimateToColor(Palette.Invisible, Color.white, .5f, RepeatMode.Once);
+            _animate.AnimateToColor(Palette.Invisible, playerColor, .5f, RepeatMode.Once);
 
             Invoke("EnableInput", 1f);
         }

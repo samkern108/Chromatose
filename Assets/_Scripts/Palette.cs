@@ -4,166 +4,129 @@ using UnityEngine;
 
 namespace Chromatose
 {
-    public struct LevelPalette
+    public class LevelPalette
     {
-        public Color baseColor;
-        public Color lightColor;
-        public Color ultraColor;
+        public Color darkColor, baseColor, lightColor, ultraColor;
         public Color complementColor;
-        public Color darkColor;
-
-        public LevelPalette(Color b, Color l, Color u, Color c, Color d)
-        {
-            baseColor = b;
-            lightColor = l;
-            ultraColor = u;
-            complementColor = c;
-            darkColor = d;
-        }
+        public Color playerColor;
     }
-
-    public enum LevelColors { Yellow, Tangerine, Orange, RedOrange, Red, Pink, Purple, DarkBlue, LightBlue, BlueGreen, Green, LightGreen }
 
     public static class Palette
     {
-
-        /*public struct LevelPaletteHex {
-            public int baseColor;
-            public int lightColor;
-            public int ultraColor;
-            public int complementColor;
-            public int darkColor;
-
-            public LevelPalette CreateLevelPalette() {
-                return new LevelPalette (ColorFromHex(baseColor), ColorFromHex(lightColor), ColorFromHex(ultraColor), ColorFromHex(complementColor), ColorFromHex(darkColor));
-            }
-        }
-
-        public static LevelPalette redLevel;
-        public static LevelPalette blueLevel;
-
-        public static void InitLevelColors() {
-            redLevel = new LevelPalette ();
-            redLevel.baseColor = ColorFromHex ();
-        }*/
-
-        private static int[] levelColorsHex = new int[]
-        {
-        0xFFE800, // yellow		0
-		0xFFBC00, // tangerine	1
-		0xFF7F00, // orange		2
-		0xFF4D00, // red-orange	3
-		0xFB0400, // red		4
-		0xEC0084, // pink		5
-		0x811B87, // purple		6
-		0x133F72, // dark blue	7
-		//0x004EA8, // dark blue	7
-		0x0079C9, // light blue	8
-		0x009DA8, // blue-green	9
-		0x009731, // green		10
-		0x84C500 // light green	11
-        };
-
-        private static int[] levelColorsLightHex = new int[]
-        {
-        0xFFE800, // yellow		0
-		0xFFBC00, // tangerine	1
-		0xFF7F00, // orange		2
-		0xFF4D00, // red-orange	3
-		0xAE5D5C, // red		4
-		0xEC0084, // pink		5
-		0x811B87, // purple		6
-		0x1462D0, // dark blue	7
-		0x0079C9, // light blue	8
-		0x009DA8, // blue-green	9
-		0x009731, // green		10
-		0x84C500 // light green	11
-        };
-
-        private static int[] levelColorsUltraHex = new int[]
-        {
-        0xFFE800, // yellow		0
-		0xFFBC00, // tangerine	1
-		0xFFE800, // orange		2
-		0xFF4D00, // red-orange	3
-		0xFFE800, // red		4
-		0xEC0084, // pink		5
-		0x811B87, // purple		6
-		0x00FFFF, // dark blue	7
-		0x0079C9, // light blue	8
-		0x009DA8, // blue-green	9
-		0x009731, // green		10
-		0x84C500 // light green	11
-        };
-
-        private static int[] levelComplementaryColorsHex = new int[]
-        {
-        0xFFE800, // yellow		0
-		0xFFBC00, // tangerine	1
-		0xFF7F00, // orange		2
-		0xFF4D00, // red-orange	3
-		0xFFE800, // red		4
-		0xEC0084, // pink		5
-		0x811B87, // purple		6
-		0x004EA8, // dark blue	7
-		0xC97900, // light blue	8
-		0x009DA8, // blue-green	9
-		0x009731, // green		10
-		0x84C500 // light green	11
-        };
-
-        private static int[] levelDarkColorsHex = new int[]
-        {
-        0xFFE800, // yellow		0
-		0xFFBC00, // tangerine	1
-		0xFF7F00, // orange		2
-		0xFF4D00, // red-orange	3
-		0x810200, // red		4
-		0xEC0084, // pink		5
-		0x811B87, // purple		6
-		0x004EA8, // dark blue	7
-		0x003E67, // light blue	8
-		0x009DA8, // blue-green	9
-		0x009731, // green		10
-		0x84C500 // light green	11
-        };
-
-        public static Color[] levelColors, levelColorsComplement, levelColorsDark, levelColorsLight, levelColorsUltra;
+        private static LevelPalette yellow, tangerine, orange, redorange, red, pink, purple, darkblue, lightblue, bluegreen, green, lightgreen;
+		public enum LevelColor { yellow, tangerine, orange, redorange, red, pink, purple, darkblue, lightblue, bluegreen, green, lightgreen };
+		public static Dictionary<LevelColor, LevelPalette> levels = new Dictionary<LevelColor, LevelPalette>();
 
         public static void InitColors()
         {
-            levelColors = new Color[levelColorsHex.Length];
-            for (int i = 0; i < levelColors.Length; i++)
-            {
-                levelColors[i] = ColorFromHex(levelColorsHex[i]);
-            }
+            yellow = new LevelPalette();
+            yellow.baseColor = ColorFromHex(0xFFE800);
+            yellow.lightColor = ColorFromHex(0xFF7F00);
+            yellow.ultraColor = ColorFromHex(0xFF7F00);
+            yellow.complementColor = ColorFromHex(0xFF7F00);
+            yellow.darkColor = ColorFromHex(0xFF7F00);
+            yellow.playerColor = ColorFromHex(0xFFFFFF);
+			levels.Add(LevelColor.yellow, yellow);
 
-            levelColorsComplement = new Color[levelComplementaryColorsHex.Length];
-            for (int j = 0; j < levelColorsComplement.Length; j++)
-            {
-                levelColorsComplement[j] = ColorFromHex(levelColorsHex[j]);
-            }
+            tangerine = new LevelPalette();
+            tangerine.baseColor = ColorFromHex(0xFFBC00);
+            tangerine.lightColor = ColorFromHex(0xFF7F00);
+            tangerine.ultraColor = ColorFromHex(0xFF7F00);
+            tangerine.complementColor = ColorFromHex(0xFF7F00);
+            tangerine.darkColor = ColorFromHex(0xFF7F00);
+            tangerine.playerColor = ColorFromHex(0xFFFFFF);
+			levels.Add(LevelColor.tangerine, tangerine);
 
-            levelColorsDark = new Color[levelDarkColorsHex.Length];
-            for (int k = 0; k < levelColorsDark.Length; k++)
-            {
-                levelColorsDark[k] = ColorFromHex(levelDarkColorsHex[k]);
-            }
+            orange = new LevelPalette();
+            orange.baseColor = ColorFromHex(0xFF7F00);
+            orange.lightColor = ColorFromHex(0xFF7F00);
+            orange.ultraColor = ColorFromHex(0xFF7F00);
+            orange.complementColor = ColorFromHex(0xFF7F00);
+            orange.darkColor = ColorFromHex(0xFF7F00);
+            orange.playerColor = ColorFromHex(0xFFFFFF);
+			levels.Add(LevelColor.orange, orange);
 
-            levelColorsLight = new Color[levelColorsLightHex.Length];
-            for (int i = 0; i < levelColorsLight.Length; i++)
-            {
-                levelColorsLight[i] = ColorFromHex(levelColorsLightHex[i]);
-            }
+            redorange = new LevelPalette();
+            redorange.baseColor = ColorFromHex(0xFF4D00);
+            redorange.lightColor = ColorFromHex(0xFF4D00);
+            redorange.ultraColor = ColorFromHex(0xFF4D00);
+            redorange.complementColor = ColorFromHex(0xFF4D00);
+            redorange.darkColor = ColorFromHex(0xFF4D00);
+            redorange.playerColor = ColorFromHex(0xFFFFFF);
+			levels.Add(LevelColor.redorange, redorange);
 
-            levelColorsUltra = new Color[levelColorsUltraHex.Length];
-            for (int i = 0; i < levelColorsUltra.Length; i++)
-            {
-                levelColorsUltra[i] = ColorFromHex(levelColorsUltraHex[i]);
-            }
+            red = new LevelPalette();
+            red.baseColor = ColorFromHex(0xFB0400);
+            red.lightColor = ColorFromHex(0xFF7F00);
+            red.ultraColor = ColorFromHex(0xFF7F00);
+            red.complementColor = ColorFromHex(0xFF7F00);
+            red.darkColor = ColorFromHex(0xFF7F00);
+            red.playerColor = ColorFromHex(0xFFFFFF);
+			levels.Add(LevelColor.red, red);
+
+            pink = new LevelPalette();
+            pink.baseColor = ColorFromHex(0xEC0084);
+            pink.lightColor = ColorFromHex(0xFF7F00);
+            pink.ultraColor = ColorFromHex(0xFF7F00);
+            pink.complementColor = ColorFromHex(0xFF7F00);
+            pink.darkColor = ColorFromHex(0xFF7F00);
+            pink.playerColor = ColorFromHex(0xFFFFFF);
+			levels.Add(LevelColor.pink, pink);
+
+            purple = new LevelPalette();
+            purple.baseColor = ColorFromHex(0x811B87);
+            purple.lightColor = ColorFromHex(0xFF7F00);
+            purple.ultraColor = ColorFromHex(0xFF7F00);
+            purple.complementColor = ColorFromHex(0xFF7F00);
+            purple.darkColor = ColorFromHex(0xFF7F00);
+            purple.playerColor = ColorFromHex(0xFFFFFF);
+			levels.Add(LevelColor.purple, purple);
+
+            darkblue = new LevelPalette();
+            darkblue.baseColor = ColorFromHex(0x133F72);
+            darkblue.lightColor = ColorFromHex(0x1462D0);
+            darkblue.ultraColor = ColorFromHex(0x00FFFF);
+            darkblue.complementColor = ColorFromHex(0xFF7F00);
+            darkblue.darkColor = ColorFromHex(0x004EA8);
+            darkblue.playerColor = ColorFromHex(0xFFFFFF);
+			levels.Add(LevelColor.darkblue, darkblue);
+
+            lightblue = new LevelPalette();
+            lightblue.baseColor = ColorFromHex(0x0079C9);
+            lightblue.lightColor = ColorFromHex(0xFF7F00);
+            lightblue.ultraColor = ColorFromHex(0xFF7F00);
+            lightblue.complementColor = ColorFromHex(0xFF7F00);
+            lightblue.darkColor = ColorFromHex(0xFF7F00);
+            lightblue.playerColor = ColorFromHex(0xFFFFFF);
+			levels.Add(LevelColor.lightblue, lightblue);
+
+            bluegreen = new LevelPalette();
+            bluegreen.baseColor = ColorFromHex(0xFF7F00);
+            bluegreen.lightColor = ColorFromHex(0xFF7F00);
+            bluegreen.ultraColor = ColorFromHex(0xFF7F00);
+            bluegreen.complementColor = ColorFromHex(0xFF7F00);
+            bluegreen.darkColor = ColorFromHex(0xFF7F00);
+            bluegreen.playerColor = ColorFromHex(0xFFFFFF);
+			levels.Add(LevelColor.bluegreen, bluegreen);
+
+            green = new LevelPalette();
+            green.baseColor = ColorFromHex(0x009731);
+            green.lightColor = ColorFromHex(0xFF7F00);
+            green.ultraColor = ColorFromHex(0xFF7F00);
+            green.complementColor = ColorFromHex(0xFF7F00);
+            green.darkColor = ColorFromHex(0xFF7F00);
+            green.playerColor = ColorFromHex(0xFFFFFF);
+			levels.Add(LevelColor.green, green);
+
+            lightgreen = new LevelPalette();
+            lightgreen.baseColor = ColorFromHex(0x84C500);
+            lightgreen.lightColor = ColorFromHex(0xFF7F00);
+            lightgreen.ultraColor = ColorFromHex(0xFF7F00);
+            lightgreen.complementColor = ColorFromHex(0xFF7F00);
+            lightgreen.darkColor = ColorFromHex(0x84C500);
+            lightgreen.playerColor = ColorFromHex(0xFFFFFF);
+			levels.Add(LevelColor.lightgreen, lightgreen);
         }
-
-        public static Color Invisible = new Color(1.0f, 1.0f, 1.0f, 0.0f);
 
         public static Color ColorFromHex(int c, float alpha = 1.0f)
         {
@@ -181,5 +144,7 @@ namespace Chromatose
         {
             return new Color((float)r / 255.0f, (float)g / 255.0f, (float)b / 255.0f, 1.0f);
         }
+
+        public static Color Invisible = new Color(1.0f, 1.0f, 1.0f, 0.0f);
     }
 }
