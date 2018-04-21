@@ -8,7 +8,7 @@ namespace Chromatose
 {
     public class DeathZone : MonoBehaviour
     {
-		private SpriteRenderer spriteRenderer;
+        private SpriteRenderer spriteRenderer;
         Vector3 startScale, endScale;
         float fireDuration = .4f;
 
@@ -20,12 +20,18 @@ namespace Chromatose
 
         void Start()
         {
-			spriteRenderer = GetComponent<SpriteRenderer>();
+            spriteRenderer = GetComponent<SpriteRenderer>();
             Koreographer.Instance.RegisterForEventsWithTime(eventID, WarmUpEvent);
             fireDuration = Level.secondsPerBeat;
             startScale = transform.localScale / 2.0f;
-			endScale = transform.localScale;
-			transform.localScale = startScale;
+            endScale = transform.localScale;
+            transform.localScale = startScale;
+        }
+
+        void OnDestroy()
+        {
+            if (Koreographer.Instance != null)
+                Koreographer.Instance.UnregisterForAllEvents(this);
         }
 
         void WarmUpEvent(KoreographyEvent evt, int sampleTime, int sampleDelta, DeltaSlice deltaSlice)
@@ -37,15 +43,15 @@ namespace Chromatose
         {
             if (firing)
             {
-				col.gameObject.SendMessage("Die");
+                col.gameObject.SendMessage("Die");
             }
         }
 
-		public void OnCollisionEnter2D(Collision2D col)
+        public void OnCollisionEnter2D(Collision2D col)
         {
             if (firing)
             {
-				col.gameObject.SendMessage("Die");
+                col.gameObject.SendMessage("Die");
             }
         }
 
@@ -64,18 +70,18 @@ namespace Chromatose
             float startTime = Time.time;
             float timer = 0;
             Vector3 scale;
-			spriteRenderer.color = startColor;
+            spriteRenderer.color = startColor;
             float fluct = .09f;
             while (timer <= fireDuration)
             {
                 timer = Time.time - startTime;
                 scale = Vector3.Lerp(startScale, endScale, timer / fireDuration);
-				transform.localScale = scale + new Vector3(fluct, fluct, 0);
+                transform.localScale = scale + new Vector3(fluct, fluct, 0);
                 spriteRenderer.color = Color.Lerp(startColor, endColor, timer / fireDuration);
                 fluct *= -1;
                 yield return 0;
             }
-			transform.localScale = endScale;
+            transform.localScale = endScale;
             if (fire)
             {
                 FireZone();
@@ -84,7 +90,7 @@ namespace Chromatose
 
         private IEnumerator<float> C_FireZone()
         {
-			spriteRenderer.color = Color.white;
+            spriteRenderer.color = Color.white;
             transform.localScale = endScale;
             firing = true;
 
@@ -94,11 +100,11 @@ namespace Chromatose
             while (timer <= fireDuration)
             {
                 timer = Time.time - startTime;
-				transform.localScale += new Vector3(fluct, fluct, 0);
+                transform.localScale += new Vector3(fluct, fluct, 0);
                 fluct *= -1;
                 yield return 0;
             }
-			firing = false;
+            firing = false;
             CoolDownZone();
         }
     }

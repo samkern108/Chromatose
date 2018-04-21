@@ -27,6 +27,12 @@ namespace Chromatose
             animate = GetComponent<Animate>();
         }
 
+        void OnDestroy()
+        {
+            if (Koreographer.Instance != null)
+                Koreographer.Instance.UnregisterForAllEvents(this);
+        }
+
         void ShootEvent(KoreographyEvent evt, int sampleTime, int sampleDelta, DeltaSlice deltaSlice)
         {
             GameObject missile;

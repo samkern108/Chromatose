@@ -13,12 +13,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mEventID: OnYrSideTrack_Level
   mEventList:
-  - mStartSample: 0
-    mEndSample: 0
-  - mStartSample: 335502
-    mEndSample: 335502
-  - mStartSample: 672000
-    mEndSample: 672000
+  - mStartSample: 81375
+    mEndSample: 81375
+  - mStartSample: 233625
+    mEndSample: 233625
+  - mStartSample: 417375
+    mEndSample: 417375
+  - mStartSample: 572250
+    mEndSample: 572250
   - mStartSample: 1344000
     mEndSample: 1344000
   - mStartSample: 2016000
@@ -52,11 +54,12 @@ MonoBehaviour:
   _GradientPayloads: []
   _GradientPayloadIdxs: 
   _IntPayloads:
+  - mIntVal: 2
+  - mIntVal: 3
+  - mIntVal: 2
+  - mIntVal: 3
   - mIntVal: 0
-  - mIntVal: 0
-  - mIntVal: 0
-  - mIntVal: 0
-  _IntPayloadIdxs: 00000000010000000200000003000000
+  _IntPayloadIdxs: 0000000001000000020000000300000004000000
   _SpectrumPayloads: []
   _SpectrumPayloadIdxs: 
   _TextPayloads: []

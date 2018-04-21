@@ -38,11 +38,11 @@ namespace Chromatose
 			levels.Add(LevelColor.tangerine, tangerine);
 
             orange = new LevelPalette();
-            orange.baseColor = ColorFromHex(0xFF7F00);
-            orange.lightColor = ColorFromHex(0xFF7F00);
-            orange.ultraColor = ColorFromHex(0xFF7F00);
-            orange.complementColor = ColorFromHex(0xFF7F00);
-            orange.darkColor = ColorFromHex(0xFF7F00);
+            orange.baseColor = ColorFromHex(0xC18325);
+            orange.lightColor = ColorFromHex(0xDFB354);
+            orange.ultraColor = ColorFromHex(0xF6F386);
+            orange.complementColor = ColorFromHex(0x86E3F6);
+            orange.darkColor = ColorFromHex(0xA36136);
             orange.playerColor = ColorFromHex(0xFFFFFF);
 			levels.Add(LevelColor.orange, orange);
 

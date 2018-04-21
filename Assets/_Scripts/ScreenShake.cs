@@ -11,8 +11,11 @@ namespace Chromatose
         private float normalSize;
         private Vector3 normalPosition;
 
+        public static ScreenShake self;
+
         public void Start()
         {
+            self = this;
             normalSize = Camera.main.orthographicSize;
             normalPosition = Camera.main.transform.position;
         }
@@ -52,6 +55,40 @@ namespace Chromatose
                 transform.position = newPosition;
                 yield return 0;
             }
+        }
+
+
+
+        Vector3 originalCameraPosition;
+
+        float shakeAmt = 0;
+
+        public void Shake(float magnitude)
+        {
+            originalCameraPosition = Camera.main.transform.position;
+            shakeAmt = magnitude;
+            InvokeRepeating("CameraShake", 0, .01f);
+            Invoke("StopShaking", 0.3f);
+
+        }
+
+        void CameraShake()
+        {
+            float zDelt = 1f;
+            if (shakeAmt > 0)
+            {
+                
+                /*float quakeAmt = Random.value * shakeAmt * 2 - shakeAmt;
+                Vector3 pp = Camera.main.transform.position;
+                pp.y += quakeAmt; // can also add to x and/or z
+                Camera.main.transform.position = pp;*/
+            }
+        }
+
+        void StopShaking()
+        {
+            CancelInvoke("CameraShake");
+            Camera.main.transform.position = originalCameraPosition;
         }
     }
 }

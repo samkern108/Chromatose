@@ -6,8 +6,14 @@ using System.Linq;
 
 namespace Chromatose
 {
+    public interface IMovementObserver
+    {
+        void StartMoving();
+        void StopMoving();
+    }
     public class BeatTrack : MonoBehaviour
     {
+        public IMovementObserver movementObserver;
 
         [EventID]
         public string eventID;
@@ -24,6 +30,7 @@ namespace Chromatose
         private int samplesPerBeat;
 
         public int startPoint = 0;
+        public bool snapToStartPoint = true;
 
         void Start()
         {
@@ -34,7 +41,15 @@ namespace Chromatose
 
             samplesPerBeat = (int)Level.koreo.GetSamplesPerBeat(0);
 
-            objectToMove.position = points[pointIndex].position;
+            movementObserver = objectToMove.GetComponentInChildren<IMovementObserver>();
+
+            if (snapToStartPoint)
+            {
+                objectToMove.position = points[pointIndex].position;
+            }
+
+            moveFromPoint = objectToMove.position;
+            moveToPoint = points[pointIndex].position;
 
             koreo = Koreographer.Instance.GetKoreographyAtIndex(0);
         }
@@ -56,9 +71,11 @@ namespace Chromatose
                 moveTimer = 0.0f;
                 moveTimeTotal = ((evt.EndSample - evt.StartSample) / samplesPerBeat);
 
-                objectToMove.SendMessage("StartMoving");
+                movementObserver.StartMoving();
             }
         }
+
+        private Vector3 moveFromPoint, moveToPoint;
 
         public void Update()
         {
@@ -69,12 +86,14 @@ namespace Chromatose
                 if (moveTimer >= moveTimeTotal)
                 {
                     moving = false;
-                    objectToMove.SendMessage("StopMoving");
+                    movementObserver.StopMoving();
                     pointIndex = (pointIndex + 1) % points.Length;
+                    moveFromPoint = points[pointIndex].position;
+                    moveToPoint = points[(pointIndex + 1) % points.Length].position;
                 }
                 else
                 {
-                    objectToMove.position = Vector3.Lerp(points[pointIndex].position, points[(pointIndex + 1) % points.Length].position, moveTimer / moveTimeTotal);
+                    objectToMove.position = Vector3.Lerp(moveFromPoint, moveToPoint, moveTimer / moveTimeTotal);
                 }
             }
         }

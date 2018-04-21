@@ -39,8 +39,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1807480314888392}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.97, y: -1.21, z: 0}
-  m_LocalScale: {x: 0.4, y: 0.4, z: 1}
+  m_LocalPosition: {x: -3.97, y: -1.21, z: -1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -82,8 +82,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 015854b52bc8f4ede95c8bdff1744f53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthMax: 1
   deathExplosion: {fileID: 1830647129377676, guid: abdaec0dbd1cc4a3d9b69d9d9f0458b1,
     type: 2}
+  notifyOnDeath: 0
+  progressImmediate: 0
 --- !u!114 &114600728113576382
 MonoBehaviour:
   m_ObjectHideFlags: 1

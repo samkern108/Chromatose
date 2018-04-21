@@ -10,7 +10,7 @@ namespace Chromatose
         {
             if (!PlayerController.dashing && !PlayerController.invulnerable)
             {
-                PlayerController.self.Die();
+                PlayerController.self.Hit();
             }
         }
 
@@ -18,7 +18,7 @@ namespace Chromatose
         {
             if (!PlayerController.dashing && !PlayerController.invulnerable)
             {
-                PlayerController.self.Die();
+                PlayerController.self.Hit();
             }
         }
     }

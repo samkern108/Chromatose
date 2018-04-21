@@ -14,14 +14,14 @@ namespace Chromatose
     {
         private SpriteRenderer spriteRenderer;
         private static int tagCounter = 0;
-        private string tag;
+        private string animTag;
 
         public void Awake()
         {
             spriteRenderer = GetComponent<SpriteRenderer>();
 
             // Hacky fix so KillCoroutines won't stop ALL Timing coroutines.
-            tag = tagCounter + "";
+            animTag = name + tagCounter;
             tagCounter++;
         }
 
@@ -29,7 +29,7 @@ namespace Chromatose
 
         public void AnimateToPosition(Vector3 start, Vector3 finish, float t, RepeatMode mode)
         {
-            Timing.RunCoroutine(C_AnimateToPosition(start, finish, t, mode), tag);
+            Timing.RunCoroutine(C_AnimateToPosition(start, finish, t, mode), animTag);
         }
 
         private IEnumerator<float> C_AnimateToPosition(Vector3 start, Vector3 finish, float duration, RepeatMode mode)
@@ -45,10 +45,10 @@ namespace Chromatose
             switch (mode)
             {
                 case RepeatMode.OnceAndBack:
-                    Timing.RunCoroutine(C_AnimateToPosition(finish, start, duration, RepeatMode.Once), tag);
+                    Timing.RunCoroutine(C_AnimateToPosition(finish, start, duration, RepeatMode.Once), animTag);
                     break;
                 case RepeatMode.PingPong:
-                    Timing.RunCoroutine(C_AnimateToPosition(finish, start, duration, RepeatMode.PingPong), tag);
+                    Timing.RunCoroutine(C_AnimateToPosition(finish, start, duration, RepeatMode.PingPong), animTag);
                     break;
                 default:
                     break;
@@ -59,7 +59,7 @@ namespace Chromatose
 
         public void AnimateToSize(Vector2 start, Vector2 finish, float t, RepeatMode mode)
         {
-            Timing.RunCoroutine(C_AnimateToSize(start, finish, t, mode), tag);
+            Timing.RunCoroutine(C_AnimateToSize(start, finish, t, mode), animTag);
         }
 
         private IEnumerator<float> C_AnimateToSize(Vector2 start, Vector2 finish, float duration, RepeatMode mode)
@@ -75,10 +75,10 @@ namespace Chromatose
             switch (mode)
             {
                 case RepeatMode.OnceAndBack:
-                    Timing.RunCoroutine(C_AnimateToSize(finish, start, duration, RepeatMode.Once), tag);
+                    Timing.RunCoroutine(C_AnimateToSize(finish, start, duration, RepeatMode.Once), animTag);
                     break;
                 case RepeatMode.PingPong:
-                    Timing.RunCoroutine(C_AnimateToSize(finish, start, duration, RepeatMode.PingPong), tag);
+                    Timing.RunCoroutine(C_AnimateToSize(finish, start, duration, RepeatMode.PingPong), animTag);
                     break;
                 default:
                     break;
@@ -89,7 +89,7 @@ namespace Chromatose
 
         public void AnimateToRotation(Quaternion start, Quaternion finish, float t, RepeatMode mode)
         {
-            Timing.RunCoroutine(C_AnimateToRotation(start, finish, t, mode), tag);
+            Timing.RunCoroutine(C_AnimateToRotation(start, finish, t, mode), animTag);
         }
 
         private IEnumerator<float> C_AnimateToRotation(Quaternion start, Quaternion finish, float duration, RepeatMode mode)
@@ -105,10 +105,10 @@ namespace Chromatose
             switch (mode)
             {
                 case RepeatMode.OnceAndBack:
-                    Timing.RunCoroutine(C_AnimateToRotation(finish, start, duration, RepeatMode.Once), tag);
+                    Timing.RunCoroutine(C_AnimateToRotation(finish, start, duration, RepeatMode.Once), animTag);
                     break;
                 case RepeatMode.PingPong:
-                    Timing.RunCoroutine(C_AnimateToRotation(finish, start, duration, RepeatMode.PingPong), tag);
+                    Timing.RunCoroutine(C_AnimateToRotation(finish, start, duration, RepeatMode.PingPong), animTag);
                     break;
                 default:
                     break;
@@ -119,7 +119,7 @@ namespace Chromatose
 
         public void AnimateToColor(Color start, Color finish, float t, RepeatMode mode)
         {
-            Timing.RunCoroutine(C_AnimateToColor(start, finish, t, mode), tag);
+            Timing.RunCoroutine(C_AnimateToColor(start, finish, t, mode), animTag);
         }
 
         private IEnumerator<float> C_AnimateToColor(Color start, Color finish, float duration, RepeatMode mode)
@@ -135,10 +135,10 @@ namespace Chromatose
             switch (mode)
             {
                 case RepeatMode.OnceAndBack:
-                    Timing.RunCoroutine(C_AnimateToColor(finish, start, duration, RepeatMode.Once), tag);
+                    Timing.RunCoroutine(C_AnimateToColor(finish, start, duration, RepeatMode.Once), animTag);
                     break;
                 case RepeatMode.PingPong:
-                    Timing.RunCoroutine(C_AnimateToColor(finish, start, duration, RepeatMode.PingPong), tag);
+                    Timing.RunCoroutine(C_AnimateToColor(finish, start, duration, RepeatMode.PingPong), animTag);
                     break;
                 default:
                     break;
@@ -147,12 +147,12 @@ namespace Chromatose
 
         public void StopAnimating()
         {
-            Timing.KillCoroutines(tag);
+            Timing.KillCoroutines(animTag);
         }
 
         void OnDestroy()
         {
-            Timing.KillCoroutines(tag);
+            Timing.KillCoroutines(animTag);
         }
     }
 }

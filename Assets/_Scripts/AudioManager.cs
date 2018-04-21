@@ -3,149 +3,191 @@ using System.Collections.Generic;
 using UnityEngine;
 using MEC;
 
-public class AudioManager : MonoBehaviour {
+public class AudioManager : MonoBehaviour
+{
 
-	public static AudioManager instance;
+    public static AudioManager instance;
 
-	public static AudioClip projectileShoot, projectileExplode, 
-	playerBoostCharge, playerBoostRelease, playerWallHit, playerTurn, playerJump, playerDeath,
-	levelComplete, gameStart, 
-	dotPickup;
+    public static AudioClip projectileShoot, projectileExplode,
+    playerDash, playerWallHit, playerTurn, playerJump, playerDeath, playerHit,
+    levelComplete, gameStart, enemyHit,
+    dotPickup;
 
-	private static GameObject sourceTemplate;
-	private static int activeSources = 0;
-	private static List<AudioSource> freeSources = new List<AudioSource>();
+    private static GameObject sourceTemplate;
+    private static int activeSources = 0;
+    private static List<AudioSource> freeSources = new List<AudioSource>();
 
-	// ## Initialization >> //
+    // ## Initialization >> //
 
-	// Member initialization
-	public void Awake() {
-		instance = this;
+    // Member initialization
+    public void Awake()
+    {
+        instance = this;
 
-		sourceTemplate = new GameObject("SourceTemplate");
-		sourceTemplate.AddComponent <AudioSource>();
-		sourceTemplate.transform.SetParent (this.transform);
+        sourceTemplate = new GameObject("SourceTemplate");
+        sourceTemplate.AddComponent<AudioSource>();
+        sourceTemplate.transform.SetParent(this.transform);
 
-		Initialize ();
-	}
+        Initialize();
+    }
 
-	// Static initialization
-	public static void Initialize () {
-		projectileShoot = ResourceLoader.LoadAudioClip ("Shoot");
-		projectileExplode = ResourceLoader.LoadAudioClip ("Projectile Hit Wall");
-		playerBoostCharge = ResourceLoader.LoadAudioClip ("Player Boost Charge");
-		playerBoostRelease = ResourceLoader.LoadAudioClip ("Player Boost 6");
-		playerWallHit = ResourceLoader.LoadAudioClip ("Player Wall Hit");
-		playerTurn = ResourceLoader.LoadAudioClip ("Player Turn");
-		playerJump = ResourceLoader.LoadAudioClip ("Player Move 2");
-		playerDeath = ResourceLoader.LoadAudioClip ("Player Death");
-		levelComplete = ResourceLoader.LoadAudioClip ("Level Complete");
-		gameStart = ResourceLoader.LoadAudioClip ("Game Start");
-		dotPickup = ResourceLoader.LoadAudioClip ("Dot Pickup");
-	}
+    // Static initialization
+    public static void Initialize()
+    {
+        projectileShoot = ResourceLoader.LoadAudioClip("Shoot");
+        projectileExplode = ResourceLoader.LoadAudioClip("Projectile Hit Wall");
+        playerDash = ResourceLoader.LoadAudioClip("Player Dash");
+        playerWallHit = ResourceLoader.LoadAudioClip("Player Wall Hit");
+        playerTurn = ResourceLoader.LoadAudioClip("Player Turn");
+        playerJump = ResourceLoader.LoadAudioClip("Player Move 2");
+        playerDeath = ResourceLoader.LoadAudioClip("Player Death");
+        playerHit = ResourceLoader.LoadAudioClip("Player Hit");
+        levelComplete = ResourceLoader.LoadAudioClip("Level Complete");
+        gameStart = ResourceLoader.LoadAudioClip("Game Start");
+		enemyHit = ResourceLoader.LoadAudioClip("Enemy Hit");
+        dotPickup = ResourceLoader.LoadAudioClip("Dot Pickup");
+    }
 
-	// << Initialization ## //
+    // << Initialization ## //
 
-	// ## Audio Source Handling >> //
+    // ## Audio Source Handling >> //
 
-	private static AudioSource GetFreeAudioSource(float recycleTime) {
-		AudioSource source;
-		if (freeSources.Count == 0) {
-			GameObject obj = Instantiate (sourceTemplate);
-			obj.transform.SetParent (AudioManager.instance.transform);
-			activeSources++;
-			source = obj.GetComponent <AudioSource>();
-		}
-		else {
-			// Race condition?
-			source = freeSources[0];
-			freeSources.RemoveAt (0);
-			// TODO: Figure out a better way to determine if sources can be removed.
-			if (freeSources.Count >= (int)Mathf.Ceil (activeSources / 2)) {
-				freeSources.RemoveRange (0, (int)Mathf.Floor (activeSources / 2));
-			}
-		}
-		Timing.RunCoroutine (RecycleSource(recycleTime + .1f, source));
-		return source;
-	}
+    private static AudioSource GetFreeAudioSource(float recycleTime)
+    {
+        AudioSource source;
+        if (freeSources.Count == 0)
+        {
+            GameObject obj = Instantiate(sourceTemplate);
+            obj.transform.SetParent(AudioManager.instance.transform);
+            activeSources++;
+            source = obj.GetComponent<AudioSource>();
+        }
+        else
+        {
+            // Race condition?
+            source = freeSources[0];
+            freeSources.RemoveAt(0);
+            // TODO: Figure out a better way to determine if sources can be removed.
+            if (freeSources.Count >= (int)Mathf.Ceil(activeSources / 2))
+            {
+                freeSources.RemoveRange(0, (int)Mathf.Floor(activeSources / 2));
+            }
+        }
+        Timing.RunCoroutine(RecycleSource(recycleTime + .1f, source));
+        return source;
+    }
 
-	private static IEnumerator<float> RecycleSource (float wait, AudioSource source) {
-		yield return wait;
-		source.pitch = 1.0f;
-		freeSources.Add (source);
-	}
+    private static IEnumerator<float> RecycleSource(float wait, AudioSource source)
+    {
+        yield return wait;
+        source.pitch = 1.0f;
+        freeSources.Add(source);
+    }
 
-	// << Audio Source Handling ## //
-		
-	// ## Player SFX >> //
+    // << Audio Source Handling ## //
 
-	public static void PlayEnemyDeath() {
-		AudioSource source = GetFreeAudioSource (dotPickup.length);
-		source.volume = .2f;
-		source.pitch = Random.Range (1f, 1.3f);
-		source.PlayOneShot (playerDeath);
-	}
+    // ## Player SFX >> //
 
-	public static void PlayPlayerDeath() {
-		AudioSource source = GetFreeAudioSource (dotPickup.length);
-		source.volume = .6f;
-		source.pitch = Random.Range (.8f, 1.1f);
-		source.PlayOneShot (playerDeath);
-	}
-		
-	public static void PlayPlayerJump() {
-		AudioSource source = GetFreeAudioSource (playerJump.length);
-		source.volume = .9f;
-		source.pitch = Random.Range (.8f, 1.1f);
-		source.PlayOneShot (playerJump);
-	}
+    public static void PlayPlayerDash()
+    {
+        AudioSource source = GetFreeAudioSource(playerDash.length);
+        source.volume = .6f;
+        //source.pitch = Random.Range (1f, 1.3f);
+        source.PlayOneShot(playerDash);
+    }
 
-	/*private static bool playerTurnSafeToPlay = true;
+    public static void PlayPlayerHit()
+    {
+        AudioSource source = GetFreeAudioSource(playerHit.length);
+        source.volume = .6f;
+        //source.pitch = Random.Range (1f, 1.3f);
+        source.PlayOneShot(playerHit);
+    }
+
+    public static void PlayEnemyDeath()
+    {
+        AudioSource source = GetFreeAudioSource(playerDeath.length);
+        source.volume = .2f;
+        source.pitch = Random.Range(1f, 1.3f);
+        source.PlayOneShot(playerDeath);
+    }
+
+	    public static void PlayEnemyHit(float intensity)
+    {
+        AudioSource source = GetFreeAudioSource(enemyHit.length);
+		Debug.Log(intensity);
+        source.volume = intensity / 4.0f;
+        source.pitch = Random.Range(2f - intensity, 2.3f - intensity);
+        source.PlayOneShot(enemyHit);
+    }
+
+    public static void PlayPlayerDeath()
+    {
+        AudioSource source = GetFreeAudioSource(playerDeath.length);
+        source.volume = .6f;
+        source.pitch = Random.Range(.8f, 1.1f);
+        source.PlayOneShot(playerDeath);
+    }
+
+    public static void PlayPlayerJump()
+    {
+        AudioSource source = GetFreeAudioSource(playerJump.length);
+        source.volume = .9f;
+        source.pitch = Random.Range(.8f, 1.1f);
+        source.PlayOneShot(playerJump);
+    }
+
+    /*private static bool playerTurnSafeToPlay = true;
 	private void PlayerTurnSafeToPlay() {
 		playerTurnSafeToPlay = true;
 	}*/
 
-	public static void PlayPlayerTurn() {
-		//if (!playerTurnSafeToPlay) return;
-		//playerTurnSafeToPlay = false;
-		AudioSource source = GetFreeAudioSource (dotPickup.length);
-		source.volume = Random.Range(.2f, .3f);
-		source.pitch = Random.Range(.6f, .8f);
-		source.PlayOneShot (playerTurn);
-		//AudioManager.instance.Invoke ("PlayerTurnSafeToPlay", playerTurn.length/3);
-	}
+    public static void PlayPlayerTurn()
+    {
+        //if (!playerTurnSafeToPlay) return;
+        //playerTurnSafeToPlay = false;
+        AudioSource source = GetFreeAudioSource(dotPickup.length);
+        source.volume = Random.Range(.2f, .3f);
+        source.pitch = Random.Range(.6f, .8f);
+        source.PlayOneShot(playerTurn);
+        //AudioManager.instance.Invoke ("PlayerTurnSafeToPlay", playerTurn.length/3);
+    }
 
-	// << Player SFX ## //
+    // << Player SFX ## //
 
-	// ## Enemy SFX >> //
+    // ## Enemy SFX >> //
 
-	public static void PlayEnemyShoot() {
-		AudioSource source = GetFreeAudioSource(projectileShoot.length);
-		source.volume = Random.Range (.4f, .8f);
-		source.pitch = Random.Range (1.2f, 1.6f);
-		source.PlayOneShot (projectileShoot);
-	}
+    public static void PlayEnemyShoot()
+    {
+        AudioSource source = GetFreeAudioSource(projectileShoot.length);
+        source.volume = Random.Range(.4f, .8f);
+        source.pitch = Random.Range(1.2f, 1.6f);
+        source.PlayOneShot(projectileShoot);
+    }
 
-	public static void PlayShoot() {
-		AudioSource source = GetFreeAudioSource(projectileShoot.length);
-		source.volume = Random.Range (.4f, .8f);
-		source.pitch = Random.Range (.8f, 1.2f);
-		source.PlayOneShot (projectileShoot);
-	}
+    public static void PlayShoot()
+    {
+        AudioSource source = GetFreeAudioSource(projectileShoot.length);
+        source.volume = Random.Range(.4f, .8f);
+        source.pitch = Random.Range(.8f, 1.2f);
+        source.PlayOneShot(projectileShoot);
+    }
 
-	public static void PlayProjectileExplode() {
-		AudioSource source = GetFreeAudioSource(projectileExplode.length);
-		source.volume = Random.Range (.2f, .4f);
-		source.pitch = Random.Range (1.0f, 1.8f);
-		source.PlayOneShot (projectileExplode);
-	}
+    public static void PlayProjectileExplode()
+    {
+        AudioSource source = GetFreeAudioSource(projectileExplode.length);
+        source.volume = Random.Range(.2f, .4f);
+        source.pitch = Random.Range(1.0f, 1.8f);
+        source.PlayOneShot(projectileExplode);
+    }
 
-	// << Enemy SFX ## //
+    // << Enemy SFX ## //
 
-	public static void PlayDotPickup() {
-		AudioSource source = GetFreeAudioSource (dotPickup.length);
-		source.pitch = .75f;
-		source.volume = .7f;
-		source.PlayOneShot (dotPickup);
-	}
+    public static void PlayDotPickup()
+    {
+        AudioSource source = GetFreeAudioSource(dotPickup.length);
+        source.pitch = .75f;
+        source.volume = .7f;
+        source.PlayOneShot(dotPickup);
+    }
 }

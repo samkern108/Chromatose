@@ -24,3 +24,7 @@ MonoBehaviour:
   mTracks:
   - {fileID: 11400000, guid: d57c71bb4f2f344fcbcea287bcfa3a46, type: 2}
   - {fileID: 11400000, guid: 428de38fb18b0416eb2c63abd21b0ed9, type: 2}
+  - {fileID: 11400000, guid: b4b7088e1407f47e09c29fa04b4c8be6, type: 2}
+  - {fileID: 11400000, guid: d72150103d9a843abadb9d624ae022d2, type: 2}
+  - {fileID: 11400000, guid: 96167503855a6410a94c0faacda1cb0c, type: 2}
+  - {fileID: 11400000, guid: 2ab3c259a960f4ffabf05136a57d8f74, type: 2}

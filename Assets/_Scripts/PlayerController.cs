@@ -9,9 +9,10 @@ namespace Chromatose
 {
     public class PlayerController : MonoBehaviour, IRestartObserver
     {
+        private LightAnimate _lightAnimate;
+        private Color lightColor;
         public static PlayerController self;
         private SpriteRenderer spriteRenderer;
-        public Sprite circle, triangle;
 
         [EventID]
         public string eventID;
@@ -19,8 +20,11 @@ namespace Chromatose
         public static bool inputDisabled = false, invulnerable = false;
 
         // movement config
-        private float gravity = -32f, gravityRotation = 0f;
-        private float runSpeed = 7f, dashSpeed = 30f, jumpHeight = 7f;
+        private float gravity = -32f;
+
+        private Vector3 gravityDirection = Vector3.down;
+        private float runSpeed = 7f, dashSpeed = 30f;
+        public float jumpHeight = 7f;
         private float groundDamping = 20f; // how fast do we change direction? higher means faster
         private float dashTimeMax, dashTime = 0.0f;
         public static bool dashing = false, canDash = true, airborne = false;
@@ -44,13 +48,14 @@ namespace Chromatose
 
         private Color playerColor;
 
+        private Vector2 spawnPosition = new Vector2(0, -4);
+
         void Awake()
         {
             self = this;
 
             spriteRenderer = GetComponent<SpriteRenderer>();
             spriteRenderer.color = Palette.Invisible;
-            playerColor = Level.levelPalette.playerColor;
 
             NotificationMaster.restartObservers.Add(this);
 
@@ -63,11 +68,17 @@ namespace Chromatose
             playerSize = spriteRenderer.bounds.size;
             playerExtents = spriteRenderer.bounds.extents;
 
+            _lightAnimate = GetComponentInChildren<LightAnimate>();
+            lightColor = Color.white;
+
+            spawnPosition = transform.position;
+
             //Koreographer.Instance.RegisterForEventsWithTime(eventID, BeatEvent);
         }
 
         void Start()
         {
+            playerColor = Level.levelPalette.playerColor;
             dashTimeMax = Level.secondsPerBeat / 4.0f;
             SpawnPlayer();
         }
@@ -76,10 +87,23 @@ namespace Chromatose
         {
             canDash = false;
             dashing = true;
-            spriteRenderer.sprite = triangle;
+            invulnerable = true;
+            _lightAnimate.AnimateToIntensity(3f, .1f, RepeatMode.Once);
+            _lightAnimate.AnimateToRange(3f, .1f, RepeatMode.Once);
             dashTime = 0.0f;
             dashPS.Play();
-            AudioManager.PlayPlayerJump();
+            AudioManager.PlayPlayerDash();
+            Camera.main.GetComponent<CameraControl>().Shake(.075f, 20, 20);
+        }
+
+        private void StopDashInvuln()
+        {
+            _animate.StopAnimating();
+            dashPS.Stop();
+            invulnerable = false;
+            canDash = true;
+            _lightAnimate.AnimateToIntensity(2f, .2f, RepeatMode.Once);
+            _lightAnimate.AnimateToRange(1.2f, .2f, RepeatMode.Once);
         }
 
         private float x, y;
@@ -117,9 +141,7 @@ namespace Chromatose
                 {
                     _velocity.y /= 2.0f;
                     dashing = false;
-                    spriteRenderer.sprite = circle;
-                    if (dashPS.isPlaying)
-                        Invoke("StopDashPS", dashTimeMax);
+                    Invoke("StopDashInvuln", dashTimeMax * 2);
                 }
 
                 if (_controller.isGrounded) MoveOnGround();
@@ -128,16 +150,32 @@ namespace Chromatose
 
            // Animate();
 
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, -transform.up, 10.0f, 1 << LayerMask.NameToLayer("Wall"));
+            /*RaycastHit2D hit = Physics2D.Raycast(transform.position, -transform.up, 10.0f, 1 << LayerMask.NameToLayer("Wall"));
             if (hit)
             {
                 _controller.SetUpDirection(hit.normal);
+            }*/
+
+            /*float minDistance = Int16.MaxValue;
+            float downAngle = 0;
+
+            for (int angle = 0; angle < 360; angle += 180) {
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector3.down.Rotate2D(angle), 30.0f, 1 << LayerMask.NameToLayer("Wall"));
+                if(hit.distance < minDistance) {
+                    minDistance = hit.distance;
+                    downAngle = angle;
+                }
             }
-
-            _controller.move(_velocity * Time.deltaTime);
-
-            _velocity = _controller.velocity;
+            if(downAngle != gravityAngle) {
+                Debug.Log(downAngle + "   " + gravityAngle);
+                gravityAngle = downAngle;
+                _controller.unrotatedVelocity = _controller.velocity;
+            }*/
+            _controller.move(_velocity * Time.deltaTime, gravityAngle);
+            _velocity = _controller.unrotatedVelocity;
         }
+
+        float gravityAngle = 0;
 
         private void Animate()
         {
@@ -145,11 +183,6 @@ namespace Chromatose
             newScale.x = x;
             newScale.y = y;
             transform.localScale = newScale;
-        }
-
-        private void StopDashPS()
-        {
-            dashPS.Stop();
         }
 
         private void MoveInAir()
@@ -195,21 +228,15 @@ namespace Chromatose
             {
                 _velocity.y = Mathf.Sqrt(jumpHeight * -gravity);
                 AudioManager.PlayPlayerJump();
-                Vector3 animateEndSize = transform.localScale;
+                /*Vector3 animateEndSize = transform.localScale;
                 animateEndSize.y *= 1.4f;
                 animateEndSize.x *= .8f;
-                _animate.AnimateToSize(transform.localScale, animateEndSize, .3f, RepeatMode.OnceAndBack);
+                _animate.AnimateToSize(transform.localScale, animateEndSize, .3f, RepeatMode.OnceAndBack);*/
             }
 
             var smoothedMovementFactor = groundDamping;//_controller.isGrounded ? groundDamping : inAirDamping; // how fast do we change direction?
             _velocity.x = Mathf.Lerp(_velocity.x, normalizedHorizontalSpeed * runSpeed, Time.deltaTime * smoothedMovementFactor);
             _velocity.y += gravity * Time.deltaTime;
-
-            if (Input.GetKey(KeyCode.DownArrow))
-            {
-                _velocity.y *= 3f;
-                _controller.ignoreOneWayPlatformsThisFrame = true;
-            }
         }
 
         public void FlipPlayer()
@@ -219,7 +246,6 @@ namespace Chromatose
             spriteFlipped *= -1;
         }
 
-        private Vector2 spawnPosition = new Vector2(0, -4);
         private void SpawnPlayer()
         {
             invulnerable = true;
@@ -262,10 +288,40 @@ namespace Chromatose
             get { return _playerTransform.position; }
         }
 
-        public void Die()
+        public void Hit()
         {
-            NotificationMaster.SendPlayerDeathNotification();
+            health--;
+            _animate.AnimateToColor(Level.levelPalette.playerColor, Color.red, .1f, RepeatMode.PingPong);
+            lightColor.r /= 3f;
+            lightColor.g /= 3f;
+            lightColor.b /= 3f;
+            _lightAnimate.AnimateToColor(lightColor, Level.secondsPerBeat * 4.0f, RepeatMode.Once);
+            _lightAnimate.AnimateToRange(3, Level.secondsPerBeat * 2.0f, RepeatMode.OnceAndBack);
+            Invoke("StopHit", Level.secondsPerMeasure);
+            invulnerable = true;
+            if(health <= 0) {
+                Die();
+            }
+            else {
+                AudioManager.PlayPlayerHit();
+                Camera.main.GetComponent<CameraControl>().Shake(.15f, 30, 20);
+            }
+        }
+
+        private void StopHit() {
+            _animate.StopAnimating();
+            spriteRenderer.color = Level.levelPalette.playerColor;
+            invulnerable = false;
+        }
+
+private int health = 4;
+private bool dead = false;
+        private void Die() {
+            if(dead) return;
+
             AudioManager.PlayPlayerDeath();
+            Camera.main.GetComponent<CameraControl>().Shake(.2f, 60, 20);
+            NotificationMaster.SendPlayerDeathNotification();
             Instantiate(deathExplosion, transform.position, Quaternion.identity);
             gameObject.SetActive(false);
             Level.self.PlayerRespawn();

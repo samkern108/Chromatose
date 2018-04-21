@@ -50,20 +50,18 @@ namespace Chromatose
         void OnDestroy()
         {
             if (Koreographer.Instance != null)
-            {
                 Koreographer.Instance.UnregisterForAllEvents(this);
-            }
         }
 
         void CameraColorEvent(KoreographyEvent evt, int sampleTime, int sampleDelta, DeltaSlice deltaSlice)
         {
-            int payload = 0;//((IntPayload)evt.Payload).IntVal;
+            int payload = ((IntPayload)evt.Payload).IntVal;
             int colorValue = Mathf.FloorToInt(payload / 4);
             int numBeats = payload % 4;
-            Color newColor = (payload == 0) ? lightColor : ultraColor;
+            Color newColor = Level.levelPalette.darkColor; //(payload == 0) ? lightColor : ultraColor;
 
             float decayTime = Level.secondsPerBeat * (numBeats + 1);
-            Debug.Log(Level.secondsPerBeat + "   " + numBeats);
+            //Debug.Log(Level.secondsPerBeat + "   " + numBeats);
             Timing.RunCoroutine(C_AnimateToColor(baseColor, newColor, flashDuration, decayTime), tag);
         }
 

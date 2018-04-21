@@ -9,8 +9,16 @@ namespace Chromatose
         void NotifyOnDeath(bool progressImmediate);
     }
 
+	public interface INotifyOnHitObserver
+    {
+        void NotifyOnHit(bool dead);
+    }
+
     public class EnemyHealth : MonoBehaviour
     {
+        private LightAnimate _lightAnimate;
+        private Light _light;
+        private Color startingColor;
         public int healthMax = 3;
         private int currentHealth;
         public GameObject deathExplosion;
@@ -23,6 +31,9 @@ namespace Chromatose
         public bool progressImmediate = false;
 
         public INotifyOnDeathObserver notifyDelegate;
+		public INotifyOnHitObserver notifyOnHitDelegate;
+
+        private bool dead = false;
 
         public void Start()
         {
@@ -31,35 +42,76 @@ namespace Chromatose
 
             baseColor = Color.white;
             hitColor = Color.red;
+
+            _lightAnimate = GetComponentInParent<LightAnimate>();
+            if (_lightAnimate)
+            {
+				_light = _lightAnimate.GetComponent<Light>();
+                startingColor = _light.color;
+                float lightRange = _light.range;
+                float lightIntensity = _light.intensity;
+                _light.range = 0.0f;
+                _light.color = Color.black;
+                _light.intensity *= 6f;
+                _lightAnimate.AnimateToRange(lightRange, Level.secondsPerMeasure, RepeatMode.Once);
+                _lightAnimate.AnimateToColor(Color.white, Level.secondsPerBeat * 8f, RepeatMode.Once);
+                _lightAnimate.AnimateToIntensity(lightIntensity, Level.secondsPerBeat * 2f, RepeatMode.Once);
+            }
+        }
+
+        private void SetLightIntensity()
+        {
+            if (_lightAnimate)
+            {
+                Color color = new Color();
+                float ratio = (float)currentHealth / (float)healthMax;
+                color.r = startingColor.r * ratio;
+                color.g = startingColor.g * ratio;
+                color.b = startingColor.b * ratio;
+                _lightAnimate.AnimateToColor(color, Level.secondsPerBeat, RepeatMode.Once);
+            }
         }
 
         public void OnTriggerEnter2D(Collider2D col)
         {
-            Debug.Log("On Trigger Enter");
+            if (dead) return;
+
             if (col.gameObject.tag == "Player" && PlayerController.dashing)
             {
                 currentHealth--;
                 animate.AnimateToColor(baseColor, hitColor, Level.secondsPerBeat, RepeatMode.OnceAndBack);
+                SetLightIntensity();
                 Vector3 currentSize = transform.localScale;
                 animate.AnimateToSize(currentSize, (currentSize - currentSize * .2f), Level.secondsPerBeat, RepeatMode.Once);
+                AudioManager.PlayEnemyHit((float)currentHealth / (float)healthMax);
+				if(notifyOnHitDelegate != null) notifyOnHitDelegate.NotifyOnHit(dead);
                 if (currentHealth <= 0)
                 {
+                    Camera.main.GetComponent<CameraControl>().Shake(.15f, 30, 20);
                     Die();
+                }
+                else
+                {
+                    Camera.main.GetComponent<CameraControl>().Shake(.15f, 30, 20);
                 }
             }
             else if (!PlayerController.invulnerable)
             {
-                PlayerController.self.Die();
+                PlayerController.self.Hit();
             }
         }
 
         public void Die()
         {
-            AudioManager.PlayEnemyDeath();
-            animate.AnimateToColor(baseColor, hitColor, Level.secondsPerBeat * .05f, RepeatMode.PingPong);
-            Vector3 currentSize = transform.localScale;
-            animate.AnimateToSize(currentSize, (currentSize - currentSize * .2f), Level.secondsPerBeat * 2.0f, RepeatMode.Once);
-            Invoke("Destroy", Level.secondsPerBeat * 2.0f);
+            if (!dead)
+            {
+                animate.AnimateToColor(baseColor, hitColor, Level.secondsPerBeat * .05f, RepeatMode.PingPong);
+                Vector3 currentSize = transform.localScale;
+                animate.AnimateToSize(currentSize, (currentSize - currentSize * .2f), Level.secondsPerBeat * 2.0f, RepeatMode.Once);
+                Invoke("Destroy", Level.secondsPerBeat * 2.0f);
+                dead = true;
+				if(_lightAnimate) _lightAnimate.Die();
+            }
         }
 
         private void Destroy()
@@ -69,6 +121,7 @@ namespace Chromatose
             {
                 notifyDelegate.NotifyOnDeath(progressImmediate);
             }
+			if(_lightAnimate) GameObject.Destroy(_lightAnimate);
             GameObject.Destroy(this.gameObject);
         }
     }
