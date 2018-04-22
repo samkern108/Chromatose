@@ -13,10 +13,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mEventID: IPlayYouListen_LaserMove
   mEventList:
-  - mStartSample: 275184
-    mEndSample: 275184
-  - mStartSample: 444528
-    mEndSample: 444528
+  - mStartSample: 21168
+    mEndSample: 105840
+  - mStartSample: 127008
+    mEndSample: 232848
+  - mStartSample: 254016
+    mEndSample: 338688
+  - mStartSample: 359856
+    mEndSample: 613872
   _SerializedPayloadTypes:
   - SonicBloom.Koreo.IntPayload
   _AssetPayloads: []
@@ -31,8 +35,10 @@ MonoBehaviour:
   _GradientPayloadIdxs: 
   _IntPayloads:
   - mIntVal: 0
+  - mIntVal: 1
   - mIntVal: 0
-  _IntPayloadIdxs: 0000000001000000
+  - mIntVal: 1
+  _IntPayloadIdxs: 00000000010000000200000003000000
   _SpectrumPayloads: []
   _SpectrumPayloadIdxs: 
   _TextPayloads: []

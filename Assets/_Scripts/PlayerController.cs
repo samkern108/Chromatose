@@ -282,6 +282,7 @@ namespace Chromatose
         public static Transform PlayerTransform
         {
             set { if (_playerTransform == null) _playerTransform = value; }
+            get { return _playerTransform; }
         }
         public static Vector3 PlayerPosition
         {

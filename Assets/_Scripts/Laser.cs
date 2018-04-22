@@ -39,30 +39,43 @@ namespace Chromatose
             Timing.RunCoroutine(C_WarmUpLaser(startWidth, 3.0f * endWidth / 4.0f, BackgroundColor.lightColor, BackgroundColor.ultraColor));
         }
 
+        private RaycastHit2D[] hits;
         public void Update()
         {
-            if (firing)
+            if (line.enabled)
             {
-                Vector3 checkPosition = transform.position;
-                checkPosition.x -= endWidth / 4.0f;
-                checkPosition.y -= endWidth / 4.0f;
-                RaycastHit2D[] hits = Physics2D.RaycastAll(checkPosition, -transform.up, 20.0f);
-                foreach (RaycastHit2D hit in hits)
+                RaycastHit2D hitWall = Physics2D.Raycast(transform.position, -transform.up, 20.0f);
+                if (hitWall.collider != null && hitWall.collider.gameObject.layer == LayerMask.NameToLayer("Wall"))
                 {
-                    if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Enemy") || (hit.collider.gameObject.layer == LayerMask.NameToLayer("Player") && !PlayerController.invulnerable))
-                    {
-                        hit.collider.gameObject.SendMessage("Die");
-                    }
+                    Vector3 point = this.transform.InverseTransformPoint(hitWall.point);
+                    line.SetPosition(1, point);
+                    return;
                 }
 
-                checkPosition.x += endWidth / 2.0f;
-                checkPosition.y += endWidth / 2.0f;
-                hits = Physics2D.RaycastAll(checkPosition, -transform.up, 20.0f);
-                foreach (RaycastHit2D hit in hits)
+                if (firing)
                 {
-                    if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Enemy") || (hit.collider.gameObject.layer == LayerMask.NameToLayer("Player") && !PlayerController.invulnerable))
+                    Vector3 checkPosition = transform.position;
+                    checkPosition.x -= endWidth / 4.0f;
+                    checkPosition.y -= endWidth / 4.0f;
+                    hits = Physics2D.RaycastAll(checkPosition, -transform.up, 20.0f);
+
+                    foreach (RaycastHit2D hit in hits)
                     {
-                        hit.collider.gameObject.SendMessage("Die");
+                        if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Enemy") || (hit.collider.gameObject.layer == LayerMask.NameToLayer("Player") && !PlayerController.invulnerable))
+                        {
+                            hit.collider.gameObject.SendMessage("Die");
+                        }
+                    }
+
+                    checkPosition.x += endWidth / 2.0f;
+                    checkPosition.y += endWidth / 2.0f;
+                    hits = Physics2D.RaycastAll(checkPosition, -transform.up, 20.0f);
+                    foreach (RaycastHit2D hit in hits)
+                    {
+                        if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Enemy") || (hit.collider.gameObject.layer == LayerMask.NameToLayer("Player") && !PlayerController.invulnerable))
+                        {
+                            hit.collider.gameObject.SendMessage("Die");
+                        }
                     }
                 }
             }
