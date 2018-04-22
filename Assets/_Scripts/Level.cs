@@ -9,6 +9,7 @@ namespace Chromatose
 {
     public class Level : MonoBehaviour
     {
+        public float startPitch = 1.0f;
         [EventID]
         public string levelEventID;
 
@@ -20,7 +21,7 @@ namespace Chromatose
 
         private static int stageNumber = -1;
 
-        public GameObject[] stages;
+        public Stage[] stages;
         public static bool moveToNextStage = false;
         public static float BPM;
 
@@ -40,11 +41,11 @@ namespace Chromatose
             levelPalette = Palette.levels[level];
             self = this;
 
-            foreach (GameObject stage in stages)
+            foreach (Stage stage in stages)
             {
-                stage.SetActive(false);
+                stage.gameObject.SetActive(false);
             }
-            stages[0].SetActive(true);
+            stages[0].gameObject.SetActive(true);
 
             koreo = Koreographer.Instance.GetKoreographyAtIndex(0);
             track = koreo.GetTrackByID(levelEventID);
@@ -54,6 +55,8 @@ namespace Chromatose
             Koreographer.Instance.RegisterForEventsWithTime(speedEventID, ChangeSpeedEvent);
 
             audioSource = GetComponent<AudioSource>();
+            audioSource.pitch = startPitch;
+            
             secondsPerBeat = 60.0f / BPM;
             secondsPerMeasure = secondsPerBeat * 4.0f;
 
@@ -153,13 +156,16 @@ namespace Chromatose
             Debug.Log("Load Next Stage " + stageNumber);
             if (stageNumber >= 0)
             {
-                stages[stageNumber].SetActive(false);
+                if ((stageNumber + 1) < stages.Length)
+                {
+                    stages[stageNumber].StageWillChange(stages[stageNumber + 1]);
+                }
+                stages[stageNumber].gameObject.SetActive(false);
             }
             stageNumber++;
             if (stageNumber < stages.Length)
             {
-                Debug.Log("Stage number set active now");
-                stages[stageNumber].SetActive(true);
+                stages[stageNumber].gameObject.SetActive(true);
             }
             else
             {

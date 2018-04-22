@@ -13,23 +13,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mEventID: OnYrSide_TwinsShoot
   mEventList:
-  - mStartSample: 336000
-    mEndSample: 336000
-  - mStartSample: 504000
-    mEndSample: 504000
-  - mStartSample: 672000
-    mEndSample: 672000
   - mStartSample: 714000
     mEndSample: 714000
-  - mStartSample: 756000
-    mEndSample: 756000
   - mStartSample: 798000
     mEndSample: 798000
-  - mStartSample: 840000
-    mEndSample: 840000
   - mStartSample: 882000
     mEndSample: 882000
-  _SerializedPayloadTypes: []
+  - mStartSample: 966000
+    mEndSample: 966000
+  - mStartSample: 1050000
+    mEndSample: 1050000
+  - mStartSample: 1134000
+    mEndSample: 1134000
+  - mStartSample: 1218000
+    mEndSample: 1218000
+  _SerializedPayloadTypes:
+  - SonicBloom.Koreo.IntPayload
   _AssetPayloads: []
   _AssetPayloadIdxs: 
   _ColorPayloads: []
@@ -40,8 +39,11 @@ MonoBehaviour:
   _FloatPayloadIdxs: 
   _GradientPayloads: []
   _GradientPayloadIdxs: 
-  _IntPayloads: []
-  _IntPayloadIdxs: 
+  _IntPayloads:
+  - mIntVal: 0
+  - mIntVal: 0
+  - mIntVal: 0
+  _IntPayloadIdxs: 040000000500000006000000
   _SpectrumPayloads: []
   _SpectrumPayloadIdxs: 
   _TextPayloads: []

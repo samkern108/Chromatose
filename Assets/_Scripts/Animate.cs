@@ -36,7 +36,7 @@ namespace Chromatose
         {
             float startTime = Time.time;
             float timer = 0;
-            while (timer <= duration)
+            while (timer <= duration && transform != null)
             {
                 timer = Time.time - startTime;
                 transform.position = Vector3.Lerp(start, finish, timer / duration);
@@ -66,7 +66,7 @@ namespace Chromatose
         {
             float startTime = Time.time;
             float timer = 0;
-            while (timer <= duration)
+            while (timer <= duration && transform != null)
             {
                 timer = Time.time - startTime;
                 transform.localScale = Vector2.Lerp(start, finish, timer / duration);
@@ -96,7 +96,7 @@ namespace Chromatose
         {
             float startTime = Time.time;
             float timer = 0;
-            while (timer <= duration)
+            while (timer <= duration && transform != null)
             {
                 timer = Time.time - startTime;
                 transform.localRotation = Quaternion.Lerp(start, finish, timer / duration);
@@ -126,7 +126,7 @@ namespace Chromatose
         {
             float startTime = Time.time;
             float timer = 0;
-            while (timer <= duration)
+            while (timer <= duration && spriteRenderer != null)
             {
                 timer = Time.time - startTime;
                 spriteRenderer.color = Color.Lerp(start, finish, timer / duration);

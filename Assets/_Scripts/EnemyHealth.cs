@@ -6,7 +6,7 @@ namespace Chromatose
 {
     public interface INotifyOnDeathObserver
     {
-        void NotifyOnDeath(bool progressImmediate);
+        void NotifyOnDeath(EnemyHealth health);
     }
 
 	public interface INotifyOnHitObserver
@@ -16,9 +16,11 @@ namespace Chromatose
 
     public class EnemyHealth : MonoBehaviour
     {
+        public bool notifyOnDeath = false, progressImmediate = false;
         private LightAnimate _lightAnimate;
         private Light _light;
         private Color startingColor;
+        private Vector3 normalScale;
         public int healthMax = 3;
         private int currentHealth;
         public GameObject deathExplosion;
@@ -26,9 +28,6 @@ namespace Chromatose
         private Animate animate;
 
         private Color baseColor, hitColor;
-
-        public bool notifyOnDeath = false;
-        public bool progressImmediate = false;
 
         public INotifyOnDeathObserver notifyDelegate;
 		public INotifyOnHitObserver notifyOnHitDelegate;
@@ -42,6 +41,8 @@ namespace Chromatose
 
             baseColor = Color.white;
             hitColor = Color.red;
+
+            normalScale = new Vector3(4,4,0);
 
             _lightAnimate = GetComponentInParent<LightAnimate>();
             if (_lightAnimate)
@@ -59,12 +60,11 @@ namespace Chromatose
             }
         }
 
-        private void SetLightIntensity()
+        private void SetLightIntensity(float ratio)
         {
             if (_lightAnimate)
             {
                 Color color = new Color();
-                float ratio = (float)currentHealth / (float)healthMax;
                 color.r = startingColor.r * ratio;
                 color.g = startingColor.g * ratio;
                 color.b = startingColor.b * ratio;
@@ -80,7 +80,7 @@ namespace Chromatose
             {
                 currentHealth--;
                 animate.AnimateToColor(baseColor, hitColor, Level.secondsPerBeat, RepeatMode.OnceAndBack);
-                SetLightIntensity();
+                SetLightIntensity((float)currentHealth / (float)healthMax);
                 Vector3 currentSize = transform.localScale;
                 animate.AnimateToSize(currentSize, (currentSize - currentSize * .2f), Level.secondsPerBeat, RepeatMode.Once);
                 AudioManager.PlayEnemyHit((float)currentHealth / (float)healthMax);
@@ -114,12 +114,19 @@ namespace Chromatose
             }
         }
 
+        public void RestoreToFullHealth() {
+            currentHealth = healthMax;
+            SetLightIntensity(1);
+            animate.AnimateToColor(baseColor, Color.green, Level.secondsPerBeat * 2.0f, RepeatMode.OnceAndBack);
+            animate.AnimateToSize(transform.localScale, normalScale, Level.secondsPerBeat * 2.0f, RepeatMode.Once);
+        }
+
         private void Destroy()
         {
             Instantiate(deathExplosion, transform.position, Quaternion.identity);
             if (notifyOnDeath)
             {
-                notifyDelegate.NotifyOnDeath(progressImmediate);
+                notifyDelegate.NotifyOnDeath(this);
             }
 			if(_lightAnimate) GameObject.Destroy(_lightAnimate);
             GameObject.Destroy(this.gameObject);

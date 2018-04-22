@@ -16,11 +16,9 @@ MonoBehaviour:
   - mStartSample: 84000
     mEndSample: 210000
   - mStartSample: 336000
-    mEndSample: 414750
-  - mStartSample: 462000
-    mEndSample: 546000
-  - mStartSample: 588000
-    mEndSample: 672000
+    mEndSample: 420282
+  - mStartSample: 461720
+    mEndSample: 545720
   - mStartSample: 672000
     mEndSample: 714000
   - mStartSample: 756000
@@ -37,8 +35,6 @@ MonoBehaviour:
     mEndSample: 1218000
   - mStartSample: 1260000
     mEndSample: 1302000
-  - mStartSample: 1344000
-    mEndSample: 1386000
   - mStartSample: 1470000
     mEndSample: 1491000
   - mStartSample: 1512000

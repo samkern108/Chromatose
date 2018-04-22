@@ -46,10 +46,10 @@ namespace Chromatose
                 angle += 90;
                 missile.GetComponent<Projectile>().Initialize(direction, projectileSpeed);
             }
-            shootAngle -= 45;
+            //shootAngle -= 45;
             startSize = transform.localScale;
             bigSize = startSize + (startSize * .2f);
-            animate.AnimateToSize(startSize, bigSize, .2f, RepeatMode.OnceAndBack);
+            animate.AnimateToSize(startSize, bigSize, .05f, RepeatMode.OnceAndBack);
         }
     }
 }

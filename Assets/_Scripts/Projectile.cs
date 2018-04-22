@@ -35,6 +35,9 @@ namespace Chromatose
             {
                 Explode();
             }
+            else if (LayerMask.LayerToName(collider.gameObject.layer) == "Player") {
+                PlayerController.self.Hit();
+            }
             Destroy(gameObject);
         }
 
