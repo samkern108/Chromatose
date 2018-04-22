@@ -17,10 +17,10 @@ MonoBehaviour:
     mEndSample: 81375
   - mStartSample: 233625
     mEndSample: 233625
-  - mStartSample: 417375
-    mEndSample: 417375
-  - mStartSample: 572250
-    mEndSample: 572250
+  - mStartSample: 250490
+    mEndSample: 250490
+  - mStartSample: 570570
+    mEndSample: 570570
   - mStartSample: 1344000
     mEndSample: 1344000
   - mStartSample: 2016000

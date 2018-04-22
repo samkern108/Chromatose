@@ -73,7 +73,6 @@ namespace Chromatose
         void LoopEvent(KoreographyEvent evt, int sampleTime, int sampleDelta, DeltaSlice deltaSlice)
         {
             int payload = ((IntPayload)evt.Payload).IntVal;
-            Debug.Log(payload);
             if (payload == 2)
             {
                 loopStart = evt;
@@ -96,7 +95,7 @@ namespace Chromatose
 
         private void LoopMusic()
         {
-            Debug.Log("Start Over");
+            Debug.Log("Loop Music!");
             // start the loop over from the beginning
             audioSource.Stop();
             Koreographer.Instance.FlushDelayQueue(koreo);

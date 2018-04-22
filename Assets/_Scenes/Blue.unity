@@ -1159,36 +1159,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventID: OnYrSideTrack_Synth
   lastColorChangeFrame: 0
---- !u!1 &262502943
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1738509976815010, guid: ff90f9f3585654224a26b72697cd9616,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 262502944}
-  m_Layer: 12
-  m_Name: PointOne (2)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &262502944
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4730849503313632, guid: ff90f9f3585654224a26b72697cd9616,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 262502943}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.0900002, y: 0.46, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1847116270}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &293250034
 GameObject:
   m_ObjectHideFlags: 0
@@ -2140,7 +2110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventID: OnYrSide_BossMovement
-  objectToMove: {fileID: 405248972}
+  track: {fileID: 0}
   startPoint: 1
   snapToStartPoint: 1
 --- !u!1001 &588549083
@@ -2769,7 +2739,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventID: OnYrSide_BossMovement
-  objectToMove: {fileID: 775794352}
+  track: {fileID: 0}
   startPoint: 3
   snapToStartPoint: 1
 --- !u!1 &737318584
@@ -3166,36 +3136,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!1 &839210879
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1738509976815010, guid: ff90f9f3585654224a26b72697cd9616,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 839210880}
-  m_Layer: 12
-  m_Name: PointOne (3)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &839210880
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4730849503313632, guid: ff90f9f3585654224a26b72697cd9616,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 839210879}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.92, y: 0.46, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1847116270}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &906677962
 GameObject:
   m_ObjectHideFlags: 0
@@ -3592,7 +3532,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventID: OnYrSide_BossMovement
-  objectToMove: {fileID: 1296022380}
+  track: {fileID: 0}
   startPoint: 2
   snapToStartPoint: 1
 --- !u!1 &976357640
@@ -3703,7 +3643,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventID: OnYrSide_BossMovement
-  objectToMove: {fileID: 1920766252}
+  track: {fileID: 0}
   startPoint: 0
   snapToStartPoint: 1
 --- !u!1 &1003751447
@@ -3948,34 +3888,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b936f77cf961446a99bd302470fcc2fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1119866377
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1119866378}
-  m_Layer: 0
-  m_Name: Lights
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1119866378
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1119866377}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1893451728}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1126099301
 GameObject:
   m_ObjectHideFlags: 0
@@ -4362,7 +4274,7 @@ GameObject:
   - component: {fileID: 1168047335}
   - component: {fileID: 1168047336}
   m_Layer: 12
-  m_Name: MovementTrack
+  m_Name: Track
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4379,27 +4291,23 @@ Transform:
   m_LocalPosition: {x: -0.82, y: -0.91, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_Children:
-  - {fileID: 1901654647}
   - {fileID: 1422036853}
+  - {fileID: 1901654647}
   m_Father: {fileID: 1893451728}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1168047336
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114587935685285582, guid: ff90f9f3585654224a26b72697cd9616,
-    type: 2}
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1168047334}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6af67a710a2d44d18162c642a1f67cc, type: 3}
+  m_Script: {fileID: 11500000, guid: 95d7922b452da4d94ad27014423b61f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventID: OnYrSide_BossMovement
-  objectToMove: {fileID: 1220876396}
-  startPoint: 0
-  snapToStartPoint: 0
+  points: []
 --- !u!1 &1187022726
 GameObject:
   m_ObjectHideFlags: 0
@@ -4506,7 +4414,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventID: OnYrSide_BossMovement
-  objectToMove: {fileID: 511874973}
+  track: {fileID: 0}
   startPoint: 1
   snapToStartPoint: 1
 --- !u!1001 &1208793479
@@ -4661,6 +4569,7 @@ GameObject:
   - component: {fileID: 1220876396}
   - component: {fileID: 1220876398}
   - component: {fileID: 1220876397}
+  - component: {fileID: 1220876399}
   m_Layer: 12
   m_Name: EnemyBallPointLight (1)
   m_TagString: Untagged
@@ -4729,6 +4638,21 @@ Light:
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!114 &1220876399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1220876395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6af67a710a2d44d18162c642a1f67cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventID: OnYrSide_BossMovement
+  track: {fileID: 1168047336}
+  startPoint: 1
+  snapToStartPoint: 0
 --- !u!1 &1222364023
 GameObject:
   m_ObjectHideFlags: 0
@@ -5578,7 +5502,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1422036853}
   m_Layer: 12
-  m_Name: PointOne
+  m_Name: 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5596,7 +5520,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1168047335}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1454616326
 GameObject:
@@ -6065,6 +5989,7 @@ GameObject:
   - component: {fileID: 1605895313}
   - component: {fileID: 1605895315}
   - component: {fileID: 1605895314}
+  - component: {fileID: 1605895316}
   m_Layer: 12
   m_Name: EnemyBallPointLight (2)
   m_TagString: Untagged
@@ -6133,6 +6058,21 @@ Light:
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!114 &1605895316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1605895312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6af67a710a2d44d18162c642a1f67cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventID: OnYrSide_BossMovement
+  track: {fileID: 1168047336}
+  startPoint: 0
+  snapToStartPoint: 0
 --- !u!1 &1624338999
 GameObject:
   m_ObjectHideFlags: 0
@@ -6357,7 +6297,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventID: OnYrSide_BossMovement
-  objectToMove: {fileID: 1939104367}
+  track: {fileID: 0}
   startPoint: 2
   snapToStartPoint: 1
 --- !u!1 &1785037112
@@ -6541,55 +6481,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
---- !u!1 &1847116269
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1046461672924344, guid: ff90f9f3585654224a26b72697cd9616,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1847116270}
-  - component: {fileID: 1847116271}
-  m_Layer: 12
-  m_Name: MovementTrack (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1847116270
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4827621011389250, guid: ff90f9f3585654224a26b72697cd9616,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1847116269}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.82, y: -0.91, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 1}
-  m_Children:
-  - {fileID: 839210880}
-  - {fileID: 262502944}
-  m_Father: {fileID: 1893451728}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1847116271
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114587935685285582, guid: ff90f9f3585654224a26b72697cd9616,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1847116269}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6af67a710a2d44d18162c642a1f67cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eventID: OnYrSide_BossMovement
-  objectToMove: {fileID: 1605895313}
-  startPoint: 1
-  snapToStartPoint: 0
 --- !u!1 &1850513559
 GameObject:
   m_ObjectHideFlags: 0
@@ -6638,7 +6529,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventID: OnYrSide_BossMovement
-  objectToMove: {fileID: 695077485}
+  track: {fileID: 0}
   startPoint: 0
   snapToStartPoint: 1
 --- !u!1 &1852748779
@@ -6833,8 +6724,6 @@ Transform:
   - {fileID: 1220876396}
   - {fileID: 1605895313}
   - {fileID: 1168047335}
-  - {fileID: 1847116270}
-  - {fileID: 1119866378}
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6848,7 +6737,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1901654647}
   m_Layer: 12
-  m_Name: PointOne (1)
+  m_Name: 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6866,7 +6755,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1168047335}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1916457580
 GameObject:
@@ -7688,7 +7577,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventID: OnYrSide_BossMovement
-  objectToMove: {fileID: 329972122}
+  track: {fileID: 0}
   startPoint: 3
   snapToStartPoint: 1
 --- !u!1 &2087611283

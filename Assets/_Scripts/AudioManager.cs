@@ -115,7 +115,6 @@ public class AudioManager : MonoBehaviour
 	    public static void PlayEnemyHit(float intensity)
     {
         AudioSource source = GetFreeAudioSource(enemyHit.length);
-		Debug.Log(intensity);
         source.volume = intensity / 4.0f;
         source.pitch = Random.Range(2f - intensity, 2.3f - intensity);
         source.PlayOneShot(enemyHit);

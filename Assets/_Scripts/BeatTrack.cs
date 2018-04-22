@@ -23,10 +23,9 @@ namespace Chromatose
         private float moveTimeTotal = 0.0f;
         private float moveTimer = 0.0f;
 
-        private Transform[] points;
-        private int pointIndex = 0;
+        public Track track;
+        private int moveToPointIndex = 0;
 
-        public Transform objectToMove;
         private int samplesPerBeat;
 
         public int startPoint = 0;
@@ -35,22 +34,20 @@ namespace Chromatose
         void Start()
         {
             Koreographer.Instance.RegisterForEventsWithTime(eventID, TrackMoveEvent);
-            points = transform.GetComponentsInChildren<Transform>();
-            points = points.Skip(1).ToArray();
-            pointIndex = startPoint;
 
-            samplesPerBeat = (int)Level.koreo.GetSamplesPerBeat(0);
-
-            movementObserver = objectToMove.GetComponentInChildren<IMovementObserver>();
-
+            moveToPointIndex = startPoint;
             if (snapToStartPoint)
             {
-                objectToMove.position = points[pointIndex].position;
+                transform.position = track.points[moveToPointIndex].position;
+                moveToPointIndex++;
             }
 
-            moveFromPoint = objectToMove.position;
-            moveToPoint = points[pointIndex].position;
+            moveFromPoint = transform.position;
+            moveToPoint = track.points[moveToPointIndex].position;
 
+            movementObserver = GetComponentInChildren<IMovementObserver>();
+
+            samplesPerBeat = (int)Level.koreo.GetSamplesPerBeat(0);
             koreo = Koreographer.Instance.GetKoreographyAtIndex(0);
         }
 
@@ -59,17 +56,20 @@ namespace Chromatose
             if (Koreographer.Instance != null)
                 Koreographer.Instance.UnregisterForAllEvents(this);
         }
-
-        private int currentSampleTime = 0;
+        private KoreographyEvent currentEvent;
         void TrackMoveEvent(KoreographyEvent evt, int sampleTime, int sampleDelta, DeltaSlice deltaSlice)
         {
-            CheckForDestroy();
-            if (currentSampleTime != evt.StartSample)
+            // This breaks if we only have one track while looping
+            if (currentEvent == null || currentEvent.StartSample != evt.StartSample)
             {
-                currentSampleTime = evt.StartSample;
+                currentEvent = evt;
                 moving = true;
                 moveTimer = 0.0f;
                 moveTimeTotal = ((evt.EndSample - evt.StartSample) / samplesPerBeat);
+
+                moveFromPoint = transform.position;
+                moveToPoint = track.points[moveToPointIndex].position;
+                moveToPointIndex = (moveToPointIndex + 1) % track.points.Length;
 
                 movementObserver.StartMoving();
             }
@@ -79,7 +79,6 @@ namespace Chromatose
 
         public void Update()
         {
-            CheckForDestroy();
             if (moving)
             {
                 moveTimer += koreo.GetBeatTimeDelta();
@@ -87,22 +86,11 @@ namespace Chromatose
                 {
                     moving = false;
                     movementObserver.StopMoving();
-                    pointIndex = (pointIndex + 1) % points.Length;
-                    moveFromPoint = points[pointIndex].position;
-                    moveToPoint = points[(pointIndex + 1) % points.Length].position;
                 }
                 else
                 {
-                    objectToMove.position = Vector3.Lerp(moveFromPoint, moveToPoint, moveTimer / moveTimeTotal);
+                    transform.position = Vector3.Lerp(moveFromPoint, moveToPoint, moveTimer / moveTimeTotal);
                 }
-            }
-        }
-
-        private void CheckForDestroy()
-        {
-            if (!objectToMove)
-            {
-                Destroy(this);
             }
         }
     }

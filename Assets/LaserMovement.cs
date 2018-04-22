@@ -34,11 +34,10 @@ namespace Chromatose
                 moveToPointIndex++;
             }
 
-            samplesPerBeat = (int)Level.koreo.GetSamplesPerBeat(0);
-
             moveFromPoint = transform.position;
             moveToPoint = track.points[moveToPointIndex];
 
+            samplesPerBeat = (int)Level.koreo.GetSamplesPerBeat(0);
             koreo = Koreographer.Instance.GetKoreographyAtIndex(0);
         }
 

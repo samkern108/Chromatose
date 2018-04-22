@@ -10,11 +10,12 @@ namespace Chromatose
     {
 
         public Color[] colors = new Color[12];
-        public GameObject smallWheelPrefab;
+        public GameObject smallWheelPrefab, dot;
         public static ColorWheel self;
+        public Sprite activatedSprite;
 
-        void Start()
-        {            
+        void Awake()
+        {
             self = this;
             Scenes.Init();
             CreateColorWheel();

@@ -23,10 +23,10 @@ namespace Chromatose
         private float gravity = -32f;
 
         private Vector3 gravityDirection = Vector3.down;
-        private float runSpeed = 7f, dashSpeed = 30f;
-        public float jumpHeight = 7f;
+        private float runSpeed = 6f, dashSpeed = 20f;
+        private float jumpHeight = 14f;
         private float groundDamping = 20f; // how fast do we change direction? higher means faster
-        private float dashTimeMax, dashTime = 0.0f;
+        private float dashTimeMax = .50f, dashTime = 0.0f;
         public static bool dashing = false, canDash = true, airborne = false;
 
         private float normalizedHorizontalSpeed = 0;
@@ -79,7 +79,6 @@ namespace Chromatose
         void Start()
         {
             playerColor = Level.levelPalette.playerColor;
-            dashTimeMax = Level.secondsPerBeat / 4.0f;
             SpawnPlayer();
         }
 
@@ -89,7 +88,7 @@ namespace Chromatose
             dashing = true;
             invulnerable = true;
             _lightAnimate.AnimateToIntensity(3f, .1f, RepeatMode.Once);
-            _lightAnimate.AnimateToRange(3f, .1f, RepeatMode.Once);
+            _lightAnimate.AnimateToRange(2f, .1f, RepeatMode.Once);
             dashTime = 0.0f;
             dashPS.Play();
             AudioManager.PlayPlayerDash();
@@ -107,7 +106,7 @@ namespace Chromatose
         }
 
         private float x, y;
-        private bool jump, jumpCancel, dash;
+        private bool jump, jumpCancel, dash, dashDown;
         void Update()
         {
             if (inputDisabled)
@@ -122,6 +121,7 @@ namespace Chromatose
             jump = Input.GetKeyDown(KeyCode.JoystickButton18) || Input.GetKeyDown(KeyCode.UpArrow);
             jumpCancel = Input.GetKeyUp(KeyCode.JoystickButton18) || Input.GetKeyUp(KeyCode.UpArrow);
             dash = Input.GetKeyDown(KeyCode.Space);
+            dashDown = Input.GetKey(KeyCode.Space);
 
             bool colliding = _controller.collisionState.right || _controller.collisionState.left ||
                             _controller.collisionState.above || _controller.collisionState.below;
@@ -130,7 +130,7 @@ namespace Chromatose
             {
                 Dash();
             }
-            else if (!colliding && dashing && dashTime <= dashTimeMax)
+            else if (dashDown &&  dashing && dashTime <= dashTimeMax)
             {
                 dashTime += Time.deltaTime;
                 _velocity = (dashSpeed) * new Vector2(x, y).normalized;
@@ -139,12 +139,12 @@ namespace Chromatose
             {
                 if (dashing)
                 {
-                    _velocity.y /= 2.0f;
+                    _velocity.y /= 3.0f;
                     dashing = false;
-                    Invoke("StopDashInvuln", dashTimeMax * 2);
+                    StopDashInvuln();
+                    //Invoke("StopDashInvuln", .05f);
                 }
-
-                if (_controller.isGrounded) MoveOnGround();
+                else if (_controller.isGrounded) MoveOnGround();
                 else MoveInAir();
             }
 
@@ -226,7 +226,7 @@ namespace Chromatose
 
             if (jump)
             {
-                _velocity.y = Mathf.Sqrt(jumpHeight * -gravity);
+                _velocity.y = jumpHeight;//Mathf.Sqrt(jumpHeight * -gravity);
                 AudioManager.PlayPlayerJump();
                 /*Vector3 animateEndSize = transform.localScale;
                 animateEndSize.y *= 1.4f;
