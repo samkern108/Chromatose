@@ -14,12 +14,12 @@ namespace Chromatose
 
         public void StartMoving()
         {
-            animate.AnimateToColor(Color.black, Color.white, Level.secondsPerBeat, RepeatMode.Once);
+            animate.AnimateToColor(Color.white, Level.secondsPerBeat, RepeatMode.Once);
         }
 
         public void StopMoving()
         {
-            animate.AnimateToColor(Color.white, Color.black, Level.secondsPerBeat, RepeatMode.Once);
+            animate.AnimateToColor(Color.black, Level.secondsPerBeat, RepeatMode.Once);
         }
     }
 }

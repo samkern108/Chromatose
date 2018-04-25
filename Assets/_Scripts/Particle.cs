@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class Particle : MonoBehaviour {
 
+	public bool disableAfterDuration = false;
+
 	void Start () {
 		Invoke ("KillSelf", GetComponent<ParticleSystem>().main.duration - .1f);
 	}
 	
 	void KillSelf () {
-		Destroy (gameObject);
+		if(disableAfterDuration) {
+			gameObject.SetActive(false);
+		}
+		else
+			Destroy (gameObject);
 	}
 }

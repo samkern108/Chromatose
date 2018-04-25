@@ -17,7 +17,7 @@ namespace Chromatose
 
         private static Color lightColor, playerColor;
         private static SpriteRenderer spriteRenderer;
-        private static Transform spriteTransform;
+        private static Transform spriteTransform, pfxTransform;
 
         void Awake()
         {
@@ -35,6 +35,10 @@ namespace Chromatose
 
             dashPS = transform.Find("DashPS").GetComponent<ParticleSystem>();
             deathExplosion = transform.Find("Death Explosion").gameObject;
+            deathExplosion.transform.SetParent(null);
+            deathExplosion.transform.localScale = Vector3.one;
+            
+            pfxTransform = this.transform;
         }
 
         void Start()
@@ -90,6 +94,7 @@ namespace Chromatose
         {
             AudioManager.PlayPlayerDeath();
             Camera.main.GetComponent<CameraControl>().Shake(.2f, 60, 20);
+            deathExplosion.transform.position = pfxTransform.position;
             deathExplosion.SetActive(true);
         }
 

@@ -35,6 +35,8 @@ namespace Chromatose
 
         private Vector2 spawnPosition = new Vector2(0, -4);
 
+        public List<INotifyOnHitObserver> hitObservers = new List<INotifyOnHitObserver>();
+
         void Awake()
         {
             self = this;
@@ -44,6 +46,11 @@ namespace Chromatose
 
             spawnPosition = transform.position;
             inputDisabled = true;
+        }
+
+        void Start()
+        {
+            hitObservers.Add(BackgroundColor.self);
         }
 
         public void Dash()
@@ -215,10 +222,14 @@ namespace Chromatose
 
             if (health <= 0)
             {
+                foreach (INotifyOnHitObserver obs in hitObservers)
+                    obs.NotifyOnHit(null, true);
                 Die();
             }
             else
             {
+                foreach (INotifyOnHitObserver obs in hitObservers)
+                    obs.NotifyOnHit(null, false);
                 invulnerable = true;
                 PlayerEffects.Hit();
                 Invoke("StopHit", Level.secondsPerMeasure);

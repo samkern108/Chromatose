@@ -37,18 +37,20 @@ namespace Chromatose
 
         public static BackgroundColor self;
 
-        void Start()
+        void Awake()
         {
             self = this;
-
-            //Koreographer.Instance.RegisterForEventsWithTime(eventID, CameraColorEvent);
             spriteRenderer = GetComponent<SpriteRenderer>();
             bounds = spriteRenderer.bounds;
+        }
 
+        void Start()
+        {
             baseColor = StageConstants.self.backgroundBase;
             lightColor = StageConstants.self.backgroundLight;
             ultraColor = StageConstants.self.backgroundUltra;
 
+            //Koreographer.Instance.RegisterForEventsWithTime(eventID, CameraColorEvent);
             koreo = Koreographer.Instance.GetKoreographyAtIndex(0);
             track = koreo.GetTrackByID(eventID);
             kEvents = track.GetAllEvents();
@@ -131,7 +133,17 @@ namespace Chromatose
         public void NotifyOnHit(EnemyHealth health, bool dead)
         {
             Timing.KillCoroutines(tag);
-            Color newColor = (dead) ? ultraColor : lightColor;
+
+            Color newColor;
+            // This means it's the player controller. I know, this is terrible.
+            if (health == null)
+            {
+                newColor = (dead) ? StageConstants.self.enemyHit1 : StageConstants.self.enemyHit2;
+            }
+            else
+            {
+                newColor = (dead) ? ultraColor : lightColor;
+            }
             float decayTime = Level.secondsPerBeat * (1 / LevelMusic.audioSource.pitch);
             decayTime *= (dead) ? 4.0f : 2.0f;
 

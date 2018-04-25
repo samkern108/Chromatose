@@ -34,6 +34,7 @@ namespace Chromatose
 
         public void AnimateToPosition(Vector3 start, Vector3 finish, float t, RepeatMode mode)
         {
+            Timing.KillCoroutines(animTag + AnimType.Position);
             Timing.RunCoroutine(C_AnimateToPosition(start, finish, t, mode), animTag + AnimType.Position);
             animPositionCounter++;
         }
@@ -66,6 +67,7 @@ namespace Chromatose
 
         public void AnimateToSize(Vector2 start, Vector2 finish, float t, RepeatMode mode)
         {
+            Timing.KillCoroutines(animTag + AnimType.Size);
             Timing.RunCoroutine(C_AnimateToSize(start, finish, t, mode), animTag + AnimType.Size);
         }
 
@@ -96,6 +98,7 @@ namespace Chromatose
 
         public void AnimateToRotation(Quaternion start, Quaternion finish, float t, RepeatMode mode)
         {
+            Timing.KillCoroutines(animTag + AnimType.Rotation);
             Timing.RunCoroutine(C_AnimateToRotation(start, finish, t, mode), animTag + AnimType.Rotation);
         }
 
@@ -124,8 +127,16 @@ namespace Chromatose
 
         // COLOR
 
+        public void AnimateToColor(Color finish, float t, RepeatMode mode)
+        {
+            Timing.KillCoroutines(animTag + AnimType.Color);
+            if(spriteRenderer != null)
+                Timing.RunCoroutine(C_AnimateToColor(spriteRenderer.color, finish, t, mode), animTag + AnimType.Color);
+        }
+
         public void AnimateToColor(Color start, Color finish, float t, RepeatMode mode)
         {
+            Timing.KillCoroutines(animTag + AnimType.Color);
             Timing.RunCoroutine(C_AnimateToColor(start, finish, t, mode), animTag + AnimType.Color);
         }
 

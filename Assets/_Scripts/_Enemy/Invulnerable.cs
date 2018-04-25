@@ -28,7 +28,6 @@ namespace Chromatose
         public void TurnOffInvulnerable()
         {
             myHealth.invulnerable = false;
-            animate.StopAnimating(Animate.AnimType.Color);
             animate.AnimateToColor(StageConstants.self.enemyInvuln1, Color.black, Level.secondsPerBeat, RepeatMode.Once);
         }
 
