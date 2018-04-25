@@ -21,10 +21,14 @@ MonoBehaviour:
     mEndSample: 250490
   - mStartSample: 570570
     mEndSample: 570570
-  - mStartSample: 1344000
-    mEndSample: 1344000
-  - mStartSample: 2016000
-    mEndSample: 2016000
+  - mStartSample: 672000
+    mEndSample: 672000
+  - mStartSample: 1302000
+    mEndSample: 1302000
+  - mStartSample: 1470000
+    mEndSample: 1470000
+  - mStartSample: 2583000
+    mEndSample: 2583000
   - mStartSample: 2688000
     mEndSample: 2688000
   - mStartSample: 3360000
@@ -58,8 +62,13 @@ MonoBehaviour:
   - mIntVal: 3
   - mIntVal: 2
   - mIntVal: 3
-  - mIntVal: 0
-  _IntPayloadIdxs: 0000000001000000020000000300000004000000
+  - mIntVal: 2
+  - mIntVal: 3
+  - mIntVal: 2
+  - mIntVal: 3
+  - mIntVal: 2
+  - mIntVal: 3
+  _IntPayloadIdxs: 00000000010000000200000003000000040000000500000006000000070000000800000009000000
   _SpectrumPayloads: []
   _SpectrumPayloadIdxs: 
   _TextPayloads: []

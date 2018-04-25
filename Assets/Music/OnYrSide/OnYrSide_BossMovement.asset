@@ -35,22 +35,20 @@ MonoBehaviour:
     mEndSample: 1218000
   - mStartSample: 1260000
     mEndSample: 1302000
-  - mStartSample: 1470000
-    mEndSample: 1491000
+  - mStartSample: 1344000
+    mEndSample: 1449000
   - mStartSample: 1512000
-    mEndSample: 1554000
-  - mStartSample: 1596000
-    mEndSample: 1638000
-  - mStartSample: 1680000
-    mEndSample: 1722000
-  - mStartSample: 1806000
-    mEndSample: 1827000
-  - mStartSample: 1848000
+    mEndSample: 1575000
+  - mStartSample: 1617000
+    mEndSample: 1680000
+  - mStartSample: 1722000
+    mEndSample: 1785000
+  - mStartSample: 1827000
     mEndSample: 1890000
   - mStartSample: 1932000
-    mEndSample: 1974000
-  - mStartSample: 2016000
-    mEndSample: 2058000
+    mEndSample: 1995000
+  - mStartSample: 2037000
+    mEndSample: 2100000
   - mStartSample: 2142000
     mEndSample: 2163000
   - mStartSample: 2184000
@@ -109,7 +107,8 @@ MonoBehaviour:
     mEndSample: 4494000
   - mStartSample: 4536000
     mEndSample: 4578000
-  _SerializedPayloadTypes: []
+  _SerializedPayloadTypes:
+  - SonicBloom.Koreo.IntPayload
   _AssetPayloads: []
   _AssetPayloadIdxs: 
   _ColorPayloads: []
@@ -120,8 +119,9 @@ MonoBehaviour:
   _FloatPayloadIdxs: 
   _GradientPayloads: []
   _GradientPayloadIdxs: 
-  _IntPayloads: []
-  _IntPayloadIdxs: 
+  _IntPayloads:
+  - mIntVal: 0
+  _IntPayloadIdxs: 0b000000
   _SpectrumPayloads: []
   _SpectrumPayloadIdxs: 
   _TextPayloads: []
