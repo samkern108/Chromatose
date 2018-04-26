@@ -10,39 +10,45 @@ namespace Chromatose
         public bool tutorialEnabled = true;
         private int exitsCompleted = 0;
 
-        public GameObject introPanel, controlsPanel;
+        public GameObject introPanelPC, controlsPanelPC, introPanelXBOX, controlsPanelXBOX;
+        public bool onXbox = false;
 
         public void Start()
         {
+            introPanelPC.SetActive(false);
+            introPanelXBOX.SetActive(false);
+            controlsPanelXBOX.SetActive(false);
+            controlsPanelPC.SetActive(false);
+
             if (tutorialEnabled)
             {
-                introPanel.SetActive(true);
+                if (onXbox) introPanelXBOX.SetActive(true);
+                else introPanelPC.SetActive(true);
             }
-            else
-            {
-                introPanel.SetActive(false);
-                Level.self.StartGameDelayed();
-            }
-            controlsPanel.SetActive(false);
+            else Level.self.StartGameDelayed();
         }
 
         public void Update()
         {
-            if (introPanel.activeInHierarchy)
+            if (introPanelPC.activeInHierarchy && Input.GetKeyDown(KeyCode.Space))
             {
-                if (Input.GetKeyDown(KeyCode.JoystickButton16) || Input.GetKeyDown(KeyCode.Space))
-                {
-                    introPanel.SetActive(false);
-                    controlsPanel.SetActive(true);
-                }
+                introPanelPC.SetActive(false);
+                controlsPanelPC.SetActive(true);
             }
-            else if (controlsPanel.activeInHierarchy)
+            else if (introPanelXBOX.activeInHierarchy && Input.GetKeyDown(KeyCode.JoystickButton16))
             {
-                if (Input.GetKeyDown(KeyCode.JoystickButton16) || Input.GetKeyDown(KeyCode.Space))
-                {
-                    controlsPanel.SetActive(false);
-                    Level.self.StartGameDelayed();
-                }
+                introPanelXBOX.SetActive(false);
+                controlsPanelXBOX.SetActive(true);
+            }
+            else if (controlsPanelPC.activeInHierarchy && Input.GetKeyDown(KeyCode.Space))
+            {
+                controlsPanelPC.SetActive(false);
+                Level.self.StartGameDelayed();
+            }
+            else if (controlsPanelXBOX.activeInHierarchy && Input.GetKeyDown(KeyCode.JoystickButton16))
+            {
+                controlsPanelXBOX.SetActive(false);
+                Level.self.StartGameDelayed();
             }
 
             if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Joystick1Button9))

@@ -93,7 +93,6 @@ namespace Chromatose
             if (col.gameObject.tag == "Player" && PlayerController.dashing && !invulnerable)
             {
                 currentHealth--;
-                //animate.AnimateToColor(baseColor, hitColor, Level.secondsPerBeat, RepeatMode.OnceAndBack);
                 SetLightIntensity((float)currentHealth / (float)healthMax);
                 Vector3 currentSize = transform.localScale;
                 animate.AnimateToSize(currentSize, (currentSize - currentSize * .2f), Level.secondsPerBeat, RepeatMode.Once);

@@ -36,6 +36,7 @@ namespace Chromatose
         private List<KoreographyEvent> kEvents;
 
         public static BackgroundColor self;
+        public BackgroundAccent backgroundAccent;
 
         void Awake()
         {
@@ -148,6 +149,10 @@ namespace Chromatose
             decayTime *= (dead) ? 4.0f : 2.0f;
 
             Timing.RunCoroutine(C_AnimateToColor(baseColor, newColor, (1 / LevelMusic.audioSource.pitch) * .05f, decayTime), tag);
+
+            /*Color accentColor = newColor;
+            accentColor.a = .6f;
+            backgroundAccent.OverrideColor(accentColor);*/
         }
     }
 }

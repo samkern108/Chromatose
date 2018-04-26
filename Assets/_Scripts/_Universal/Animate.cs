@@ -130,7 +130,7 @@ namespace Chromatose
         public void AnimateToColor(Color finish, float t, RepeatMode mode)
         {
             Timing.KillCoroutines(animTag + AnimType.Color);
-            if(spriteRenderer != null)
+            if (spriteRenderer != null)
                 Timing.RunCoroutine(C_AnimateToColor(spriteRenderer.color, finish, t, mode), animTag + AnimType.Color);
         }
 

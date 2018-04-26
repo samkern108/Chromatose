@@ -1,0 +1,5 @@
+Chromatose eventual To-Do
+
+* Give Animate optional delegate callbacks
+* Give Animate AnimationCurves for color and timing
+* Change from my custom NotificationCenter pattern to event handling
