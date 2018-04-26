@@ -22,13 +22,13 @@ namespace Chromatose
         public void TurnOnInvulnerable()
         {
             myHealth.invulnerable = true;
-            animate.AnimateToColor(StageConstants.self.enemyInvuln1, StageConstants.self.enemyInvuln2, Level.secondsPerBeat * .1f, RepeatMode.PingPong);
+            animate.AnimateToColor(StageConstants.self.enemyInvuln1, StageConstants.self.enemyInvuln2, Level.secondsPerBeat * .1f, RepeatMode.PingPong, AnimPriority.Critical);
         }
 
         public void TurnOffInvulnerable()
         {
             myHealth.invulnerable = false;
-            animate.AnimateToColor(StageConstants.self.enemyInvuln1, Color.black, Level.secondsPerBeat, RepeatMode.Once);
+            animate.AnimateToColor(StageConstants.self.enemyInvuln1, Color.black, Level.secondsPerBeat, RepeatMode.Once, AnimPriority.Override);
         }
 
         public void LoadingStage()

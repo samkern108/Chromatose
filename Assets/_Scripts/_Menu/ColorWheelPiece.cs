@@ -23,11 +23,11 @@ namespace Chromatose
             color = GetComponent<SpriteRenderer>().color;
             animates = GetComponentsInChildren<Animate>();
 
-            Vector3 startPosition = 1.8f * transform.up;
-            Vector3 finalPosition = 2.6f * transform.up;
+            Vector3 startPosition = 1.6f * transform.up;
+            Vector3 finalPosition = 2.2f * transform.up;
 
-            Vector3 startScale = 1.2f * transform.localScale;
-            Vector3 finalScale = .9f * transform.localScale;
+            Vector3 startScale = 1.0f * transform.localScale;
+            Vector3 finalScale = .7f * transform.localScale;
 
             animates[0].AnimateToPosition(startPosition, finalPosition, 10.0f, RepeatMode.PingPong);
             animates[0].AnimateToSize(startScale, finalScale, 6.0f, RepeatMode.PingPong);

@@ -55,8 +55,9 @@ namespace Chromatose
         public void LoadingStage()
         {
             if (inactive)
-            {
+            {  
                 animate.AnimateToSize(Vector3.zero, normalScale, Level.secondsPerMeasure, RepeatMode.Once);
+                Debug.Log("Animating to size: " + normalScale);
                 if (_lightAnimate)
                 {
                     _light = _lightAnimate.GetComponent<Light>();
@@ -116,7 +117,7 @@ namespace Chromatose
         {
             if (!dead)
             {
-                animate.AnimateToColor(StageConstants.self.enemyHit1, StageConstants.self.enemyHit2, Level.secondsPerBeat * .05f, RepeatMode.PingPong);
+                animate.AnimateToColor(StageConstants.self.enemyHit1, StageConstants.self.enemyHit2, Level.secondsPerBeat * .05f, RepeatMode.PingPong, AnimPriority.Critical);
                 Vector3 currentSize = transform.localScale;
                 animate.AnimateToSize(currentSize, (currentSize - currentSize * .2f), Level.secondsPerBeat * 2.0f, RepeatMode.Once);
                 Invoke("Destroy", Level.secondsPerBeat * 2.0f);

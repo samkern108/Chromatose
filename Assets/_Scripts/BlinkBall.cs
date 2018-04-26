@@ -13,9 +13,6 @@ namespace Chromatose
         {
 			animate = GetComponent<Animate>();
             spriteRenderer = GetComponent<SpriteRenderer>();
-            startSize = transform.localScale;
-            bigSize = startSize + (startSize * .2f);
-            animate.AnimateToSize(Vector3.zero, startSize, Level.secondsPerMeasure, RepeatMode.Once);
         }
 
         public void Blink()

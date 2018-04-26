@@ -10,6 +10,7 @@ namespace Chromatose
     {
         void Blink();
     }
+
     public class BlinkTrack : MonoBehaviour
     {
         public IBlinkObserver blinkObserver;
@@ -45,14 +46,18 @@ namespace Chromatose
             if (canMove)
             {
                 Invoke("Blink", blinkInLengthMod * Level.secondsPerBeat);
-                blinkPosition = track.GetRandomPoint().position;
+                blinkPosition = track.GetRandomPointExcludingCurrent().position;
+
                 BlinkInEffect();
             }
         }
 
         private void BlinkInEffect()
         {
-            blinkInEffect.transform.position = blinkPosition;
+            Vector3 newPosition = blinkPosition;
+            newPosition.z = 0;
+            blinkInEffect.transform.position = newPosition;
+
             blinkInEffect.SetActive(true);
         }
 

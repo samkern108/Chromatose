@@ -8,14 +8,17 @@ namespace Chromatose
     public class Track : MonoBehaviour
     {
 		public Transform[] points;
+        private int currentPoint = -1;
         void Awake()
         {
             points = transform.GetComponentsInChildren<Transform>();
             points = points.Skip(1).ToArray();
         }
 
-        public Transform GetRandomPoint() {
-            return points[(int)Random.Range(0, points.Length - 1)];
+        public Transform GetRandomPointExcludingCurrent() {
+            int newPoint = (int)Random.Range(0, points.Length - 1);
+            if(newPoint == currentPoint) newPoint = (newPoint + 1) % points.Length;
+            return points[newPoint];
         }
     }
 }

@@ -10,16 +10,19 @@ namespace Chromatose
         void Awake()
         {
             animate = GetComponent<Animate>();
+            animate.intendedColor = Color.black;
         }
 
         public void StartMoving()
         {
-            animate.AnimateToColor(Color.white, Level.secondsPerBeat, RepeatMode.Once);
+            animate.intendedColor = Color.white;
+            animate.AnimateToColor(Color.white, Level.secondsPerBeat, RepeatMode.Once, AnimPriority.Informative);
         }
 
         public void StopMoving()
         {
-            animate.AnimateToColor(Color.black, Level.secondsPerBeat, RepeatMode.Once);
+            animate.intendedColor = Color.black;
+            animate.AnimateToColor(Color.black, Level.secondsPerBeat, RepeatMode.Once, AnimPriority.Informative);
         }
     }
 }

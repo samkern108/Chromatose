@@ -8,15 +8,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Scenes/ColorWheel.unity
     guid: d3059a403fceb4e41ac35f3cc319cb01
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Scenes/Red.unity
     guid: 431b04bebb4c146df9c5ad790f94268c
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Scenes/Orange.unity
     guid: 85d4160ee8de24848bd56a3831fe9c3a
   - enabled: 1
     path: Assets/_Scenes/Blue.unity
     guid: f96fae79914f94a5aa7d5a9ceb4e9b83
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Scenes/Demo.unity
     guid: 1283ff1d285bc4418a065fe75649ba1d

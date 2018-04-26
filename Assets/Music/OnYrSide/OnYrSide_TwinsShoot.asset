@@ -29,20 +29,108 @@ MonoBehaviour:
     mEndSample: 1218000
   - mStartSample: 1302000
     mEndSample: 1302000
+  - mStartSample: 1386000
+    mEndSample: 1386000
   - mStartSample: 1470000
     mEndSample: 1470000
-  - mStartSample: 1596000
-    mEndSample: 1596000
+  - mStartSample: 1554000
+    mEndSample: 1554000
+  - mStartSample: 1638000
+    mEndSample: 1638000
   - mStartSample: 1722000
     mEndSample: 1722000
-  - mStartSample: 1848000
-    mEndSample: 1848000
+  - mStartSample: 1806000
+    mEndSample: 1806000
+  - mStartSample: 1890000
+    mEndSample: 1890000
   - mStartSample: 1974000
     mEndSample: 1974000
-  - mStartSample: 2100000
-    mEndSample: 2100000
+  - mStartSample: 2058000
+    mEndSample: 2058000
+  - mStartSample: 2142000
+    mEndSample: 2142000
   - mStartSample: 2226000
     mEndSample: 2226000
+  - mStartSample: 2310000
+    mEndSample: 2310000
+  - mStartSample: 2394000
+    mEndSample: 2394000
+  - mStartSample: 2478000
+    mEndSample: 2478000
+  - mStartSample: 2562000
+    mEndSample: 2562000
+  - mStartSample: 2646000
+    mEndSample: 2646000
+  - mStartSample: 2730000
+    mEndSample: 2730000
+  - mStartSample: 2814000
+    mEndSample: 2814000
+  - mStartSample: 2898000
+    mEndSample: 2898000
+  - mStartSample: 2982000
+    mEndSample: 2982000
+  - mStartSample: 3066000
+    mEndSample: 3066000
+  - mStartSample: 3150000
+    mEndSample: 3150000
+  - mStartSample: 3234000
+    mEndSample: 3234000
+  - mStartSample: 3318000
+    mEndSample: 3318000
+  - mStartSample: 3402000
+    mEndSample: 3402000
+  - mStartSample: 3486000
+    mEndSample: 3486000
+  - mStartSample: 3570000
+    mEndSample: 3570000
+  - mStartSample: 3654000
+    mEndSample: 3654000
+  - mStartSample: 3738000
+    mEndSample: 3738000
+  - mStartSample: 3822000
+    mEndSample: 3822000
+  - mStartSample: 3906000
+    mEndSample: 3906000
+  - mStartSample: 3990000
+    mEndSample: 3990000
+  - mStartSample: 4074000
+    mEndSample: 4074000
+  - mStartSample: 4158000
+    mEndSample: 4158000
+  - mStartSample: 4242000
+    mEndSample: 4242000
+  - mStartSample: 4326000
+    mEndSample: 4326000
+  - mStartSample: 4410000
+    mEndSample: 4410000
+  - mStartSample: 4494000
+    mEndSample: 4494000
+  - mStartSample: 4578000
+    mEndSample: 4578000
+  - mStartSample: 4662000
+    mEndSample: 4662000
+  - mStartSample: 4746000
+    mEndSample: 4746000
+  - mStartSample: 4830000
+    mEndSample: 4830000
+  - mStartSample: 4914000
+    mEndSample: 4914000
+  - mStartSample: 4998000
+    mEndSample: 4998000
+  - mStartSample: 5082000
+    mEndSample: 5082000
+  - mStartSample: 5166000
+    mEndSample: 5166000
+  - mStartSample: 5250000
+    mEndSample: 5250000
+  - mStartSample: 5334000
+    mEndSample: 5334000
+  - mStartSample: 5418000
+    mEndSample: 5418000
+  - mStartSample: 5502000
+    mEndSample: 5502000
+  - mStartSample: 5586000
+    mEndSample: 5586000
   _SerializedPayloadTypes:
   - SonicBloom.Koreo.IntPayload
   _AssetPayloads: []
@@ -67,7 +155,14 @@ MonoBehaviour:
   - mIntVal: 0
   - mIntVal: 0
   - mIntVal: 0
-  _IntPayloadIdxs: 0400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e000000
+  - mIntVal: 0
+  - mIntVal: 0
+  - mIntVal: 0
+  - mIntVal: 0
+  - mIntVal: 0
+  - mIntVal: 0
+  - mIntVal: 0
+  _IntPayloadIdxs: 040000000500000006000000070000000a0000000b0000000c0000000d0000000e0000000f0000001000000011000000120000001300000014000000150000001600000017000000
   _SpectrumPayloads: []
   _SpectrumPayloadIdxs: 
   _TextPayloads: []

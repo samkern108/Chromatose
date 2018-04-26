@@ -6,7 +6,7 @@ namespace Chromatose
 {
     public class SP_BlueS2Ball : StagePiece
     {
-        public void LoadingStage()
+        public void StageCompleted()
         {
             Turret t = GetComponentInChildren<Turret>();
             if (t) t.enabled = true;

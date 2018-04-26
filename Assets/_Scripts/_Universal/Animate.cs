@@ -10,16 +10,24 @@ namespace Chromatose
         Once, OnceAndBack, PingPong
     }
 
+    public enum AnimType
+    {
+        Color, Size, Position, Rotation
+    }
+
+    // Override should ONLY be used to turn off a Critical PingPong.
+    public enum AnimPriority
+    {
+        None = 0, Decorative, Informative, Critical, Override
+    }
+
     public class Animate : MonoBehaviour
     {
         private SpriteRenderer spriteRenderer;
         private static int tagCounter = 0;
         private string animTag;
 
-        public enum AnimType
-        {
-            Color, Size, Position, Rotation
-        }
+        public Color intendedColor;
 
         public void Awake()
         {
@@ -28,6 +36,8 @@ namespace Chromatose
             // Hacky fix so KillCoroutines won't stop ALL Timing coroutines.
             animTag = name + tagCounter;
             tagCounter++;
+
+            currentColorPriority = AnimPriority.None;
         }
 
         // POSITION
@@ -126,18 +136,27 @@ namespace Chromatose
         }
 
         // COLOR
+        private AnimPriority currentColorPriority;
 
-        public void AnimateToColor(Color finish, float t, RepeatMode mode)
+        public void AnimateToColor(Color finish, float t, RepeatMode mode, AnimPriority priority = AnimPriority.Decorative)
         {
-            Timing.KillCoroutines(animTag + AnimType.Color);
-            if (spriteRenderer != null)
-                Timing.RunCoroutine(C_AnimateToColor(spriteRenderer.color, finish, t, mode), animTag + AnimType.Color);
+            if ((int)priority >= (int)currentColorPriority)
+            {
+                Timing.KillCoroutines(animTag + AnimType.Color);
+                if (spriteRenderer != null)
+                    Timing.RunCoroutine(C_AnimateToColor(spriteRenderer.color, finish, t, mode), animTag + AnimType.Color);
+                currentColorPriority = priority;
+            }
         }
 
-        public void AnimateToColor(Color start, Color finish, float t, RepeatMode mode)
+        public void AnimateToColor(Color start, Color finish, float t, RepeatMode mode, AnimPriority priority = AnimPriority.Decorative)
         {
-            Timing.KillCoroutines(animTag + AnimType.Color);
-            Timing.RunCoroutine(C_AnimateToColor(start, finish, t, mode), animTag + AnimType.Color);
+            if ((int)priority >= (int)currentColorPriority)
+            {
+                Timing.KillCoroutines(animTag + AnimType.Color);
+                Timing.RunCoroutine(C_AnimateToColor(start, finish, t, mode), animTag + AnimType.Color);
+                currentColorPriority = priority;
+            }
         }
 
         private IEnumerator<float> C_AnimateToColor(Color start, Color finish, float duration, RepeatMode mode)
@@ -153,12 +172,13 @@ namespace Chromatose
             switch (mode)
             {
                 case RepeatMode.OnceAndBack:
-                    Timing.RunCoroutine(C_AnimateToColor(finish, start, duration, RepeatMode.Once), animTag + AnimType.Color);
+                    Timing.RunCoroutine(C_AnimateToColor(finish, intendedColor, duration, RepeatMode.Once), animTag + AnimType.Color);
                     break;
                 case RepeatMode.PingPong:
                     Timing.RunCoroutine(C_AnimateToColor(finish, start, duration, RepeatMode.PingPong), animTag + AnimType.Color);
                     break;
                 default:
+                    currentColorPriority = AnimPriority.None;
                     break;
             }
         }

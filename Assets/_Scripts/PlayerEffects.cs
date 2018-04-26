@@ -37,7 +37,7 @@ namespace Chromatose
             deathExplosion = transform.Find("Death Explosion").gameObject;
             deathExplosion.transform.SetParent(null);
             deathExplosion.transform.localScale = Vector3.one;
-            
+
             pfxTransform = this.transform;
         }
 
@@ -76,7 +76,7 @@ namespace Chromatose
 
         public static void StopHit()
         {
-            _animate.StopAnimating(Animate.AnimType.Color);
+            _animate.StopAnimating(AnimType.Color);
             spriteRenderer.color = Level.levelPalette.playerColor;
         }
 

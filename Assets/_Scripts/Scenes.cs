@@ -22,12 +22,12 @@ namespace Chromatose
         public static void Init() {
 			scenes[0] = new SceneInfo(0,false);
 			scenes[1] = new SceneInfo(0,false);
-			scenes[2] = new SceneInfo(2,true); // orange
+			scenes[2] = new SceneInfo(0,false); // orange
 			scenes[3] = new SceneInfo(0,false);
-			scenes[4] = new SceneInfo(1,true); // red
+			scenes[4] = new SceneInfo(0,false); // red
 			scenes[5] = new SceneInfo(0,false);
 			scenes[6] = new SceneInfo(0,false);
-			scenes[7] = new SceneInfo(3,true); // darkblue
+			scenes[7] = new SceneInfo(1,true); // darkblue
 			scenes[8] = new SceneInfo(0,false);
 			scenes[9] = new SceneInfo(0,false);
 			scenes[10] = new SceneInfo(0,false);

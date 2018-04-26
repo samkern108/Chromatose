@@ -25,7 +25,15 @@ namespace Chromatose
                 if (onXbox) introPanelXBOX.SetActive(true);
                 else introPanelPC.SetActive(true);
             }
-            else Level.self.StartGameDelayed();
+            else
+            {
+                Level.self.StartGameDelayed();
+                GameObject[] walls = GameObject.FindGameObjectsWithTag("Wall");
+                foreach (GameObject wall in walls)
+                {
+                    wall.GetComponent<Wall>().AnimateWallOutward();
+                }
+            }
         }
 
         public void Update()
@@ -43,11 +51,23 @@ namespace Chromatose
             else if (controlsPanelPC.activeInHierarchy && Input.GetKeyDown(KeyCode.Space))
             {
                 controlsPanelPC.SetActive(false);
+
+                GameObject[] walls = GameObject.FindGameObjectsWithTag("Wall");
+                foreach (GameObject wall in walls)
+                {
+                    wall.GetComponent<Wall>().AnimateWallOutward();
+                }
                 Level.self.StartGameDelayed();
             }
             else if (controlsPanelXBOX.activeInHierarchy && Input.GetKeyDown(KeyCode.JoystickButton16))
             {
                 controlsPanelXBOX.SetActive(false);
+
+                GameObject[] walls = GameObject.FindGameObjectsWithTag("Wall");
+                foreach (GameObject wall in walls)
+                {
+                    wall.GetComponent<Wall>().AnimateWallOutward();
+                }
                 Level.self.StartGameDelayed();
             }
 

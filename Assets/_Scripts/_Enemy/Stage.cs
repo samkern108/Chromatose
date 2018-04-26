@@ -74,13 +74,13 @@ namespace Chromatose
                     activeStageNumber++;
                     Stage stageToLoad = StageManager.self.stages[activeStageNumber];
 
+                    BroadcastMessage("StageCompleted");
                     foreach (GameObject obj in keepOnStageChange)
                         if (obj.activeInHierarchy)
                             obj.transform.SetParent(stageToLoad.transform);
 
                     stageToLoad.SetState(State.Loading);
                     Level.stopLooping = true;
-                    BroadcastMessage("StageCompleted");
                     break;
                 case State.Ended:
                     Debug.Log("Ended");

@@ -1,5 +1,11 @@
 Chromatose eventual To-Do
 
+Code Cleanup
 * Give Animate optional delegate callbacks
 * Give Animate AnimationCurves for color and timing
 * Change from my custom NotificationCenter pattern to event handling
+* Make PlayerHealth and EnemyHealth children of Health. (And change that null reference thing in BackgroundColor; it's ugly).
+* Move ALL bpm/secondsperbeat/etc into LevelMusic, and make a secondsPerHalfMeasure.
+
+Design
+* Figure out how to make boost more timed to the beat.

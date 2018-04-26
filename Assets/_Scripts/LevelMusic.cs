@@ -12,11 +12,16 @@ namespace Chromatose
 
         private static LevelMusic self;
 
+        public int startSample = 0;
+
         void Awake()
         {
             self = this;
             audioSource = GetComponent<AudioSource>();
             audioSource.pitch = startPitch;
+
+            float newTime = (float)startSample / (float)Level.koreo.SampleRate;
+            audioSource.time = newTime;
         }
 
         public static void SetTime(float newTime)
