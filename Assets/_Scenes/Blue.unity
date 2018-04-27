@@ -1812,6 +1812,61 @@ Prefab:
       propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minScalar
       value: 10.0000
       objectReference: {fileID: 0}
+    - target: {fileID: 198150557298100786, guid: dcc63a91e0b9943a091250d03998d03e,
+        type: 2}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minScalar
+      value: 10.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198150557298100786, guid: dcc63a91e0b9943a091250d03998d03e,
+        type: 2}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minScalar
+      value: 10.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198150557298100786, guid: dcc63a91e0b9943a091250d03998d03e,
+        type: 2}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minScalar
+      value: 10.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198150557298100786, guid: dcc63a91e0b9943a091250d03998d03e,
+        type: 2}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minScalar
+      value: 10.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198150557298100786, guid: dcc63a91e0b9943a091250d03998d03e,
+        type: 2}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minScalar
+      value: 10.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198150557298100786, guid: dcc63a91e0b9943a091250d03998d03e,
+        type: 2}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minScalar
+      value: 10.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198150557298100786, guid: dcc63a91e0b9943a091250d03998d03e,
+        type: 2}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minScalar
+      value: 10.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198150557298100786, guid: dcc63a91e0b9943a091250d03998d03e,
+        type: 2}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minScalar
+      value: 10.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198150557298100786, guid: dcc63a91e0b9943a091250d03998d03e,
+        type: 2}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minScalar
+      value: 10.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198150557298100786, guid: dcc63a91e0b9943a091250d03998d03e,
+        type: 2}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minScalar
+      value: 10.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198150557298100786, guid: dcc63a91e0b9943a091250d03998d03e,
+        type: 2}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minScalar
+      value: 10.0000
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114858371093118746, guid: dcc63a91e0b9943a091250d03998d03e, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: dcc63a91e0b9943a091250d03998d03e, type: 2}
@@ -3768,8 +3823,8 @@ ParticleSystem:
         key0: {r: 0.13429931, g: 0.29508114, b: 0.6764706, a: 1}
         key1: {r: 0, g: 1, b: 1, a: 1}
         key2: {r: 1, g: 0.8482759, b: 0, a: 0}
-        key3: {r: 0.47587106, g: 0.41895548, b: 0.9044118, a: 0}
-        key4: {r: 0.44827604, g: 0, b: 1, a: 0}
+        key3: {r: 0.9044118, g: 0.56961435, b: 0.41895548, a: 0}
+        key4: {r: 1, g: 0.6827586, b: 0, a: 0}
         key5: {r: 1, g: 1, b: 1, a: 0}
         key6: {r: 0, g: 0, b: 0, a: 0}
         key7: {r: 0, g: 0, b: 0, a: 0}
@@ -4325,9 +4380,15 @@ ParticleSystem:
         m_Curve:
         - serializedVersion: 2
           time: 0
-          value: 0.6486492
+          value: 1
           inSlope: 0.046951428
           outSlope: 0.046951428
+          tangentMode: 0
+        - serializedVersion: 2
+          time: 0.32339346
+          value: 0.46221682
+          inSlope: -0.5275011
+          outSlope: -0.5275011
           tangentMode: 0
         - serializedVersion: 2
           time: 1
@@ -7869,7 +7930,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 816522720}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 481.5, y: 308, z: 0}
+  m_LocalPosition: {x: 598.5, y: 362, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1852748780}

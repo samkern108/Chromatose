@@ -96,7 +96,7 @@ namespace Chromatose
             {
                 Dash();
             }
-            else if (dashDown && dashing && dashTime <= dashTimeMax)
+            else if ((dashDown || dashTime <= dashTimeMax / 2.0f) && dashing && (dashTime <= dashTimeMax))
             {
                 dashTime += Time.deltaTime;
                 Vector3 dashDirection = new Vector2((x + lastX) / 2.0f, (y + lastY) / 2.0f).normalized;

@@ -8,13 +8,15 @@ namespace Chromatose
     {
         public void OnTriggerEnter2D(Collider2D col)
         {
-            if (!PlayerController.dashing && !PlayerController.invulnerable)
-            {
-                PlayerController.self.Hit();
-            }
+            HitPlayer();
         }
 
         public void OnCollisionEnter2D(Collision2D col)
+        {
+            HitPlayer();
+        }
+
+        private void HitPlayer()
         {
             if (!PlayerController.dashing && !PlayerController.invulnerable)
             {

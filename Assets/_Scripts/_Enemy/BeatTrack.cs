@@ -107,12 +107,16 @@ namespace Chromatose
         public void LoadingStage()
         {
             canMove = false;
+            Invoke("StageBegin", Level.secondsPerMeasure * 2.0f);
         }
 
         public void StageBegin()
         {
-            canMove = true;
-            firstMoveAfterStageBegin = true;
+            if (!canMove)
+            {
+                canMove = true;
+                firstMoveAfterStageBegin = true;
+            }
         }
     }
 }

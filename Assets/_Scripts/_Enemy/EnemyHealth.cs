@@ -55,9 +55,8 @@ namespace Chromatose
         public void LoadingStage()
         {
             if (inactive)
-            {  
+            {
                 animate.AnimateToSize(Vector3.zero, normalScale, Level.secondsPerMeasure, RepeatMode.Once);
-                Debug.Log("Animating to size: " + normalScale);
                 if (_lightAnimate)
                 {
                     _light = _lightAnimate.GetComponent<Light>();
@@ -72,6 +71,10 @@ namespace Chromatose
                     _lightAnimate.AnimateToIntensity(lightIntensity, Level.secondsPerBeat * 2f, RepeatMode.Once);
                 }
                 inactive = false;
+            }
+            else
+            {
+                Invoke("StageBegin", Level.secondsPerMeasure * 2.0f);
             }
         }
 
@@ -91,25 +94,28 @@ namespace Chromatose
         {
             if (dead) return;
 
-            if (col.gameObject.tag == "Player" && PlayerController.dashing && !invulnerable)
+            if (col.gameObject.tag == "Player")
             {
-                currentHealth--;
-                SetLightIntensity((float)currentHealth / (float)healthMax);
-                Vector3 currentSize = transform.localScale;
-                animate.AnimateToSize(currentSize, (currentSize - currentSize * .2f), Level.secondsPerBeat, RepeatMode.Once);
-                AudioManager.PlayEnemyHit((float)currentHealth / (float)healthMax);
-                Camera.main.GetComponent<CameraControl>().Shake(.15f, 30, 20);
-                if (currentHealth <= 0 && (hitListener == null || hitListener.dead == false))
+                if (PlayerController.dashing && !invulnerable)
                 {
-                    Die();
+                    currentHealth--;
+                    SetLightIntensity((float)currentHealth / (float)healthMax);
+                    Vector3 currentSize = transform.localScale;
+                    animate.AnimateToSize(currentSize, (currentSize - currentSize * .2f), Level.secondsPerBeat, RepeatMode.Once);
+                    AudioManager.PlayEnemyHit((float)currentHealth / (float)healthMax);
+                    Camera.main.GetComponent<CameraControl>().Shake(.15f, 30, 20);
+                    if (currentHealth <= 0 && (hitListener == null || hitListener.dead == false))
+                    {
+                        Die();
+                    }
+                    if (notifyOnHitDelegates.Count > 0)
+                        foreach (INotifyOnHitObserver obs in notifyOnHitDelegates)
+                            obs.NotifyOnHit(this, dead);
                 }
-                if (notifyOnHitDelegates.Count > 0)
-                    foreach (INotifyOnHitObserver obs in notifyOnHitDelegates)
-                        obs.NotifyOnHit(this, dead);
-            }
-            else if (!PlayerController.invulnerable)
-            {
-                PlayerController.self.Hit();
+                else if (!PlayerController.invulnerable)
+                {
+                    PlayerController.self.Hit();
+                }
             }
         }
 
@@ -128,9 +134,12 @@ namespace Chromatose
 
         public void StageBegin()
         {
-            currentHealth = healthMax;
-            SetLightIntensity(1);
-            animate.AnimateToSize(transform.localScale, normalScale, Level.secondsPerBeat * 2.0f, RepeatMode.Once);
+            if (currentHealth != healthMax)
+            {
+                currentHealth = healthMax;
+                SetLightIntensity(1);
+                animate.AnimateToSize(transform.localScale, normalScale, Level.secondsPerBeat * 2.0f, RepeatMode.Once);
+            }
         }
 
         private void Destroy()

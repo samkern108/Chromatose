@@ -34,6 +34,7 @@ namespace Chromatose
         public void LoadingStage()
         {
             TurnOnInvulnerable();
+            Invoke("StageBegin", Level.secondsPerMeasure * 2.0f);
         }
 
         public void StageBegin()
