@@ -13,6 +13,7 @@ namespace Chromatose
     }
     public class BeatTrack : MonoBehaviour
     {
+        public int payload = 0;
         public IMovementObserver movementObserver;
 
         [EventID]
@@ -61,6 +62,8 @@ namespace Chromatose
         private KoreographyEvent currentEvent;
         void TrackMoveEvent(KoreographyEvent evt, int sampleTime, int sampleDelta, DeltaSlice deltaSlice)
         {
+            int evtPayload = ((IntPayload)evt.Payload).IntVal;
+            if(evtPayload != payload) return;
             // This breaks if we only have one track while looping
             if (canMove && (currentEvent == null || currentEvent.StartSample != evt.StartSample))
             {

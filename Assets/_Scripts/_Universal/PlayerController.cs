@@ -69,7 +69,7 @@ namespace Chromatose
             PlayerEffects.StopDash();
         }
 
-        private float lastX, lastY, x, y;
+        private float lastX, lastY, x, y, xRaw, yRaw;
         private bool jump, jumpCancel, dash, dashDown;
         void Update()
         {
@@ -83,6 +83,8 @@ namespace Chromatose
             lastY = y;
             x = Input.GetAxis("Horizontal");
             y = Input.GetAxis("Vertical");
+            xRaw = Input.GetAxisRaw("Horizontal");
+            yRaw = Input.GetAxisRaw("Vertical");
 
             jump = Input.GetKeyDown(KeyCode.JoystickButton18) || Input.GetKeyDown(KeyCode.UpArrow);
             jumpCancel = Input.GetKeyUp(KeyCode.JoystickButton18) || Input.GetKeyUp(KeyCode.UpArrow);
@@ -98,9 +100,19 @@ namespace Chromatose
             }
             else if ((dashDown || dashTime <= dashTimeMax / 2.0f) && dashing && (dashTime <= dashTimeMax))
             {
-                dashTime += Time.deltaTime;
-                Vector3 dashDirection = new Vector2((x + lastX) / 2.0f, (y + lastY) / 2.0f).normalized;
-                _velocity = (dashSpeed) * dashDirection;
+                RaycastHit2D wallHit = Physics2D.Raycast(transform.position, new Vector2(x, y).normalized, .5f, 1 << LayerMask.NameToLayer("Wall"));
+                if (wallHit)
+                {
+                    Camera.main.GetComponent<CameraControl>().Shake(.20f, 20, 20);
+                    dashing = false;
+                    StopDashInvuln();
+                }
+                else
+                {
+                    dashTime += Time.deltaTime;
+                    Vector3 dashDirection = new Vector2(x, y).normalized; //new Vector2((x + lastX) / 2.0f, (y + lastY) / 2.0f).normalized;
+                    _velocity = (dashSpeed) * dashDirection;
+                }
             }
             else
             {

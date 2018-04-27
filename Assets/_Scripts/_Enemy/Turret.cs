@@ -17,7 +17,7 @@ namespace Chromatose
         public int splitCount = 0;
         public float projectileSpeed = 7.0f;
 
-        private bool turretActive = true;
+        public bool turretActive = true;
 
         void Start()
         {

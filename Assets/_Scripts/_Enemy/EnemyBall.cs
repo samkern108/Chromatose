@@ -5,21 +5,21 @@ namespace Chromatose
 {
     public class EnemyBall : MonoBehaviour, IMovementObserver
     {
-        private Animate animate;
+        protected Animate animate;
 
-        void Awake()
+        protected void Awake()
         {
             animate = GetComponent<Animate>();
             animate.intendedColor = Color.black;
         }
 
-        public void StartMoving()
+        public virtual void StartMoving()
         {
             animate.intendedColor = Color.white;
             animate.AnimateToColor(Color.white, Level.secondsPerBeat, RepeatMode.Once, AnimPriority.Informative);
         }
 
-        public void StopMoving()
+        public virtual void StopMoving()
         {
             animate.intendedColor = Color.black;
             animate.AnimateToColor(Color.black, Level.secondsPerBeat, RepeatMode.Once, AnimPriority.Informative);

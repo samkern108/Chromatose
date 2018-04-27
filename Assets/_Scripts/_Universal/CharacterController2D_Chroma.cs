@@ -155,7 +155,6 @@ namespace Chromatose
 
         public void SetUpDirection(Vector2 up)
         {
-            Debug.Log(up);
             transform.localRotation = Quaternion.FromToRotation(Vector2.up, up);
         }
 

@@ -19,6 +19,9 @@ namespace Chromatose
 
         public static void InitColors()
         {
+            // If we're already intialized, stop.
+            if(levels.Count > 0) return;
+
             yellow = new LevelPalette();
             yellow.baseColor = ColorFromHex(0xFFE800);
             yellow.lightColor = ColorFromHex(0xFF7F00);

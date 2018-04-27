@@ -41,6 +41,8 @@ namespace Chromatose
 
         private void CreateColorWheel()
         {
+            ColorWheelPiece.pieceCounter = 0;
+            
             GameObject newPiece;
             SpriteRenderer spriteRenderer;
             float angle = 360 / 12;

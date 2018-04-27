@@ -109,8 +109,10 @@ namespace Chromatose
                         Die();
                     }
                     if (notifyOnHitDelegates.Count > 0)
-                        foreach (INotifyOnHitObserver obs in notifyOnHitDelegates)
+                        foreach (INotifyOnHitObserver obs in notifyOnHitDelegates) {
+                            if(obs == null) continue;
                             obs.NotifyOnHit(this, dead);
+                        }
                 }
                 else if (!PlayerController.invulnerable)
                 {

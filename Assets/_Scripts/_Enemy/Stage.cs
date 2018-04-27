@@ -57,7 +57,7 @@ namespace Chromatose
                 case State.Loading:
                     gameObject.SetActive(true);
                     loadingStage = this;
-                    Debug.Log("Loading");
+                    //Debug.Log("Loading");
                     LevelMusic.ChangePitch(startPitch, Level.secondsPerMeasure);
 
                     BroadcastMessage("LoadingStage");
@@ -66,11 +66,11 @@ namespace Chromatose
                 case State.Active:
                     if (activeStage != null) activeStage.SetState(State.Ended);
                     activeStage = this;
-                    Debug.Log("Active");
+                    //Debug.Log("Active");
                     BroadcastMessage("StageBegin");
                     break;
                 case State.Completed:
-                    Debug.Log("Completed");
+                    //Debug.Log("Completed");
                     activeStageNumber++;
                     Stage stageToLoad = StageManager.self.stages[activeStageNumber];
 
@@ -83,7 +83,7 @@ namespace Chromatose
                     Level.stopLooping = true;
                     break;
                 case State.Ended:
-                    Debug.Log("Ended");
+                    //Debug.Log("Ended");
                     gameObject.SetActive(false);
                     break;
             }

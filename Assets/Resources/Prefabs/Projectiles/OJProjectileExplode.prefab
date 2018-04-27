@@ -53,6 +53,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b21778fda8fa446da9b7bb3019a683c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableAfterDuration: 0
 --- !u!198 &198629053287575490
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -2483,7 +2484,7 @@ ParticleSystem:
       serializedVersion: 2
       m_Bits: 512
     maxCollisionShapes: 256
-    quality: 0
+    quality: 2
     voxelSize: 0.5
     collisionMessages: 0
     collidesWithDynamic: 1

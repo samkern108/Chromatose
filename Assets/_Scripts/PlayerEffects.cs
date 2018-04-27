@@ -52,7 +52,7 @@ namespace Chromatose
             _lightAnimate.AnimateToRange(2f, .1f, RepeatMode.Once);
             dashPS.Play();
             AudioManager.PlayPlayerDash();
-            Camera.main.GetComponent<CameraControl>().Shake(.075f, 20, 20);
+            Camera.main.GetComponent<CameraControl>().Shake(.15f, 20, 20);
         }
 
         public static void StopDash()
