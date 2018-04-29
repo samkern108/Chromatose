@@ -15,6 +15,7 @@ namespace Chromatose
 
         public void NotifyOnDeath(EnemyHealth health)
         {
+            Debug.Log("Progress Now I'm Stage 4");
             Stage.activeStage.NotifyOnDeath(health, progressImmediate);
         }
     }

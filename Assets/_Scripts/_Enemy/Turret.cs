@@ -19,9 +19,11 @@ namespace Chromatose
 
         public bool turretActive = true;
 
+        public bool skip = false;
+
         void Start()
         {
-            Koreographer.Instance.RegisterForEventsWithTime(eventID, ShootEvent);
+            //Koreographer.Instance.RegisterForEventsWithTime(eventID, ShootEvent);
             animate = GetComponent<Animate>();
         }
 
@@ -37,12 +39,13 @@ namespace Chromatose
                 ShootMissile();
         }
 
-        protected virtual void ShootMissile()
+        public virtual void ShootMissile()
         {
             GameObject missile;
             Vector3 direction;
             float angle = shootAngle;
-            for (int i = 0; i < 4; i++)
+            int shootCounter = (skip) ? 2 : 1;
+            for (int i = 0; i < 4; i += shootCounter)
             {
                 missile = Instantiate(projectile);//, ProjectileManager.myTransform);
                 missile.transform.position = transform.position;
@@ -54,10 +57,12 @@ namespace Chromatose
             startSize = transform.localScale;
             bigSize = startSize + (startSize * .2f);
             animate.AnimateToSize(startSize, bigSize, .05f, RepeatMode.OnceAndBack);
+            animate.AnimateToColor(Color.yellow, .05f, RepeatMode.OnceAndBack, AnimPriority.Informative);
         }
 
         public void LoadingStage() {
             turretActive = false;
+            Invoke("StageBegin", Level.secondsPerMeasure * 2.0f);
         }
 
         public void StageBegin() {

@@ -24,6 +24,11 @@ namespace Chromatose
 
         public static bool stopLooping = false;
 
+        public Canvas winCanvas;
+        public GameObject winFireworks;
+
+        public static bool gameEnded = false;
+
         void Awake()
         {
             Palette.InitColors();
@@ -40,19 +45,20 @@ namespace Chromatose
             secondsPerMeasure = secondsPerBeat * 4.0f;
         }
 
-        public void StartGameDelayed() {
+        public void StartGameDelayed()
+        {
             Invoke("LoadStartStage", secondsPerMeasure);
             Invoke("StartGame", secondsPerMeasure * 2.0f);
         }
 
-        public void LoadStartStage() 
+        public void LoadStartStage()
         {
             StageManager.self.LoadStartStage();
+            LevelMusic.Play();
         }
 
         public void StartGame()
         {
-            LevelMusic.Play();
             StageManager.self.NextStageMusicStart();
             PlayerRespawn();
         }
@@ -77,7 +83,8 @@ namespace Chromatose
                     LevelMusic.ChangeVolume(1.0f, 0.0f, secondsPerBeat);
                     Invoke("LoopMusic", secondsPerBeat);
                 }
-                else {
+                else
+                {
                     stopLooping = false;
                     Debug.Log("Start Music: " + sampleTime);
                     StageManager.self.NextStageMusicStart();
@@ -97,8 +104,12 @@ namespace Chromatose
             LevelMusic.Play();
         }
 
-        public void LevelEnded() {
-            SceneManager.LoadScene(0);
+        public void LevelEnded()
+        {
+            winCanvas.gameObject.SetActive(true);
+            winFireworks.SetActive(true);
+            stopLooping = true;
+            gameEnded = true;
         }
 
         public void PlayerRespawn()

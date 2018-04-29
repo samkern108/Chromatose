@@ -18,6 +18,13 @@ namespace Chromatose
             {
                 stage.SetState(Stage.State.NotStarted);
             }
+            //InvokeRepeating("CheckToProgress", 2.0f, 2.0f);
+        }
+
+        public void CheckToProgress() {
+            if(Stage.activeStage.GetComponentsInChildren<EnemyBall>().Length == 0) {
+                Stage.ForceProgressStage();
+            }
         }
 
         public void LoadStartStage()

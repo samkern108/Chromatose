@@ -47,8 +47,13 @@ namespace Chromatose
             notifiers.Add(health);
         }
 
+        public static void ForceProgressStage() {
+            activeStage.SetState(State.Completed);
+        }
+
         public void SetState(State newState)
         {
+            if(Level.gameEnded) return;
             switch (newState)
             {
                 case State.NotStarted:
@@ -67,11 +72,16 @@ namespace Chromatose
                     if (activeStage != null) activeStage.SetState(State.Ended);
                     activeStage = this;
                     //Debug.Log("Active");
-                    BroadcastMessage("StageBegin");
+                    //BroadcastMessage("StageBegin");
                     break;
                 case State.Completed:
                     //Debug.Log("Completed");
                     activeStageNumber++;
+                    if (activeStageNumber >= StageManager.self.stages.Length) {
+                        Level.self.LevelEnded();
+                        return;
+                    }
+
                     Stage stageToLoad = StageManager.self.stages[activeStageNumber];
 
                     BroadcastMessage("StageCompleted");
@@ -81,6 +91,7 @@ namespace Chromatose
 
                     stageToLoad.SetState(State.Loading);
                     Level.stopLooping = true;
+                    Debug.Log("Active Stage " + activeStage);
                     break;
                 case State.Ended:
                     //Debug.Log("Ended");

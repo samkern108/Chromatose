@@ -31,7 +31,7 @@ namespace Chromatose
             animate.AnimateToSize(startSize, bigSize, .05f, RepeatMode.OnceAndBack);
         }*/
 
-        protected override void ShootMissile()
+        public override void ShootMissile()
         {
             GameObject missile;
             Vector3 direction;

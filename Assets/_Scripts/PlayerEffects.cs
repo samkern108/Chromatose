@@ -19,6 +19,8 @@ namespace Chromatose
         private static SpriteRenderer spriteRenderer;
         private static Transform spriteTransform, pfxTransform;
 
+        private static ParticleSystem.MainModule dashPSMain;
+
         void Awake()
         {
             spriteRenderer = GetComponentInChildren<SpriteRenderer>();
@@ -38,6 +40,8 @@ namespace Chromatose
             deathExplosion.transform.SetParent(null);
             deathExplosion.transform.localScale = Vector3.one;
 
+            dashPSMain = dashPS.main;
+
             pfxTransform = this.transform;
         }
 
@@ -48,11 +52,19 @@ namespace Chromatose
 
         public static void Dash()
         {
-            _lightAnimate.AnimateToIntensity(3f, .1f, RepeatMode.Once);
-            _lightAnimate.AnimateToRange(2f, .1f, RepeatMode.Once);
+            _lightAnimate.AnimateToIntensity(3.2f, .1f, RepeatMode.Once);
+            _lightAnimate.AnimateToRange(2.4f, .1f, RepeatMode.Once);
             dashPS.Play();
+            dashPSMain.startLifetime = .18f;
             AudioManager.PlayPlayerDash();
             Camera.main.GetComponent<CameraControl>().Shake(.15f, 20, 20);
+        }
+
+        public static void UpdateDash(float percentage)
+        {
+            dashPSMain.startLifetime = .18f * percentage;
+            _light.range = 1.2f * percentage + 1.2f;
+            _light.intensity = 1.2f * percentage + 2f;
         }
 
         public static void StopDash()

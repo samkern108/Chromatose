@@ -30,7 +30,7 @@ namespace Chromatose
         {
             float startTime = Time.time;
             float timer = 0;
-            while (timer <= duration)
+            while (_light != null && timer <= duration)
             {
                 timer = Time.time - startTime;
                 _light.color = Color.Lerp(start, finish, timer / duration);
@@ -59,7 +59,7 @@ namespace Chromatose
         {
             float startTime = Time.time;
             float timer = 0;
-            while (timer <= duration)
+            while (_light != null && timer <= duration)
             {
                 timer = Time.time - startTime;
                 _light.intensity = Mathf.Lerp(start, finish, timer / duration);
@@ -88,7 +88,7 @@ namespace Chromatose
         {
             float startTime = Time.time;
             float timer = 0;
-            while (timer <= duration)
+            while (_light != null && timer <= duration)
             {
                 timer = Time.time - startTime;
                 _light.range = Mathf.Lerp(start, finish, timer / duration);

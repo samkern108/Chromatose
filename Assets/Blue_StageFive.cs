@@ -12,7 +12,7 @@ namespace Chromatose
             Turret[] turrets = GetComponentsInChildren<Turret>();
 			foreach(Turret t in turrets) {
 				t.shootAngle = 45;
-				t.splitCount = 2;
+				t.splitCount = 3;
 			}
 
 			BeatTrack[] beatTracks = GetComponentsInChildren<BeatTrack>();

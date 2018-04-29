@@ -7,7 +7,7 @@ namespace Chromatose
 {
     public class Turret_AlternateSides : Turret
     {
-        protected override void ShootMissile()
+        public override void ShootMissile()
         {
             int shootSide = -1;
             RaycastHit2D rightHit = Physics2D.Raycast(transform.position, Vector2.right, 40.0f, 1 << LayerMask.NameToLayer("Wall"));

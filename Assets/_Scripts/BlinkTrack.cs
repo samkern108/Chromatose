@@ -22,10 +22,17 @@ namespace Chromatose
         private Koreography koreo;
         public Track track;
 
+        private Turret turret;
+
         private bool canMove = false;
+
+        private EnemyHealth childHealth;
 
         void Start()
         {
+            turret = GetComponentInChildren<Turret>();
+            childHealth = GetComponentInChildren<EnemyHealth>();
+
             Koreographer.Instance.RegisterForEventsWithTime(eventID, BlinkEvent);
 
             blinkObserver = GetComponentInChildren<IBlinkObserver>();
@@ -37,18 +44,33 @@ namespace Chromatose
         {
             if (Koreographer.Instance != null)
                 Koreographer.Instance.UnregisterForAllEvents(this);
+            Destroy(blinkInEffect);
         }
 
         private Vector3 blinkPosition;
+        private bool prewarmed = false;
 
         void BlinkEvent(KoreographyEvent evt, int sampleTime, int sampleDelta, DeltaSlice deltaSlice)
         {
+            if(childHealth == null) {
+                blinkInEffect.SetActive(false);
+                Destroy(this);
+            }
+
             if (canMove)
             {
-                Invoke("Blink", blinkInLengthMod * Level.secondsPerBeat);
-                blinkPosition = track.GetRandomPointExcludingCurrent().position;
-
-                BlinkInEffect();
+                if (!prewarmed)
+                {
+                    blinkPosition = track.GetRandomPointExcludingCurrent().position;
+                    BlinkInEffect();
+                }
+                else
+                {
+                    Blink();
+                    if(turret.enabled)
+                        turret.ShootMissile();
+                }
+                prewarmed = !prewarmed;
             }
         }
 
@@ -71,6 +93,7 @@ namespace Chromatose
         public void LoadingStage()
         {
             canMove = false;
+            Invoke("StageBegin", Level.secondsPerMeasure * 2.0f);
         }
 
         public void StageBegin()

@@ -18,6 +18,7 @@ namespace Chromatose
         public Transform GetRandomPointExcludingCurrent() {
             int newPoint = (int)Random.Range(0, points.Length - 1);
             if(newPoint == currentPoint) newPoint = (newPoint + 1) % points.Length;
+            currentPoint = newPoint;
             return points[newPoint];
         }
     }

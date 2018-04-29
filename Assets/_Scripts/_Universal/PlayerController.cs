@@ -18,7 +18,7 @@ namespace Chromatose
         private float runSpeed = 6f, dashSpeed = 20f;
         private float jumpHeight = 14f;
         private float groundDamping = 20f; // how fast do we change direction? higher means faster
-        private float dashTimeMax = .50f, dashTime = 0.0f;
+        private float dashTimeMax = .50f, dashTime = 0.0f, dashCooldownMax = .1f, dashCooldown = 0.0f;
         public static bool dashing = false, canDash = true, airborne = false;
 
         private int maxHealth = 4, health = 4;
@@ -71,6 +71,9 @@ namespace Chromatose
 
         private float lastX, lastY, x, y, xRaw, yRaw;
         private bool jump, jumpCancel, dash, dashDown;
+        private Vector3 lastDashDirection;
+        float lastXRaw, lastYRaw;
+
         void Update()
         {
             if (inputDisabled)
@@ -83,6 +86,9 @@ namespace Chromatose
             lastY = y;
             x = Input.GetAxis("Horizontal");
             y = Input.GetAxis("Vertical");
+
+            lastXRaw = xRaw;
+            lastYRaw = yRaw;
             xRaw = Input.GetAxisRaw("Horizontal");
             yRaw = Input.GetAxisRaw("Vertical");
 
@@ -94,25 +100,22 @@ namespace Chromatose
             bool colliding = _controller.collisionState.right || _controller.collisionState.left ||
                             _controller.collisionState.above || _controller.collisionState.below;
 
-            if (!dashing && dash && canDash)
+            dashCooldown -= Time.deltaTime;
+            if (!dashing && dash && canDash && dashCooldown <= 0.0f)
             {
                 Dash();
             }
             else if ((dashDown || dashTime <= dashTimeMax / 2.0f) && dashing && (dashTime <= dashTimeMax))
             {
-                RaycastHit2D wallHit = Physics2D.Raycast(transform.position, new Vector2(x, y).normalized, .5f, 1 << LayerMask.NameToLayer("Wall"));
-                if (wallHit)
-                {
-                    Camera.main.GetComponent<CameraControl>().Shake(.20f, 20, 20);
-                    dashing = false;
-                    StopDashInvuln();
-                }
-                else
-                {
-                    dashTime += Time.deltaTime;
-                    Vector3 dashDirection = new Vector2(x, y).normalized; //new Vector2((x + lastX) / 2.0f, (y + lastY) / 2.0f).normalized;
-                    _velocity = (dashSpeed) * dashDirection;
-                }
+                dashTime += Time.deltaTime;
+                Vector3 dashDirection = new Vector2((x + lastX) / 2.0f, (y + lastY) / 2.0f).normalized;
+                if(xRaw == 0 && yRaw == 0)
+                    dashDirection = Vector2.zero;
+                _velocity = dashSpeed * dashDirection;
+
+                float percentage = 1 - (dashTime)/ (dashTimeMax);
+                float percentageOffset = percentage / 2.0f + .5f;
+                PlayerEffects.UpdateDash(percentage);
             }
             else
             {
@@ -120,6 +123,7 @@ namespace Chromatose
                 {
                     _velocity.y /= 3.0f;
                     dashing = false;
+                    dashCooldown = dashCooldownMax;
                     StopDashInvuln();
                 }
                 else if (_controller.isGrounded) MoveOnGround();
